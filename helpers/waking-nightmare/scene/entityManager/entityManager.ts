@@ -1,3 +1,4 @@
+import { Updatable } from "../../classes/game-objects/Component";
 import GameObject from "../../classes/game-objects/GameObject";
 
 class EntityManager {
@@ -8,11 +9,13 @@ class EntityManager {
   };
 
   updateEntities = () => {
-    this.entities.forEach((gameObject) => {
-      if (typeof gameObject?.update === 'function') {
-        gameObject.update();
+    this.entities.forEach((gameObject: GameObject) => {
+      if ((gameObject as Updatable).update) {
+        (gameObject as Updatable).update();
       }
     });
+
+
   };
 }
 
