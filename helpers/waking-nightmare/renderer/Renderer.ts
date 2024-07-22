@@ -15,7 +15,6 @@ class Renderer {
     this.resizeCanvas();
     window.addEventListener('resize', this.resizeCanvas);
     this.pixelBuffer = new PixelBuffer(this);
-    console.log('INITILIZING RENDERER');
   }
 
   resizeCanvas() {

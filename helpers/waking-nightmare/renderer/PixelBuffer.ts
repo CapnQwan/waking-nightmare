@@ -12,12 +12,12 @@ class PixelBuffer {
   RecalculatePixelBuffer() {
     for (let x = 0; x < this.renderer.width; x++) {
       for (let y = 0; y < this.renderer.height; y++) {
-        this.CalculatePixelValue(x, y);
+        this.RaycastPixel(x, y);
       }
     }
   }
 
-  CalculatePixelValue(x: number, y: number) {
+  RaycastPixel(x: number, y: number) {
 
   }
 };

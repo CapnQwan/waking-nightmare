@@ -1,9 +1,9 @@
 import Vector3 from "../math/Vector3";
 
-class Transform {
+class WN_Transform {
   position: Vector3 = Vector3.zero();
   scale: Vector3 = Vector3.one();
   rotation: Vector3 = Vector3.zero();
 }
 
-export default Transform;
+export default WN_Transform;

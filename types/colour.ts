@@ -1,0 +1,1 @@
+type colour = Array<number>;
