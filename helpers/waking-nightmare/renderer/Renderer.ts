@@ -1,3 +1,4 @@
+import WNCore from "../WakingNightmareCore";
 import PixelBuffer from "./PixelBuffer";
 
 class Renderer {
@@ -7,14 +8,16 @@ class Renderer {
   pixelRatio: number = 0;
   width: number = 0;
   height: number = 0;
+  wnCore: WNCore
 
-  constructor() {
+  constructor(core: WNCore) {
     this.canvas = document.createElement('canvas');
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
     this.resizeCanvas();
     window.addEventListener('resize', this.resizeCanvas);
     this.pixelBuffer = new PixelBuffer(this);
+    this.wnCore = core;
   }
 
   resizeCanvas() {

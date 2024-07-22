@@ -9,10 +9,6 @@ class Scene {
       this.entityManager.addEntity(gameObject);
     }
   };
-
-  update = () => {
-    this.entityManager.updateEntities();
-  };
 }
 
 export default Scene;

@@ -13,3 +13,4 @@ class WN_SpriteRenderer extends WN_RendererComponent {
   }
 }
 
+export default WN_SpriteRenderer;

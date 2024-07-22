@@ -1,18 +1,18 @@
-import GameObject from "./classes/game-objects/GameObject";
 import Time from "./classes/math/Time";
+import WN_GameObject from "./classes/modules/WN_GameObject";
 import Renderer from "./Renderer/Renderer";
-import Scene from "./scene/scene";
+import SceneManager from "./SceneManager/SceneManager";
 
 interface constructionProps {
   isDebugging?: boolean;
-  scene?: Array<GameObject>;
+  scene?: Array<WN_GameObject>;
 }
 
 class WNCore {
   isDebugging: boolean;
   renderer: Renderer = new Renderer();
   time: Time = new Time();
-  scene: Scene = new Scene();
+  sceneManager: SceneManager = new SceneManager();
 
   constructor({
     isDebugging = true,
@@ -30,7 +30,7 @@ class WNCore {
     if (this.isDebugging) {
       this.time.renderPerformance(this.renderer);
     }
-    this.scene.update();
+
     requestAnimationFrame(this.update);
   }
 };
