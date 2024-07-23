@@ -2,7 +2,7 @@ import WN_Object from "./WN_Object";
 import WN_Transform from "./WN_Transform";
 import WN_Component from "./WN_Component";
 import WN_RendererComponent from "./components/renderers/WN_RendererComponent";
-import EntityManager from "../../Scene/EntityManager/EntityManager";
+import EntityManager from "../../SceneManager/Scene/EntityManager/EntityManager";
 
 class WN_GameObject extends WN_Object {
   transform: WN_Transform = new WN_Transform();

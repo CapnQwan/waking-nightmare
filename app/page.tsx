@@ -7,7 +7,7 @@ export default function Home() {
   const [engine, setEngine] = useState<WNCore>();
 
   useEffect(() => {
-    const WakingNightmare = new WNCore({ isDebbuging: true });
+    const WakingNightmare = new WNCore({ isDebugging: true });
     setEngine(WakingNightmare);
   }, []);
 

@@ -1,10 +1,16 @@
-import GameObject from "../classes/game-objects/GameObject";
+import WN_GameObject from "../../classes/modules/WN_GameObject";
+import SceneManager from "../SceneManager";
 import EntityManager from "./EntityManager/EntityManager";
 
 class Scene {
-  entityManager: EntityManager = new EntityManager();
+  sceneManager: SceneManager;
+  entityManager: EntityManager = new EntityManager(this);
 
-  loadScene = (scene: Array<GameObject>) => {
+  constructor(sceneManager: SceneManager) {
+    this.sceneManager = sceneManager;
+  }
+
+  loadScene = (scene: Array<WN_GameObject>) => {
     for (const gameObject of scene) {
       this.entityManager.addEntity(gameObject);
     }

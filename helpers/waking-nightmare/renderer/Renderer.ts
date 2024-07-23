@@ -8,7 +8,7 @@ class Renderer {
   pixelRatio: number = 0;
   width: number = 0;
   height: number = 0;
-  wnCore: WNCore
+  wnCore: WNCore;
 
   constructor(core: WNCore) {
     this.canvas = document.createElement('canvas');
