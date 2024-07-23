@@ -1,4 +1,4 @@
-import Time from "./classes/math/Time";
+import WN_Time from "./classes/math/WN_Time";
 import WN_GameObject from "./classes/modules/WN_GameObject";
 import Renderer from "./renderer/Renderer";
 import QuadrentManager from "./SceneManager/Scene/EntityManager/QuadrentManager/QuadrentManager";
@@ -12,7 +12,7 @@ interface constructionProps {
 class WNCore {
   isDebugging: boolean;
   renderer: Renderer = new Renderer(this);
-  time: Time = new Time();
+  time: WN_Time = new WN_Time();
   sceneManager: SceneManager = new SceneManager(this);
   quadrentManager: QuadrentManager;
 
