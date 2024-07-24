@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import WNCore from "../helpers/waking-nightmare/WakingNightmareCore";
+import { useEffect, useRef, useState } from 'react';
+import WNCore from '../helpers/waking-nightmare/WakingNightmareCore';
 
 export default function Home() {
   const [engine, setEngine] = useState<WNCore>();
