@@ -1,5 +1,5 @@
-import Matrix4x4 from "../Matrix/Matrix4x4";
-import Vector3 from "../Vectors/Vector3";
+import Matrix4x4 from '../Matrix/Matrix4x4';
+import Vector3 from '../Vectors/Vector3';
 
 class Quaternion {
   x: number;
@@ -27,11 +27,18 @@ class Quaternion {
   }
 
   normalize(): Quaternion {
-    const length = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    const length = Math.sqrt(
+      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
+    );
     if (length === 0) {
-      throw new Error("Cannot normalize a zero quaternion");
+      throw new Error('Cannot normalize a zero quaternion');
     }
-    return new Quaternion(this.x / length, this.y / length, this.z / length, this.w / length);
+    return new Quaternion(
+      this.x / length,
+      this.y / length,
+      this.z / length,
+      this.w / length
+    );
   }
 
   conjugate(): Quaternion {
@@ -49,6 +56,7 @@ class Quaternion {
     const wy = this.w * this.y;
     const wz = this.w * this.z;
 
+    // prettier-ignore
     return new Matrix4x4([
       1 - 2 * (yy + zz), 2 * (xy - wz), 2 * (xz + wy), 0,
       2 * (xy + wz), 1 - 2 * (xx + zz), 2 * (yz - wx), 0,
@@ -63,8 +71,14 @@ class Quaternion {
 
   inverse(): Quaternion {
     const conjugate = this.conjugate();
-    const lengthSquared = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
-    return new Quaternion(conjugate.x / lengthSquared, conjugate.y / lengthSquared, conjugate.z / lengthSquared, conjugate.w / lengthSquared);
+    const lengthSquared =
+      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    return new Quaternion(
+      conjugate.x / lengthSquared,
+      conjugate.y / lengthSquared,
+      conjugate.z / lengthSquared,
+      conjugate.w / lengthSquared
+    );
   }
 
   rotateVector(vector: Vector3): Vector3 {
@@ -76,7 +90,12 @@ class Quaternion {
   static fromAxisAngle(axis: Vector3, angle: number): Quaternion {
     const halfAngle = angle / 2;
     const s = Math.sin(halfAngle);
-    return new Quaternion(axis.x * s, axis.y * s, axis.z * s, Math.cos(halfAngle));
+    return new Quaternion(
+      axis.x * s,
+      axis.y * s,
+      axis.z * s,
+      Math.cos(halfAngle)
+    );
   }
 
   static fromEulerAngles(yaw: number, pitch: number, roll: number): Quaternion {
@@ -95,13 +114,14 @@ class Quaternion {
     );
   }
 
-  toEulerAngles(): { yaw: number, pitch: number, roll: number } {
+  toEulerAngles(): { yaw: number; pitch: number; roll: number } {
     const sinr_cosp = 2 * (this.w * this.x + this.y * this.z);
     const cosr_cosp = 1 - 2 * (this.x * this.x + this.y * this.y);
     const roll = Math.atan2(sinr_cosp, cosr_cosp);
 
     const sinp = 2 * (this.w * this.y - this.z * this.x);
-    const pitch = Math.abs(sinp) >= 1 ? Math.sign(sinp) * Math.PI / 2 : Math.asin(sinp);
+    const pitch =
+      Math.abs(sinp) >= 1 ? (Math.sign(sinp) * Math.PI) / 2 : Math.asin(sinp);
 
     const siny_cosp = 2 * (this.w * this.z + this.x * this.y);
     const cosy_cosp = 1 - 2 * (this.y * this.y + this.z * this.z);
@@ -132,7 +152,7 @@ class Quaternion {
     const sinTheta = Math.sin(theta);
     const sinTheta0 = Math.sin(theta0);
 
-    const s0 = Math.cos(theta) - cosTheta * sinTheta / sinTheta0;
+    const s0 = Math.cos(theta) - (cosTheta * sinTheta) / sinTheta0;
     const s1 = sinTheta / sinTheta0;
 
     return new Quaternion(

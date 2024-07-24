@@ -7,7 +7,7 @@ class Vector3 {
     this.x = x;
     this.y = y;
     this.z = z;
-  };
+  }
 
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
@@ -16,7 +16,7 @@ class Vector3 {
   normalize() {
     const mag = this.magnitude();
     if (mag === 0) {
-      throw new Error("Cannot normalize a zero vector");
+      throw new Error('Cannot normalize a zero vector');
     }
     this.x /= mag;
     this.y /= mag;
@@ -27,7 +27,7 @@ class Vector3 {
   normalized() {
     const mag = this.magnitude();
     if (mag === 0) {
-      throw new Error("Cannot normalize a zero vector");
+      throw new Error('Cannot normalize a zero vector');
     }
     return new Vector3(this.x / mag, this.y / mag, this.z / mag);
   }
@@ -62,12 +62,16 @@ class Vector3 {
 
   distance(vector: Vector3): number {
     return Math.sqrt(
-      (this.x - vector.x) ** 2 + (this.y - vector.y) ** 2 + (this.z - vector.z) ** 2
+      (this.x - vector.x) ** 2 +
+        (this.y - vector.y) ** 2 +
+        (this.z - vector.z) ** 2
     );
   }
 
   angle(vector: Vector3): number {
-    return Math.acos(this.dot(vector) / (this.magnitude() * vector.magnitude()));
+    return Math.acos(
+      this.dot(vector) / (this.magnitude() * vector.magnitude())
+    );
   }
   clone(): Vector3 {
     return new Vector3(this.x, this.y, this.z);

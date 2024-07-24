@@ -14,7 +14,7 @@ class Vector2 {
   normalize() {
     const mag = this.magnitude();
     if (mag === 0) {
-      throw new Error("Cannot normalize a zero vector");
+      throw new Error('Cannot normalize a zero vector');
     }
     this.x /= mag;
     this.y /= mag;
@@ -24,7 +24,7 @@ class Vector2 {
   normalized() {
     const mag = this.magnitude();
     if (mag === 0) {
-      throw new Error("Cannot normalize a zero vector");
+      throw new Error('Cannot normalize a zero vector');
     }
     return new Vector2(this.x / mag, this.y / mag);
   }
@@ -50,7 +50,9 @@ class Vector2 {
   }
 
   angle(vector: Vector2): number {
-    return Math.acos(this.dot(vector) / (this.magnitude() * vector.magnitude()));
+    return Math.acos(
+      this.dot(vector) / (this.magnitude() * vector.magnitude())
+    );
   }
 
   static add(v1: Vector2, v2: Vector2): Vector2 {

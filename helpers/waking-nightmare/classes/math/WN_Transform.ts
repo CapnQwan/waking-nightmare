@@ -1,8 +1,8 @@
-import Matrix4x4 from "./Matrix/Matrix4x4";
-import Quaternion from "./Quaternion/Quaternion";
-import Vector3 from "./Vectors/Vector3";
+import Matrix4x4 from './Matrix/Matrix4x4';
+import Quaternion from './Quaternion/Quaternion';
+import Vector3 from './Vectors/Vector3';
 
-class Transform {
+class WN_Transform {
   position: Vector3;
   rotation: Quaternion;
   scale: Vector3;
@@ -18,9 +18,17 @@ class Transform {
   }
 
   getMatrix(): Matrix4x4 {
-    const translationMatrix = Matrix4x4.translation(this.position.x, this.position.y, this.position.z);
+    const translationMatrix = Matrix4x4.translation(
+      this.position.x,
+      this.position.y,
+      this.position.z
+    );
     const rotationMatrix = this.rotation.toMatrix4x4();
-    const scaleMatrix = Matrix4x4.scaling(this.scale.x, this.scale.y, this.scale.z);
+    const scaleMatrix = Matrix4x4.scaling(
+      this.scale.x,
+      this.scale.y,
+      this.scale.z
+    );
 
     return translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix);
   }
@@ -37,12 +45,14 @@ class Transform {
     this.scale = this.scale.multiply(scale);
   }
 
-  combine(transform: Transform): Transform {
+  combine(transform: WN_Transform): WN_Transform {
     const combinedPosition = this.position.add(transform.position);
-    const combinedRotation = this.rotation.multiply(transform.rotation).normalize();
+    const combinedRotation = this.rotation
+      .multiply(transform.rotation)
+      .normalize();
     const combinedScale = this.scale.multiply(transform.scale);
 
-    return new Transform(combinedPosition, combinedRotation, combinedScale);
+    return new WN_Transform(combinedPosition, combinedRotation, combinedScale);
   }
 
   lookAt(target: Vector3, up: Vector3 = Vector3.up()): void {
@@ -50,6 +60,7 @@ class Transform {
     const right = up.cross(direction).normalize();
     const adjustedUp = direction.cross(right).normalize();
 
+    // prettier-ignore
     const mat = new Matrix4x4([
       right.x, right.y, right.z, 0,
       adjustedUp.x, adjustedUp.y, adjustedUp.z, 0,
@@ -60,15 +71,19 @@ class Transform {
     this.rotation = Quaternion.fromMatrix4x4(mat);
   }
 
-  clone(): Transform {
-    return new Transform(this.position.clone(), this.rotation.clone(), this.scale.clone());
+  clone(): WN_Transform {
+    return new WN_Transform(
+      this.position.clone(),
+      this.rotation.clone(),
+      this.scale.clone()
+    );
   }
 
-  copy(transform: Transform): void {
+  copy(transform: WN_Transform): void {
     this.position = transform.position.clone();
     this.rotation = transform.rotation.clone();
     this.scale = transform.scale.clone();
   }
 }
 
-export default Transform;
+export default WN_Transform;

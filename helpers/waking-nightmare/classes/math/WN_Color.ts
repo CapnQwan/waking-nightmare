@@ -1,4 +1,4 @@
-import WN_Math from "./WN_Math";
+import WN_Math from './WN_Math';
 
 class WN_Color {
   r: number;
@@ -6,7 +6,17 @@ class WN_Color {
   b: number;
   a: number;
 
-  constructor({ r = 0, g = 0, b = 0, a = 1 }: { r?: number, g?: number, b?: number, a?: number }) {
+  constructor({
+    r = 0,
+    g = 0,
+    b = 0,
+    a = 1,
+  }: {
+    r?: number;
+    g?: number;
+    b?: number;
+    a?: number;
+  }) {
     this.r = WN_Math.clamp(r, 0, 256);
     this.g = WN_Math.clamp(g, 0, 256);
     this.b = WN_Math.clamp(b, 0, 256);
@@ -15,7 +25,7 @@ class WN_Color {
 
   toHex(): string {
     return (
-      "#" +
+      '#' +
       ((1 << 24) + (this.r << 16) + (this.g << 8) + this.b)
         .toString(16)
         .slice(1)
@@ -119,7 +129,7 @@ class WN_Color {
     l /= 100;
 
     const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
     const m = l - c / 2;
 
     let r = 0,

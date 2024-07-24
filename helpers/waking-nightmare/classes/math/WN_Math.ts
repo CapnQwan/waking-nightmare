@@ -16,7 +16,13 @@ class WN_Math {
     return start + t * (end - start);
   }
 
-  static map(value: number, inMin: number, inMax: number, outMin: number, outMax: number): number {
+  static map(
+    value: number,
+    inMin: number,
+    inMax: number,
+    outMin: number,
+    outMax: number
+  ): number {
     return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
   }
 
@@ -31,7 +37,14 @@ class WN_Math {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  static distance3d(x1: number, y1: number, z1: number, x2: number, y2: number, z2: number): number {
+  static distance3d(
+    x1: number,
+    y1: number,
+    z1: number,
+    x2: number,
+    y2: number,
+    z2: number
+  ): number {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const dz = z2 - z1;
@@ -44,7 +57,7 @@ class WN_Math {
 
   static radiansToDegrees(radians: number): number {
     return (radians * 180) / Math.PI;
-  } 
+  }
 
   static modulo(value: number, divisor: number): number {
     return ((value % divisor) + divisor) % divisor;

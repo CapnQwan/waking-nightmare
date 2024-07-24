@@ -1,12 +1,14 @@
-import Renderer from "./Renderer";
+import Renderer from './Renderer';
 
 class PixelBuffer {
   renderer;
   buffer;
 
   constructor(renderer: Renderer) {
-    this.renderer = renderer
-    this.buffer = new Array(this.renderer.width * this.renderer.height).fill([0, 0, 0, 255]);
+    this.renderer = renderer;
+    this.buffer = new Array(this.renderer.width * this.renderer.height).fill([
+      0, 0, 0, 255,
+    ]);
   }
 
   RecalculatePixelBuffer() {
@@ -17,9 +19,7 @@ class PixelBuffer {
     }
   }
 
-  RaycastPixel(x: number, y: number) {
-
-  }
-};
+  RaycastPixel(x: number, y: number) {}
+}
 
 export default PixelBuffer;

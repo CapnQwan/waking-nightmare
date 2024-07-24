@@ -1,4 +1,4 @@
-import WN_Color from "./WN_Color";
+import WN_Color from './WN_Color';
 
 const modulus = 4294967296 as const;
 const multiplier = 1664525 as const;
@@ -53,11 +53,12 @@ class WN_Random {
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
     const a = Math.random();
-    return new WN_Color({r, g, b, a });
+    return new WN_Color({ r, g, b, a });
   }
 
   static randomGaussian(mean: number = 0, stdDev: number = 1): number {
-    let u = 0, v = 0;
+    let u = 0,
+      v = 0;
     while (u === 0) u = Math.random();
     while (v === 0) v = Math.random();
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);

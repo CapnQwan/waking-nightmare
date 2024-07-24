@@ -1,4 +1,4 @@
-import Renderer from "../../renderer/Renderer";
+import Renderer from '@WN/renderer/Renderer';
 
 class WN_Time {
   startTime: number;
@@ -68,7 +68,8 @@ class WN_Time {
   resume() {
     if (this.isPaused) {
       this.isPaused = false;
-      const timePaused = performance.now() - (this.pauseTime || performance.now());
+      const timePaused =
+        performance.now() - (this.pauseTime || performance.now());
       this.startTime += timePaused;
       if (this.timeLastFrame !== null) {
         this.timeLastFrame += timePaused;
@@ -79,7 +80,11 @@ class WN_Time {
 
   getFrameTimeVariance(): number {
     const mean = this.getAverageFrameRate();
-    const variance = this.pastFrames.reduce((acc, frameRate) => acc + Math.pow(frameRate - mean, 2), 0) / this.pastFrames.length;
+    const variance =
+      this.pastFrames.reduce(
+        (acc, frameRate) => acc + Math.pow(frameRate - mean, 2),
+        0
+      ) / this.pastFrames.length;
     return Math.sqrt(variance);
   }
 

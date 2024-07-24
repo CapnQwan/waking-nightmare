@@ -1,8 +1,8 @@
-import WN_Time from "./classes/math/WN_Time";
-import WN_GameObject from "./classes/modules/WN_GameObject";
-import Renderer from "./renderer/Renderer";
-import QuadrentManager from "./SceneManager/Scene/EntityManager/QuadrentManager/QuadrentManager";
-import SceneManager from "./SceneManager/SceneManager";
+import WN_Time from './classes/math/WN_Time';
+import WN_GameObject from './GameObjects/GameObject/WN_GameObject';
+import Renderer from './renderer/Renderer';
+import QuadrentManager from './SceneManager/Scene/EntityManager/QuadrentManager/QuadrentManager';
+import SceneManager from './SceneManager/SceneManager';
 
 interface constructionProps {
   isDebugging?: boolean;
@@ -11,17 +11,15 @@ interface constructionProps {
 
 class WNCore {
   isDebugging: boolean;
-  renderer: Renderer = new Renderer(this);
   time: WN_Time = new WN_Time();
-  sceneManager: SceneManager = new SceneManager(this);
   quadrentManager: QuadrentManager;
+  renderer: Renderer = new Renderer(this);
+  sceneManager: SceneManager = new SceneManager(this);
 
-  constructor({
-    isDebugging = true,
-    scene = [],
-  }: constructionProps) {
+  constructor({ isDebugging = true, scene = [] }: constructionProps) {
     this.isDebugging = isDebugging;
-    this.quadrentManager = this.sceneManager.scene.entityManager.quadrantManager;
+    this.quadrentManager =
+      this.sceneManager.scene.entityManager.quadrantManager;
 
     requestAnimationFrame(this.update);
 
@@ -29,14 +27,19 @@ class WNCore {
   }
 
   update = () => {
-    this.renderer.ctx?.clearRect(0, 0, this.renderer.canvas.width, this.renderer.canvas.height);
+    this.renderer.ctx?.clearRect(
+      0,
+      0,
+      this.renderer.canvas.width,
+      this.renderer.canvas.height
+    );
 
     if (this.isDebugging) {
       this.time.renderPerformance(this.renderer);
     }
 
     requestAnimationFrame(this.update);
-  }
-};
+  };
+}
 
 export default WNCore;

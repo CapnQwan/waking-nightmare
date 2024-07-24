@@ -1,5 +1,5 @@
-import WNCore from "../WakingNightmareCore";
-import PixelBuffer from "./PixelBuffer";
+import WNCore from '../WakingNightmareCore';
+import PixelBuffer from './PixelBuffer';
 
 class Renderer {
   canvas: HTMLCanvasElement;
@@ -33,7 +33,6 @@ class Renderer {
     const textString = typeof text === 'number' ? text.toString() : text;
     this.ctx?.fillText(textString, x, y);
   }
-};
-
+}
 
 export default Renderer;

@@ -1,21 +1,15 @@
-import WN_GameObject from "./WN_GameObject";
+import WN_GameObject from '../../WN_GameObject';
 
 class WN_Behaviour extends WN_GameObject {
+  onAwake = () => {};
 
-  onAwake = () => {
-  }
+  update = () => {};
 
-  update = () => {
-  }
+  onEnable = () => {};
 
-  onEnable = () => {
-  }
+  onDisable = () => {};
 
-  onDisable = () => {
-  }
-
-  onDestroy = () => {
-  }
+  onDestroy = () => {};
 }
 
 export default WN_Behaviour;

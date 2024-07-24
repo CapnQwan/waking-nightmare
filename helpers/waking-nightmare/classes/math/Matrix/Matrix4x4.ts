@@ -2,6 +2,7 @@ class Matrix4x4 {
   elements: number[];
 
   constructor(elements?: number[]) {
+    // prettier-ignore
     this.elements = elements || [
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -38,6 +39,7 @@ class Matrix4x4 {
   }
 
   static identity(): Matrix4x4 {
+    // prettier-ignore
     return new Matrix4x4([
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -47,6 +49,7 @@ class Matrix4x4 {
   }
 
   static translation(tx: number, ty: number, tz: number): Matrix4x4 {
+    // prettier-ignore
     return new Matrix4x4([
       1, 0, 0, tx,
       0, 1, 0, ty,
@@ -58,6 +61,7 @@ class Matrix4x4 {
   static rotationX(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     return new Matrix4x4([
       1, 0, 0, 0,
       0, c, -s, 0,
@@ -69,6 +73,7 @@ class Matrix4x4 {
   static rotationY(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     return new Matrix4x4([
       c, 0, s, 0,
       0, 1, 0, 0,
@@ -80,6 +85,7 @@ class Matrix4x4 {
   static rotationZ(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     return new Matrix4x4([
       c, -s, 0, 0,
       s, c, 0, 0,
@@ -89,6 +95,7 @@ class Matrix4x4 {
   }
 
   static scaling(sx: number, sy: number, sz: number): Matrix4x4 {
+    // prettier-ignore
     return new Matrix4x4([
       sx, 0, 0, 0,
       0, sy, 0, 0,
