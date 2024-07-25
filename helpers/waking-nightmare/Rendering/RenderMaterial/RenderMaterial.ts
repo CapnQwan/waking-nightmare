@@ -18,7 +18,7 @@ class RenderMaterial {
     const imageArray = new Uint8ClampedArray(this.width * this.height * 4);
 
     for (let y = 0, i = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++, i++) {
+      for (let x = 0; x < this.width; x++, i += 4) {
         const color = this.pixelBuffer[y][x].toRgbaArray();
         imageArray[i] = color[0];
         imageArray[i + 1] = color[1];

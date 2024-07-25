@@ -25,7 +25,7 @@ class Canvas {
   }
 
   renderImageData(imageData: ImageData) {
-    this.ctx?.putImageData(imageData, 0, 0);
+    this.ctx?.putImageData(imageData, 20, 20);
   }
 
   renderText(text: string | number, x: number, y: number) {
