@@ -37,6 +37,10 @@ class WN_Color {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
 
+  toRgbaArray(): Array<number> {
+    return [this.r, this.g, this.b, this.a * 255];
+  }
+
   blend(color: WN_Color, t: number): WN_Color {
     return new WN_Color({
       r: WN_Math.lerp(this.r, color.r, t),

@@ -1,4 +1,4 @@
-import Renderer from '@WN/renderer/Renderer';
+import Canvas from '../../Rendering/Canvas';
 
 class WN_Time {
   startTime: number;
@@ -38,16 +38,16 @@ class WN_Time {
     return Math.round(totalFrameRate / this.pastFrames.length);
   }
 
-  renderPerformance(Renderer: Renderer) {
-    if (!Renderer.ctx) {
+  renderPerformance(canvas: Canvas) {
+    if (!canvas.ctx) {
       return;
     }
 
     this.update();
-    Renderer.ctx.font = '12px Arial';
-    Renderer.ctx.fillStyle = '#f2af13';
+    canvas.ctx.font = '12px Arial';
+    canvas.ctx.fillStyle = '#f2af13';
     const averageFrameRate = this.getAverageFrameRate();
-    Renderer.renderText(`FPS: ${averageFrameRate}`, Renderer.width - 100, 50);
+    canvas.renderText(`FPS: ${averageFrameRate}`, canvas.width - 100, 50);
   }
 
   clearFrameHistory() {

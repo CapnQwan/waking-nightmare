@@ -5,9 +5,9 @@ class SceneManager {
   wncore: WNCore;
   scene: Scene;
 
-  constructor(core: WNCore) {
+  constructor({ core, scene }: { core: WNCore; scene?: Scene }) {
     this.wncore = core;
-    this.scene = new Scene(this);
+    this.scene = scene ? scene : new Scene(this);
   }
 }
 

@@ -1,23 +1,18 @@
-import WNCore from '../WakingNightmareCore';
-import PixelBuffer from './PixelBuffer';
+import RenderMaterial from './RenderMaterial/RenderMaterial';
 
-class Renderer {
+class Canvas {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D | null;
-  pixelBuffer: PixelBuffer;
   pixelRatio: number = 0;
   width: number = 0;
   height: number = 0;
-  wnCore: WNCore;
 
-  constructor(core: WNCore) {
+  constructor() {
     this.canvas = document.createElement('canvas');
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
     this.resizeCanvas();
     window.addEventListener('resize', this.resizeCanvas);
-    this.pixelBuffer = new PixelBuffer(this);
-    this.wnCore = core;
   }
 
   resizeCanvas() {
@@ -29,10 +24,18 @@ class Renderer {
     this.ctx?.scale(this.pixelRatio, this.pixelRatio);
   }
 
+  renderImageData(imageData: ImageData) {
+    this.ctx?.putImageData(imageData, 0, 0);
+  }
+
   renderText(text: string | number, x: number, y: number) {
     const textString = typeof text === 'number' ? text.toString() : text;
     this.ctx?.fillText(textString, x, y);
   }
+
+  clearCanvas() {
+    this.ctx?.clearRect(0, 0, this.width, this.height);
+  }
 }
 
-export default Renderer;
+export default Canvas;

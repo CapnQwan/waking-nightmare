@@ -1,7 +1,7 @@
 import WN_Time from './classes/math/WN_Time';
 import WN_GameObject from './GameObjects/GameObject/WN_GameObject';
-import Renderer from './renderer/Renderer';
-import QuadrentManager from './SceneManager/Scene/EntityManager/QuadrentManager/QuadrentManager';
+import Canvas from './Rendering/Canvas';
+import RenderMaterial from './Rendering/RenderMaterial/RenderMaterial';
 import SceneManager from './SceneManager/SceneManager';
 
 interface constructionProps {
@@ -11,15 +11,19 @@ interface constructionProps {
 
 class WNCore {
   isDebugging: boolean;
-  time: WN_Time = new WN_Time();
-  quadrentManager: QuadrentManager;
-  renderer: Renderer = new Renderer(this);
-  sceneManager: SceneManager = new SceneManager(this);
+  time: WN_Time;
+  canvas: Canvas;
+  sceneManager: SceneManager;
+  renderMat: RenderMaterial;
 
   constructor({ isDebugging = true, scene = [] }: constructionProps) {
     this.isDebugging = isDebugging;
-    this.quadrentManager =
-      this.sceneManager.scene.entityManager.quadrantManager;
+
+    this.time = new WN_Time();
+    this.canvas = new Canvas();
+    this.sceneManager = new SceneManager({ core: this });
+
+    this.renderMat = new RenderMaterial(50, 50);
 
     requestAnimationFrame(this.update);
 
@@ -27,15 +31,11 @@ class WNCore {
   }
 
   update = () => {
-    this.renderer.ctx?.clearRect(
-      0,
-      0,
-      this.renderer.canvas.width,
-      this.renderer.canvas.height
-    );
-
+    this.canvas.clearCanvas();
+    this.renderMat = new RenderMaterial(200, 200);
+    this.canvas.renderImageData(this.renderMat.getImageData());
     if (this.isDebugging) {
-      this.time.renderPerformance(this.renderer);
+      this.time.renderPerformance(this.canvas);
     }
 
     requestAnimationFrame(this.update);
