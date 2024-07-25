@@ -1,6 +1,6 @@
-import WN_GameObject from "@WN/classes/modules/WN_GameObject";
-import EntityManager from "../EntityManager";
-import Vector3 from "@WN/classes/math/Vector3";
+import Vector3 from '@WN/classes/math/Vectors/Vector3';
+import EntityManager from '../EntityManager';
+import WN_GameObject from '@WN/GameObjects/GameObject/WN_GameObject';
 
 class QuadrentManager {
   entityManager: EntityManager;
@@ -10,7 +10,7 @@ class QuadrentManager {
 
   constructor(entityManager: EntityManager) {
     this.entityManager = entityManager;
-    const core = entityManager.scene.sceneManager.wncore;
+    const core = this.entityManager.scene.sceneManager.wncore;
     const renderer = core.renderer;
 
     const quadrentX = Math.ceil(renderer.width / this.quadrentDimensions.x);
@@ -18,22 +18,26 @@ class QuadrentManager {
 
     this.quadrents = Array.from({ length: quadrentX }, () =>
       Array.from({ length: quadrentY }, () =>
-        Array.from({ length: this.quadrentDepth }, () => []
-        )
+        Array.from({ length: this.quadrentDepth }, () => [])
       )
     );
   }
 
-  getXQuadrant = (x: number): Array<Array<Array<WN_GameObject | null>>> | null => {
+  getXQuadrant = (
+    x: number
+  ): Array<Array<Array<WN_GameObject | null>>> | null => {
     const quadrentX = Math.floor(x / this.quadrentDimensions.x);
 
     if (quadrentX < 0 || quadrentX >= this.quadrents.length) {
       return null;
     }
-    return this.quadrents[quadrentX]
+    return this.quadrents[quadrentX];
   };
 
-  getYQuadrant = (x: number, y: number): Array<Array<WN_GameObject | null>> | null => {
+  getYQuadrant = (
+    x: number,
+    y: number
+  ): Array<Array<WN_GameObject | null>> | null => {
     const xQuadrent = this.getXQuadrant(x);
     const quadrentY = Math.floor(y / this.quadrentDimensions.y);
 
@@ -44,14 +48,18 @@ class QuadrentManager {
     return xQuadrent[quadrentY];
   };
 
-  getZQuadrant = (x: number, y: number, z: number): Array<WN_GameObject | null> | null => {
+  getZQuadrant = (
+    x: number,
+    y: number,
+    z: number
+  ): Array<WN_GameObject | null> | null => {
     const yQuadrent = this.getYQuadrant(x, y);
     const quadrentZ = Math.floor(z / this.quadrentDimensions.z);
 
     if (!yQuadrent || quadrentZ < 0 || quadrentZ >= yQuadrent.length) {
       return null;
     }
-    return yQuadrent[quadrentZ]
+    return yQuadrent[quadrentZ];
   };
 
   addObject = (gameObject: WN_GameObject): void => {
@@ -60,8 +68,7 @@ class QuadrentManager {
     if (zQuadrent) {
       zQuadrent.push(gameObject);
     }
-  }
-
+  };
 }
 
 export default QuadrentManager;

@@ -1,12 +1,13 @@
-import WNCore from "../WakingNightmareCore";
-import Scene from "./Scene/Scene";
+import WNCore from '../WakingNightmareCore';
+import Scene from './Scene/Scene';
 
 class SceneManager {
   wncore: WNCore;
-  scene: Scene = new Scene(this);
+  scene: Scene;
 
-  constructor(core: WNCore) {
+  constructor({ core, scene }: { core: WNCore; scene?: Scene }) {
     this.wncore = core;
+    this.scene = scene ? scene : new Scene(this);
   }
 }
 

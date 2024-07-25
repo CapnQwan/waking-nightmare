@@ -1,4 +1,4 @@
-import WN_RendererComponent from "./WN_RendererComponent";
+import WN_RendererComponent from './WN_RendererComponent';
 
 class WN_SpriteRenderer extends WN_RendererComponent {
   sprite: sprite;
