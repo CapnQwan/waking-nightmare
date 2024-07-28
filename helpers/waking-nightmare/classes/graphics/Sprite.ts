@@ -62,7 +62,7 @@ class Sprite {
     }
 
     const offscreenCanvas = new OffscreenCanvas(this.width, this.height);
-    const context = offscreenCanvas.getContext('2d');
+    const context = offscreenCanvas.getContext('2d') as unknown as CanvasRenderingContext2D;
     if (context) {
       context.drawImage(imageBitmap, 0, 0);
       const imageData = context.getImageData(this.xCoord, this.yCoord, this.width, this.height);
@@ -70,6 +70,14 @@ class Sprite {
     } else {
       throw new Error('Failed to get 2D context from OffscreenCanvas');
     }
+  };
+
+  getImageData = (): ImageData | null => {
+    if (this.width === undefined || this.height === undefined) {
+      return null;
+    }
+
+    return new ImageData(this.sprite, this.width, this.height);
   };
 }
 

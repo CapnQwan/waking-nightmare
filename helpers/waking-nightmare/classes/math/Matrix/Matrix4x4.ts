@@ -38,6 +38,42 @@ class Matrix4x4 {
     ]);
   }
 
+  rotateX(angle: number): Matrix4x4 {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    const rotationMatrix = new Matrix4x4([
+      1, 0, 0, 0,
+      0, c, -s, 0,
+      0, s, c, 0,
+      0, 0, 0, 1
+    ]);
+    return this.multiply(rotationMatrix);
+  }
+
+  rotateY(angle: number): Matrix4x4 {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    const rotationMatrix = new Matrix4x4([
+      c, 0, s, 0,
+      0, 1, 0, 0,
+      -s, 0, c, 0,
+      0, 0, 0, 1
+    ]);
+    return this.multiply(rotationMatrix);
+  }
+
+  rotateZ(angle: number): Matrix4x4 {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    const rotationMatrix = new Matrix4x4([
+      c, -s, 0, 0,
+      s, c, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ]);
+    return this.multiply(rotationMatrix);
+  }
+
   static identity(): Matrix4x4 {
     // prettier-ignore
     return new Matrix4x4([

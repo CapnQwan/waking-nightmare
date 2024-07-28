@@ -1,6 +1,6 @@
-import WN_GameObject from '../../WN_GameObject';
+import WN_Component from '../WN_Component';
 
-class WN_Behaviour extends WN_GameObject {
+class WN_Behaviour extends WN_Component {
   onAwake = () => {};
 
   update = () => {};

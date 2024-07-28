@@ -1,16 +1,21 @@
+import Sprite from '@WN/classes/graphics/Sprite';
+import WN_GameObject from '@WN/GameObjects/GameObject/WN_GameObject';
 import WN_RendererComponent from './WN_RendererComponent';
 
-class WN_SpriteRenderer extends WN_RendererComponent {
-  sprite: sprite;
-  width: number;
-  height: number;
+type spriteRendererConstructor = {
+  parent: WN_GameObject;
+  sprite: Sprite;
+};
 
-  constructor(sprite: sprite) {
-    super({});
+class WN_SpriteRenderer extends WN_RendererComponent {
+  sprite: Sprite;
+
+  constructor({ parent, sprite }: spriteRendererConstructor) {
+    super({ parent });
     this.sprite = sprite;
-    this.height = sprite.length;
-    this.width = sprite[0].length;
   }
+
+  render = () => this.sprite.getImageData();
 }
 
 export default WN_SpriteRenderer;
