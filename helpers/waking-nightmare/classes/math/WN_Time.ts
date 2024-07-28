@@ -1,4 +1,4 @@
-import Canvas from '../../Rendering/Canvas';
+import WN_Canvas from "@WN/Rendering/WN_Canvas";
 
 class WN_Time {
   startTime: number;
@@ -38,7 +38,7 @@ class WN_Time {
     return Math.round(totalFrameRate / this.pastFrames.length);
   }
 
-  renderPerformance(canvas: Canvas) {
+  renderPerformance(canvas: WN_Canvas) {
     if (!canvas.ctx) {
       return;
     }

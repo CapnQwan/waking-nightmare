@@ -1,20 +1,18 @@
 import Vector3 from '@WN/classes/math/Vectors/Vector3';
-import EntityManager from '../EntityManager';
+import WN_EntityManager from '../WN_EntityManager';
 import WN_GameObject from '@WN/GameObjects/GameObject/WN_GameObject';
 
 class QuadrentManager {
-  entityManager: EntityManager;
+  entityManager: WN_EntityManager;
   quadrentDimensions: Vector3 = new Vector3(10, 10, 10);
   quadrentDepth: number = 100;
   quadrents: Array<Array<Array<Array<WN_GameObject | null>>>>;
 
-  constructor(entityManager: EntityManager) {
+  constructor(entityManager: WN_EntityManager, width = 0, height = 0) {
     this.entityManager = entityManager;
-    const core = this.entityManager.scene.sceneManager.wncore;
-    const renderer = core.renderer;
 
-    const quadrentX = Math.ceil(renderer.width / this.quadrentDimensions.x);
-    const quadrentY = Math.ceil(renderer.height / this.quadrentDimensions.y);
+    const quadrentX = Math.ceil(width / this.quadrentDimensions.x);
+    const quadrentY = Math.ceil(height / this.quadrentDimensions.y);
 
     this.quadrents = Array.from({ length: quadrentX }, () =>
       Array.from({ length: quadrentY }, () =>

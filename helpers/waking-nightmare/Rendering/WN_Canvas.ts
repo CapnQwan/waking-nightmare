@@ -1,6 +1,4 @@
-import RenderMaterial from './RenderMaterial/RenderMaterial';
-
-class Canvas {
+class WN_Canvas {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D | null;
   pixelRatio: number = 0;
@@ -38,4 +36,4 @@ class Canvas {
   }
 }
 
-export default Canvas;
+export default WN_Canvas;
