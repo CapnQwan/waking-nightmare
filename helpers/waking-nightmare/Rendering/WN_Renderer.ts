@@ -37,7 +37,7 @@ class WN_Renderer {
           .multiply(viewMatrix)
           .multiply(modelMatrix);
 
-        this.draw(entity, viewMatrix, mvpMatrix, camera);
+        this.draw(entity, mvpMatrix, camera);
       });
     });
   };
@@ -48,11 +48,11 @@ class WN_Renderer {
 
   draw = (
     renderer: WN_RendererComponent,
-    viewMatrix: Matrix4x4,
     mvpMatrix: Matrix4x4,
     camera: WN_Camera
   ) => {
-    renderer.render(camera.pixelBuffer, viewMatrix);
+    renderer.render(camera.pixelBuffer, mvpMatrix);
+    camera.output.loadPixelBuffer(camera.pixelBuffer);
   };
 }
 

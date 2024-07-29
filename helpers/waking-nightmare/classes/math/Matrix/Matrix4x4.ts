@@ -1,3 +1,5 @@
+import Vector3 from "../Vectors/Vector3";
+
 class Matrix4x4 {
   elements: number[];
 
@@ -36,6 +38,19 @@ class Matrix4x4 {
       a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14],
       a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15],
     ]);
+  }
+
+  multiplyVector(vector: Vector3): Vector3 {
+    const x = vector.x, y = vector.y, z = vector.z;
+    const e = this.elements;
+
+    const w = e[3] * x + e[7] * y + e[11] * z + e[15];
+
+    return new Vector3(
+      (e[0] * x + e[4] * y + e[8] * z + e[12]) / w,
+      (e[1] * x + e[5] * y + e[9] * z + e[13]) / w,
+      (e[2] * x + e[6] * y + e[10] * z + e[14]) / w
+    );
   }
 
   rotateX(angle: number): Matrix4x4 {

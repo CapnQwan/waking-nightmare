@@ -22,13 +22,17 @@ class WN_PixelBuffer {
     this.depth = new Array(this.width * this.height);
   };
 
-  addPixel = (x: number, y: number, color: Array<number>, depth: number) => {
-    const index = y * this.height + x;
+  toImageData = (): ImageData => new ImageData(this.buffer, this.width, this.height);
 
-    this.buffer[index] = color[0];
-    this.buffer[index + 1] = color[1];
-    this.buffer[index + 2] = color[2];
-    this.buffer[index + 3] = color[3];
+  addPixel = (x: number, y: number, color: Array<number>, depth: number) => {
+    const index = y * this.width + x;
+    if (depth < (this.depth[index] || Infinity)) {
+      this.buffer[index * 4] = color[0];
+      this.buffer[index * 4 + 1] = color[1];
+      this.buffer[index * 4 + 2] = color[2];
+      this.buffer[index * 4 + 3] = color[3];
+      this.depth[index] = depth;
+    }
   };
 }
 

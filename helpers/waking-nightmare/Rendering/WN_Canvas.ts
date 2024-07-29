@@ -1,3 +1,5 @@
+import WN_PixelBuffer from "./PixelBuffer/WN_PixelBuffer";
+
 class WN_Canvas {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D | null;
@@ -25,6 +27,10 @@ class WN_Canvas {
   renderImageData(imageData: ImageData) {
     this.ctx?.putImageData(imageData, 0, 0);
   }
+
+  loadPixelBuffer = (pixelBuffer: WN_PixelBuffer) => {
+    this.renderImageData(pixelBuffer.toImageData());
+  };
 
   renderText(text: string | number, x: number, y: number) {
     const textString = typeof text === 'number' ? text.toString() : text;

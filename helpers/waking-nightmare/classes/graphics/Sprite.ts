@@ -79,6 +79,21 @@ class Sprite {
 
     return new ImageData(this.sprite, this.width, this.height);
   };
+
+  getPixel = (x: number, y: number) => {
+    if (this.width === undefined || this.height === undefined) {
+      throw new Error('Width or height are not set');
+    }
+
+    const index = this.width * x + y;
+
+    const r = this.sprite[index];
+    const g = this.sprite[index + 1];
+    const b = this.sprite[index + 2];
+    const a = this.sprite[index + 3];
+
+    return [r, g, b, a];
+  };
 }
 
 export default Sprite;
