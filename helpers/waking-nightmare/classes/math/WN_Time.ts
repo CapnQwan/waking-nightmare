@@ -1,17 +1,19 @@
-import WN_Canvas from "@WN/Rendering/WN_Canvas";
+import WN_Canvas from '@WN/Rendering/WN_Canvas';
 
 class WN_Time {
-  startTime: number;
+  startTime: number = performance.now();
   timeLastFrame: number | null = null;
   deltaTime: number = 0;
   frameCount: number = 0;
   pastFrames: Array<number> = [];
-  maxFramesHistory: number;
+  maxFramesHistory: number = 10;
   time: number = 0;
   isPaused: boolean = false;
   pauseTime: number | null = null;
 
-  constructor(maxFramesHistory: number = 10) {
+  private static instance: WN_Time;
+
+  private constructor(maxFramesHistory: number = 10) {
     if (WN_Time.instance) {
       return WN_Time.instance;
     }
@@ -98,8 +100,14 @@ class WN_Time {
       this.pastFrames.splice(0, this.pastFrames.length - size);
     }
   }
+
+  static getInstance(maxFramesHistory: number = 10): WN_Time {
+    if (!WN_Time.instance) {
+      WN_Time.instance = new WN_Time(maxFramesHistory);
+    }
+    return WN_Time.instance;
+  }
 }
 
-const time = new WN_Time();
-Object.freeze(time); // To prevent modifications
+const time = WN_Time.getInstance();
 export default time;

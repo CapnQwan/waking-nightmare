@@ -1,5 +1,4 @@
 import Sprite from './classes/graphics/Sprite';
-import WN_Time from './classes/math/WN_Time';
 import WN_SpriteRenderer from './components/renderers/WN_SpirteRenderer';
 import WN_EntityManager from './EntityManager/WN_EntityManager';
 import WN_GameObject from './GameObjects/GameObject/WN_GameObject';
@@ -7,6 +6,7 @@ import WN_Camera from './Rendering/WN_Camera';
 import WN_Canvas from './Rendering/WN_Canvas';
 import WN_Renderer from './Rendering/WN_Renderer';
 import WN_SceneManager from './SceneManager/WN_SceneManager';
+import time from './classes/math/WN_Time';
 
 interface constructionProps {
   isDebugging?: boolean;
@@ -14,17 +14,21 @@ interface constructionProps {
 }
 
 class WNCore {
-  isDebugging: boolean;
-  time: WN_Time;
-  canvas: WN_Canvas;
-  entityManager: WN_EntityManager;
-  sceneManager: WN_SceneManager;
-  renderer: WN_Renderer;
+  isDebugging: boolean = true;
+  canvas!: WN_Canvas;
+  entityManager!: WN_EntityManager;
+  sceneManager!: WN_SceneManager;
+  renderer!: WN_Renderer;
+
+  private static instance: WNCore;
 
   constructor({ isDebugging = true, scene = [] }: constructionProps) {
+    if (WNCore.instance) {
+      return WNCore.instance;
+    }
+
     this.isDebugging = isDebugging;
 
-    this.time = new WN_Time();
     this.canvas = new WN_Canvas();
     this.sceneManager = new WN_SceneManager({ core: this });
     this.entityManager = new WN_EntityManager();
@@ -32,16 +36,18 @@ class WNCore {
 
     this.addTestingObjects();
 
+    WNCore.instance = this;
+
     requestAnimationFrame(this.update);
 
-    this.time.update();
+    time.update();
   }
 
   update = () => {
     this.renderer.render();
 
     if (this.isDebugging) {
-      this.time.renderPerformance(this.canvas);
+      time.renderPerformance(this.canvas);
     }
 
     requestAnimationFrame(this.update);
