@@ -12,8 +12,12 @@ class WN_Time {
   pauseTime: number | null = null;
 
   constructor(maxFramesHistory: number = 10) {
+    if (WN_Time.instance) {
+      return WN_Time.instance;
+    }
     this.startTime = performance.now();
     this.maxFramesHistory = maxFramesHistory;
+    WN_Time.instance = this;
   }
 
   update() {
@@ -96,4 +100,6 @@ class WN_Time {
   }
 }
 
-export default WN_Time;
+const time = new WN_Time();
+Object.freeze(time); // To prevent modifications
+export default time;

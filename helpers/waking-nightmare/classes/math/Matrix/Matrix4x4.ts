@@ -1,4 +1,5 @@
-import Vector3 from "../Vectors/Vector3";
+import Quaternion from '../Quaternion/Quaternion';
+import Vector3 from '../Vectors/Vector3';
 
 class Matrix4x4 {
   elements: number[];
@@ -41,7 +42,9 @@ class Matrix4x4 {
   }
 
   multiplyVector(vector: Vector3): Vector3 {
-    const x = vector.x, y = vector.y, z = vector.z;
+    const x = vector.x;
+    const y = vector.y;
+    const z = vector.z;
     const e = this.elements;
 
     const w = e[3] * x + e[7] * y + e[11] * z + e[15];
@@ -56,6 +59,7 @@ class Matrix4x4 {
   rotateX(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     const rotationMatrix = new Matrix4x4([
       1, 0, 0, 0,
       0, c, -s, 0,
@@ -68,6 +72,7 @@ class Matrix4x4 {
   rotateY(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     const rotationMatrix = new Matrix4x4([
       c, 0, s, 0,
       0, 1, 0, 0,
@@ -80,6 +85,7 @@ class Matrix4x4 {
   rotateZ(angle: number): Matrix4x4 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    // prettier-ignore
     const rotationMatrix = new Matrix4x4([
       c, -s, 0, 0,
       s, c, 0, 0,
@@ -105,6 +111,16 @@ class Matrix4x4 {
       1, 0, 0, tx,
       0, 1, 0, ty,
       0, 0, 1, tz,
+      0, 0, 0, 1
+    ]);
+  }
+
+  static translationVector(position: Vector3): Matrix4x4 {
+    // prettier-ignore
+    return new Matrix4x4([
+      1, 0, 0, position.x,
+      0, 1, 0, position.y,
+      0, 0, 1, position.z,
       0, 0, 0, 1
     ]);
   }
@@ -145,12 +161,37 @@ class Matrix4x4 {
     ]);
   }
 
+  static rotationQuaternion(rotation: Quaternion): Matrix4x4 {
+    const x = rotation.x;
+    const y = rotation.y;
+    const z = rotation.z;
+    const w = rotation.w;
+
+    // prettier-ignore
+    return new Matrix4x4([
+      1 - 2 * y * y - 2 * z * z, 2 * x * y - 2 * z * w, 2 * x * z + 2 * y * w, 0,
+      2 * x * y + 2 * z * w, 1 - 2 * x * x - 2 * z * z, 2 * y * z - 2 * x * w, 0,
+      2 * x * z - 2 * y * w, 2 * y * z + 2 * x * w, 1 - 2 * x * x - 2 * y * y, 0,
+      0, 0, 0, 1
+    ]);
+  }
+
   static scaling(sx: number, sy: number, sz: number): Matrix4x4 {
     // prettier-ignore
     return new Matrix4x4([
       sx, 0, 0, 0,
       0, sy, 0, 0,
       0, 0, sz, 0,
+      0, 0, 0, 1
+    ]);
+  }
+
+  static scaleVector(scale: Vector3): Matrix4x4 {
+    // prettier-ignore
+    return new Matrix4x4([
+      scale.x, 0, 0, 0,
+      0, scale.y, 0, 0,
+      0, 0, scale.z, 0,
       0, 0, 0, 1
     ]);
   }

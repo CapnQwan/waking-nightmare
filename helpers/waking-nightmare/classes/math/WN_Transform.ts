@@ -17,21 +17,13 @@ class WN_Transform {
     this.scale = scale;
   }
 
-  getMatrix(): Matrix4x4 {
-    const translationMatrix = Matrix4x4.translation(
-      this.position.x,
-      this.position.y,
-      this.position.z
-    );
-    const rotationMatrix = this.rotation.toMatrix4x4();
-    const scaleMatrix = Matrix4x4.scaling(
-      this.scale.x,
-      this.scale.y,
-      this.scale.z
-    );
+  getMatrix = (): Matrix4x4 => {
+    const translationMatrix = Matrix4x4.translationVector(this.position);
+    const rotationMatrix = Matrix4x4.rotationQuaternion(this.rotation);
+    const scaleMatrix = Matrix4x4.scaleVector(this.scale);
 
     return translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix);
-  }
+  };
 
   applyTranslation(translation: Vector3): void {
     this.position = this.position.add(translation);

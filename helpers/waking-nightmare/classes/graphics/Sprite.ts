@@ -12,6 +12,8 @@ class Sprite {
   xCoord: number;
   yCoord: number;
   sprite: Uint8ClampedArray;
+  hasSpriteLoaded: boolean = false;
+  isFirstRender: boolean = false;
 
   constructor({
     spriteUrl,
@@ -53,7 +55,7 @@ class Sprite {
   };
 
   private onSpriteLoaded = (): void => {
-    console.log('Sprite loaded and pixel data extracted', this.sprite);
+    this.hasSpriteLoaded = true;
   };
 
   private extractPixelData = (imageBitmap: ImageBitmap): Uint8ClampedArray => {
@@ -62,10 +64,17 @@ class Sprite {
     }
 
     const offscreenCanvas = new OffscreenCanvas(this.width, this.height);
-    const context = offscreenCanvas.getContext('2d') as unknown as CanvasRenderingContext2D;
+    const context = offscreenCanvas.getContext(
+      '2d'
+    ) as unknown as CanvasRenderingContext2D;
     if (context) {
       context.drawImage(imageBitmap, 0, 0);
-      const imageData = context.getImageData(this.xCoord, this.yCoord, this.width, this.height);
+      const imageData = context.getImageData(
+        this.xCoord,
+        this.yCoord,
+        this.width,
+        this.height
+      );
       return imageData.data;
     } else {
       throw new Error('Failed to get 2D context from OffscreenCanvas');
@@ -84,8 +93,7 @@ class Sprite {
     if (this.width === undefined || this.height === undefined) {
       throw new Error('Width or height are not set');
     }
-
-    const index = this.width * x + y;
+    const index = (y * this.height + x) * 4;
 
     const r = this.sprite[index];
     const g = this.sprite[index + 1];

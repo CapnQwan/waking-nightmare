@@ -22,7 +22,8 @@ class WN_PixelBuffer {
     this.depth = new Array(this.width * this.height);
   };
 
-  toImageData = (): ImageData => new ImageData(this.buffer, this.width, this.height);
+  toImageData = (): ImageData =>
+    new ImageData(this.buffer, this.width, this.height);
 
   addPixel = (x: number, y: number, color: Array<number>, depth: number) => {
     const index = y * this.width + x;

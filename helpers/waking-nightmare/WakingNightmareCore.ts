@@ -38,7 +38,6 @@ class WNCore {
   }
 
   update = () => {
-    this.canvas.clearCanvas();
     this.renderer.render();
 
     if (this.isDebugging) {
@@ -71,11 +70,15 @@ class WNCore {
       name: 'Sprite',
       entityManager: this.entityManager,
     });
-    const sprite = new Sprite({ spriteUrl: '/images/Enviroment Tile 1.png' });
+    const sprite = new Sprite({ spriteUrl: '/images/Sprite-0001.png' });
     const spriteRenderer = new WN_SpriteRenderer({
       parent: spriteGameObject,
       sprite: sprite,
     });
+
+    spriteGameObject.transform.position.x = 10000;
+    spriteGameObject.transform.position.y = 10000;
+    spriteGameObject.transform.position.z = 2;
 
     spriteGameObject.addComponent(spriteRenderer);
     this.entityManager.addEntity(spriteGameObject);
