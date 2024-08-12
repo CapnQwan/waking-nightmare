@@ -2,16 +2,16 @@ import WN_Behaviour from '../waking-nightmare/GameObjects/Component/Behaviours/W
 import time from '../waking-nightmare/classes/math/WN_Time';
 
 class MovingComponent extends WN_Behaviour {
-  velocityX: number = 5;
-  velocityY: number = 5;
-  minX: number = 5;
-  minY: number = 5;
-  maxX: number = 100;
-  maxY: number = 100;
+  velocityX: number = 80;
+  velocityY: number = 80;
+  minX: number = 20;
+  minY: number = 20;
+  maxX: number = 400;
+  maxY: number = 400;
 
   update = () => {
     this.transform.position.x += this.velocityX * time.deltaTime;
-    this.transform.position.y += this.velocityY * Math.asin(time.deltaTime);
+    this.transform.position.y += this.velocityY * time.deltaTime;
 
     if (
       this.transform.position.x < this.minX ||

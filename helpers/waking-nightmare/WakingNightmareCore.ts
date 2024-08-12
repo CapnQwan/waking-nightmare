@@ -86,8 +86,8 @@ class WNCore {
 
     const movingBehaviour = new MovingComponent({ parent: spriteGameObject });
 
-    spriteGameObject.transform.position.x = 5;
-    spriteGameObject.transform.position.y = 5;
+    spriteGameObject.transform.position.x = 20;
+    spriteGameObject.transform.position.y = 20;
     spriteGameObject.transform.position.z = 2;
 
     spriteGameObject.addComponent(spriteRenderer);
