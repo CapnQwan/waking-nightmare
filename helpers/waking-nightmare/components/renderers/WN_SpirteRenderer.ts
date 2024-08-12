@@ -27,21 +27,19 @@ class WN_SpriteRenderer extends WN_RendererComponent {
       return;
     }
 
-    const transformedPosition = mvpMatrix.multiplyVector(new Vector3(0, 0, 0));
+    const worldPosition = this.transform.position;
 
     const spriteWidth = this.sprite.width;
     const spriteHeight = this.sprite.height;
 
     for (let y = 0; y < spriteHeight; y++) {
       for (let x = 0; x < spriteWidth; x++) {
-        const bufferX = Math.round(transformedPosition.x + x - spriteWidth / 2);
-        const bufferY = Math.round(
-          transformedPosition.y + y - spriteHeight / 2
-        );
+        const bufferX = Math.round(worldPosition.x + x - spriteWidth / 2);
+        const bufferY = Math.round(worldPosition.y + y - spriteHeight / 2);
 
         const color = this.sprite.getPixel(x, y);
 
-        const depth = transformedPosition.z;
+        const depth = worldPosition.z;
         if (
           bufferX >= 0 &&
           bufferX < pixelBuffer.width &&

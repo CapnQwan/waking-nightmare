@@ -6,6 +6,7 @@ import WN_Camera from './Rendering/WN_Camera';
 import WN_Canvas from './Rendering/WN_Canvas';
 import WN_Renderer from './Rendering/WN_Renderer';
 import WN_SceneManager from './SceneManager/WN_SceneManager';
+import MovingComponent from '@/helpers/Examples/MovingComponent';
 import time from './classes/math/WN_Time';
 
 interface constructionProps {
@@ -44,6 +45,7 @@ class WNCore {
   }
 
   update = () => {
+    this.entityManager.updateBehaviours();
     this.renderer.render();
 
     if (this.isDebugging) {
@@ -82,11 +84,14 @@ class WNCore {
       sprite: sprite,
     });
 
-    spriteGameObject.transform.position.x = 10000;
-    spriteGameObject.transform.position.y = 10000;
+    const movingBehaviour = new MovingComponent({ parent: spriteGameObject });
+
+    spriteGameObject.transform.position.x = 5;
+    spriteGameObject.transform.position.y = 5;
     spriteGameObject.transform.position.z = 2;
 
     spriteGameObject.addComponent(spriteRenderer);
+    spriteGameObject.addComponent(movingBehaviour);
     this.entityManager.addEntity(spriteGameObject);
   };
 }
