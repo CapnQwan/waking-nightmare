@@ -17,11 +17,17 @@ class WN_Canvas {
 
   resizeCanvas = () => {
     this.pixelRatio = window.devicePixelRatio || 1;
+
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
+
     this.width = window.innerWidth * this.pixelRatio;
     this.height = window.innerHeight * this.pixelRatio;
+
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    this.ctx?.scale(this.pixelRatio, this.pixelRatio);
+
+    this.ctx?.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
   };
 
   renderImageData = (imageData: ImageData) => {
@@ -39,7 +45,10 @@ class WN_Canvas {
   };
 
   clearCanvas = () => {
-    this.ctx?.clearRect(0, 0, this.width, this.height);
+    if (this.ctx) {
+      this.ctx.fillStyle = 'rgb(150,150,150)';
+      this.ctx.fillRect(0, 0, this.width, this.height);
+    }
   };
 }
 

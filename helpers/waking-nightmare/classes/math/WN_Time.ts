@@ -54,7 +54,11 @@ class WN_Time {
     canvas.ctx.font = '12px Arial';
     canvas.ctx.fillStyle = '#f2af13';
     const averageFrameRate = this.getAverageFrameRate();
-    canvas.renderText(`FPS: ${averageFrameRate}`, canvas.width - 100, 50);
+
+    const xPos = (canvas.width - 100 * canvas.pixelRatio) / canvas.pixelRatio;
+    const yPos = 50 / canvas.pixelRatio;
+
+    canvas.renderText(`FPS: ${averageFrameRate}`, xPos, yPos);
   }
 
   clearFrameHistory() {

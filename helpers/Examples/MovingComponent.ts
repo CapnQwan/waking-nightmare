@@ -14,14 +14,14 @@ class MovingComponent extends WN_Behaviour {
     this.transform.position.y += this.velocityY * time.deltaTime;
 
     if (
-      this.transform.position.x < this.minX ||
-      this.transform.position.x > this.maxX
+      (this.transform.position.x < this.minX && this.velocityX < 0) ||
+      (this.transform.position.x > this.maxX && this.velocityX > 0)
     ) {
       this.velocityX *= -1;
     }
     if (
-      this.transform.position.y < this.minY ||
-      this.transform.position.y > this.maxY
+      (this.transform.position.y < this.minY && this.velocityY < 0) ||
+      (this.transform.position.y > this.maxY && this.velocityY > 0)
     ) {
       this.velocityY *= -1;
     }

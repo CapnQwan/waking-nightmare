@@ -19,7 +19,15 @@ class WN_PixelBuffer {
 
   resetBuffer = () => {
     this.buffer = new Uint8ClampedArray(this.width * this.height * 4);
+    //this.setBackground();
     this.depth = new Array(this.width * this.height);
+  };
+
+  setBackground = () => {
+    const defaultColor = [20, 20, 20, 255];
+    for (let i = 0; i < this.buffer.length; i += 4) {
+      this.buffer.set(defaultColor, i);
+    }
   };
 
   toImageData = (): ImageData =>
