@@ -1,14 +1,14 @@
-import Vector3 from '@WN/classes/math/Vectors/Vector3';
-import WN_EntityManager from '../WN_EntityManager';
-import WN_GameObject from '@WN/GameObjects/GameObject/WN_GameObject';
+import Vector3 from '@/helpers/waking-nightmare/utils/math/Vectors/Vector3';
+import EntityManager from '../EntityManager';
+import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 
 class QuadrentManager {
-  entityManager: WN_EntityManager;
+  entityManager: EntityManager;
   quadrentDimensions: Vector3 = new Vector3(10, 10, 10);
   quadrentDepth: number = 100;
-  quadrents: Array<Array<Array<Array<WN_GameObject | null>>>>;
+  quadrents: Array<Array<Array<Array<GameObject | null>>>>;
 
-  constructor(entityManager: WN_EntityManager, width = 0, height = 0) {
+  constructor(entityManager: EntityManager, width = 0, height = 0) {
     this.entityManager = entityManager;
 
     const quadrentX = Math.ceil(width / this.quadrentDimensions.x);
@@ -23,7 +23,7 @@ class QuadrentManager {
 
   getXQuadrant = (
     x: number
-  ): Array<Array<Array<WN_GameObject | null>>> | null => {
+  ): Array<Array<Array<GameObject | null>>> | null => {
     const quadrentX = Math.floor(x / this.quadrentDimensions.x);
 
     if (quadrentX < 0 || quadrentX >= this.quadrents.length) {
@@ -35,7 +35,7 @@ class QuadrentManager {
   getYQuadrant = (
     x: number,
     y: number
-  ): Array<Array<WN_GameObject | null>> | null => {
+  ): Array<Array<GameObject | null>> | null => {
     const xQuadrent = this.getXQuadrant(x);
     const quadrentY = Math.floor(y / this.quadrentDimensions.y);
 
@@ -50,7 +50,7 @@ class QuadrentManager {
     x: number,
     y: number,
     z: number
-  ): Array<WN_GameObject | null> | null => {
+  ): Array<GameObject | null> | null => {
     const yQuadrent = this.getYQuadrant(x, y);
     const quadrentZ = Math.floor(z / this.quadrentDimensions.z);
 
@@ -60,7 +60,7 @@ class QuadrentManager {
     return yQuadrent[quadrentZ];
   };
 
-  addObject = (gameObject: WN_GameObject): void => {
+  addObject = (gameObject: GameObject): void => {
     const position = gameObject.transform.position;
     const zQuadrent = this.getZQuadrant(position.x, position.y, position.z);
     if (zQuadrent) {
