@@ -1,8 +1,8 @@
 import Matrix4x4 from '../utils/math/Matrix/Matrix4x4';
-import WN_RendererComponent from '../GameObjects/Component/components/renderers/RendererComponent';
+import WN_RendererComponent from '../GameObjects/Component/components/renderering/RendererComponent';
 import EntityManager from '../EntityManager/EntityManager';
 import RenderMaterial from './RenderMaterial/RenderMaterial';
-import Camera from './Camera';
+import Camera from '../GameObjects/Component/components/renderering/Camera';
 import Canvas from './Canvas';
 
 class Renderer {

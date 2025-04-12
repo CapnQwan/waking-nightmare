@@ -1,8 +1,8 @@
-import Matrix4x4 from '../utils/math/Matrix/Matrix4x4';
+import Matrix4x4 from '../../../../utils/math/Matrix/Matrix4x4';
 import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
-import Canvas from './Canvas';
+import Canvas from '../../../../Rendering/Canvas';
 import RenderMaterial from './RenderMaterial/RenderMaterial';
-import Component from '../GameObjects/Component/Component';
+import Component from '../../Component';
 import PixelBuffer from './PixelBuffer/PixelBuffer';
 
 type CameraConstructor = {

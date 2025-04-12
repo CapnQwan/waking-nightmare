@@ -1,6 +1,6 @@
 import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
-import RendererComponent from '../GameObjects/Component/components/renderers/RendererComponent';
-import Camera from '../Rendering/Camera';
+import RendererComponent from '../GameObjects/Component/components/renderering/RendererComponent';
+import Camera from '../GameObjects/Component/components/renderering/Camera';
 import Behaviour from '../GameObjects/Component/Behaviours/Behaviour';
 
 class EntityManager {

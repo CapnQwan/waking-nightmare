@@ -1,4 +1,4 @@
-import WN_RendererComponent from '@/helpers/waking-nightmare/GameObjects/Component/components/renderers/RendererComponent';
+import WN_RendererComponent from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
 import WN_Transform from '@/helpers/waking-nightmare/utils/math/Transform';
 import Object from '../Object';
 import EntityManager from '@/helpers/waking-nightmare/EntityManager/EntityManager';
