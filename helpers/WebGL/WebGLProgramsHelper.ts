@@ -1,55 +1,48 @@
-import { getFragmentShader, getVertexShader } from './WebGLShadersHelper';
+import Canvas from '../waking-nightmare/Rendering/Canvas';
+import ServiceLocator from '../waking-nightmare/ServiceLocator/ServiceLocator';
+import { getFragmentShader, getVertexShader, SHADER_IDS } from './WebGLShadersHelper';
 
 /** Creates a WebGL shader program from a vertex shader and fragment shader */
 const createProgram = (
-  gl: WebGLRenderingContext,
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
-): WebGLProgram | null => {
+): WebGLProgram => {
+  const gl = ServiceLocator.get<Canvas>('canvas').gl;
+
   const program = gl.createProgram();
   if (!program) {
-    return null;
+    throw new Error('Unable to create shader program')
   }
 
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
   gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(gl.getProgramInfoLog(program));
-    gl.deleteProgram(program);
-    return null;
-  }
+
   return program;
 };
 
-/** Shadow shader program singleton, initializes it or retreives it if it's already been initialized */
-const PROGRAMS: Record<string, WebGLProgram> = {};
+/** WebGL program cache */
+const PROGRAMS: Map<string, WebGLProgram> = new Map();
+
 export const getProgram = (
-  key: string,
-  gl: WebGLRenderingContext,
-  vertexShaderOrSource: WebGLShader | string,
-  fragmentShaderOrSource: WebGLShader | string
-): WebGLProgram | null => {
-  if (key in PROGRAMS) {
-    return PROGRAMS[key];
+  vertexShader: WebGLShader,
+  fragmentShader: WebGLShader
+): WebGLProgram => {
+  // Generate a key from shader IDs
+  const vertexId = SHADER_IDS.get(vertexShader) ?? 'unknown';
+  const fragmentId = SHADER_IDS.get(fragmentShader) ?? 'unknown';
+  const programKey = `${vertexId}_${fragmentId}`;
+
+  const cachedProgram = PROGRAMS.get(programKey);
+  if (cachedProgram) {
+    return cachedProgram;
   }
 
-  const vertexShader =
-    typeof vertexShaderOrSource === 'string'
-      ? getVertexShader(`${key}_vertex_shader`, gl, vertexShaderOrSource)
-      : vertexShaderOrSource;
-  const fragmentShader =
-    typeof fragmentShaderOrSource === 'string'
-      ? getFragmentShader(`${key}_fragment_shader`, gl, fragmentShaderOrSource)
-      : vertexShaderOrSource;
-
-  if (!vertexShader || !fragmentShader) return null;
-
-  const program = createProgram(gl, vertexShader, fragmentShader);
-  if (program) {
-    PROGRAMS[key] = program;
-    return PROGRAMS[key];
+  const program = createProgram(vertexShader, fragmentShader);
+  if (!program) {
+    throw new Error('Unable to create program');
   }
 
-  return null;
+  PROGRAMS.set(programKey, program);
+  return program;
 };

@@ -32,7 +32,7 @@ class WNCore {
     this.sceneManager = new SceneManager({ core: this });
     this.renderer = new Renderer(this.entityManager);
 
-    const services = ServiceLocator.getInstance();
+    const services = ServiceLocator;
     services.register('canvas', this.canvas);
     services.register('entityManager', this.entityManager);
     services.register('sceneManager', this.sceneManager);
