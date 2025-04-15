@@ -1,6 +1,6 @@
 import { Shader } from './Shader';
-import ServiceLocator from '../ServiceLocator/ServiceLocator';
-import Canvas from './Canvas';
+import ServiceLocator from '../../ServiceLocator/ServiceLocator';
+import Canvas from '../Canvas';
 
 /**
  * Configuration object for creating a new Material instance

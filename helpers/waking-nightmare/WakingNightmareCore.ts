@@ -1,4 +1,3 @@
-import EntityManager from './EntityManager/EntityManager';
 import GameObject from './GameObjects/GameObject/GameObject';
 import Canvas from './Rendering/Canvas';
 import Renderer from './Rendering/Renderer';
@@ -14,7 +13,6 @@ interface constructionProps {
 class WNCore {
   isDebugging: boolean = true;
   canvas!: Canvas;
-  entityManager!: EntityManager;
   sceneManager!: SceneManager;
   renderer!: Renderer;
 
@@ -28,13 +26,12 @@ class WNCore {
     this.isDebugging = isDebugging;
 
     this.canvas = new Canvas();
-    this.entityManager = new EntityManager();
     this.sceneManager = new SceneManager({ core: this });
-    this.renderer = new Renderer(this.entityManager);
+    this.renderer = new Renderer();
 
     const services = ServiceLocator;
+    services.register('core', this);
     services.register('canvas', this.canvas);
-    services.register('entityManager', this.entityManager);
     services.register('sceneManager', this.sceneManager);
     services.register('renderer', this.renderer);
     services.register('time', time);

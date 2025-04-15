@@ -1,4 +1,3 @@
-class EventManager {
-}
+class EventManager {}
 
 export default EventManager;

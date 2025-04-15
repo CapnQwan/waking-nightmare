@@ -1,5 +1,5 @@
-import Vector2 from '../utils/math/Vectors/Vector2';
-import Vector3 from '../utils/math/Vectors/Vector3';
+import Vector2 from '../../utils/math/Vectors/Vector2';
+import Vector3 from '../../utils/math/Vectors/Vector3';
 
 /**
  * Configuration object for creating a new Mesh instance

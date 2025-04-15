@@ -1,9 +1,7 @@
 import Matrix4x4 from '../../../../utils/math/Matrix/Matrix4x4';
 import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 import Canvas from '../../../../Rendering/Canvas';
-import RenderMaterial from './RenderMaterial/RenderMaterial';
 import Component from '../../Component';
-import PixelBuffer from './PixelBuffer/PixelBuffer';
 
 type CameraConstructor = {
   parent: GameObject;
@@ -13,7 +11,7 @@ type CameraConstructor = {
   far?: number;
 };
 
-class Camera extends Component {
+class CameraComponent extends Component {
   output: Canvas | RenderMaterial;
   fieldOfView: number;
   near: number;
@@ -72,4 +70,4 @@ class Camera extends Component {
   }
 }
 
-export default Camera;
+export default CameraComponent;

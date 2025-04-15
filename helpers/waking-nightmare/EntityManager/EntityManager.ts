@@ -1,6 +1,6 @@
 import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 import RendererComponent from '../GameObjects/Component/components/renderering/RendererComponent';
-import Camera from '../GameObjects/Component/components/renderering/Camera';
+import CameraComponent from '../GameObjects/Component/components/renderering/CameraComponent';
 import Behaviour from '../GameObjects/Component/Behaviours/Behaviour';
 
 class EntityManager {
@@ -8,7 +8,7 @@ class EntityManager {
   private entities: Array<GameObject> = [];
   private behaviours: Array<Behaviour> = [];
   private renderers: Array<RendererComponent> = [];
-  private cameras: Array<Camera> = [];
+  private cameras: Array<CameraComponent> = [];
 
   constructor() {}
 
@@ -17,7 +17,7 @@ class EntityManager {
     gameObject.id = this.entityIdIteration++;
 
     gameObject.components.forEach((component) => {
-      if (component instanceof Camera) {
+      if (component instanceof CameraComponent) {
         this.cameras.push(component);
       }
 
