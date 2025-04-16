@@ -7,7 +7,7 @@ import Canvas from '../Canvas';
  */
 type MaterialConstructor = {
   /** The shader program to be used by this material */
-  shader: Shader;
+  shader?: Shader;
   /** Optional uniforms to be passed to the shader program */
   uniforms?: Record<string, any>;
 };
@@ -28,7 +28,7 @@ export class Material {
    * @param uniforms - Optional initial uniform values
    */
   constructor({ shader, uniforms = {} }: MaterialConstructor) {
-    this.shader = shader;
+    this.shader = shader ?? new Shader({});
     this.uniforms = uniforms;
   }
 

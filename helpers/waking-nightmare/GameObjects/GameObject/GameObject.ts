@@ -1,35 +1,24 @@
-import WN_RendererComponent from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
 import WN_Transform from '@/helpers/waking-nightmare/utils/math/Transform';
-import Object from '../Object';
-import EntityManager from '@/helpers/waking-nightmare/EntityManager/EntityManager';
-import Component from '../Component/Component';
+import { IObjectConstructor, Object } from '../Object';
+import { Component } from 'react';
+import { RendererComponent } from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
 
-class GameObject extends Object {
-  id: number;
+export interface IGameObjectConstructor extends IObjectConstructor {}
+
+export class GameObject extends Object {
   transform: WN_Transform = new WN_Transform();
-  entityManager: EntityManager;
-  children: Array<GameObject> = new Array();
-  components: Array<Component> = new Array();
-  renderComponents: Array<WN_RendererComponent> = new Array();
+  children: GameObject[] = [];
+  components: Component[] = [];
+  renderComponents: RendererComponent[] = [];
 
-  constructor({
-    id,
-    name,
-    entityManager,
-  }: {
-    id: number;
-    name: string;
-    entityManager: EntityManager;
-  }) {
-    super({ name });
-    this.id = id;
-    this.entityManager = entityManager;
+  constructor(params: IGameObjectConstructor) {
+    super(params);
   }
 
   addComponent = (component: Component) => {
     this.components.push(component);
 
-    if (component instanceof WN_RendererComponent) {
+    if (component instanceof RendererComponent) {
       this.renderComponents.push(component);
     }
   };
@@ -38,5 +27,3 @@ class GameObject extends Object {
     this.children.push(gameObject);
   };
 }
-
-export default GameObject;

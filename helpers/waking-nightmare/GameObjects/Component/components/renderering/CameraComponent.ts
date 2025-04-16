@@ -2,21 +2,21 @@ import Matrix4x4 from '../../../../utils/math/Matrix/Matrix4x4';
 import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 import Canvas from '../../../../Rendering/Canvas';
 import Component from '../../Component';
+import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/RenderTexture';
 
 type CameraConstructor = {
   parent: GameObject;
-  output: Canvas | RenderMaterial;
+  output: Canvas | RenderTexture;
   fieldOfView?: number;
   near?: number;
   far?: number;
 };
 
 class CameraComponent extends Component {
-  output: Canvas | RenderMaterial;
+  output: Canvas | RenderTexture;
   fieldOfView: number;
   near: number;
   far: number;
-  pixelBuffer: PixelBuffer;
 
   constructor({
     parent,
@@ -31,10 +31,6 @@ class CameraComponent extends Component {
     this.fieldOfView = fieldOfView;
     this.near = near;
     this.far = far;
-    this.pixelBuffer = new PixelBuffer({
-      width: this.output.width,
-      height: this.output.height,
-    });
   }
 
   getViewMatrix(): Matrix4x4 {

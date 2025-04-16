@@ -1,16 +1,19 @@
-import Transform from '../../utils/math/Transform';
-import GameObject from '../GameObject/GameObject';
-import Object from '../Object';
+import { Object, IObjectConstructor } from '../Object';
+import { GameObject } from '../GameObject/GameObject';
 
-class Component extends Object {
-  parent: GameObject;
-  transform: Transform;
-
-  constructor({ parent }: { parent: GameObject }) {
-    super({});
-    this.parent = parent;
-    this.transform = parent.transform;
-  }
+export interface IComponentConstructor extends IObjectConstructor {
+  parent?: GameObject | null;
 }
 
-export default Component;
+export class Component extends Object {
+  parent: GameObject | null;
+
+  constructor(params: IComponentConstructor) {
+    super(params);
+    this.parent = params.parent ?? null;
+  }
+
+  setParent(parent: GameObject) {
+    this.parent = parent;
+  }
+}

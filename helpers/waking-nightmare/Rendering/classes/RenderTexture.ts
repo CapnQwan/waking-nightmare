@@ -1,6 +1,6 @@
 import { Texture } from './Texture';
 
-class RenderTexture extends Texture {
+export class RenderTexture extends Texture {
   public readonly width: number;
   public readonly height: number;
   public readonly data: Uint8Array;
