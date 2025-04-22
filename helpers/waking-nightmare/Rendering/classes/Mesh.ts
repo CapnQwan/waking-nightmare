@@ -8,13 +8,13 @@ import Canvas from '../Canvas';
  */
 type TMeshConstructor = {
   /** Array of triangle indices (3 indices per triangle) */
-  triangles?: number[];
+  triangles?: Uint16Array;
   /** Array of vertex positions in 3D space */
-  verticies?: Vector3[];
+  verticies?: Float32Array;
   /** Array of UV coordinates for texture mapping */
-  uvs?: Vector2[];
+  uvs?: Float32Array;
   /** Array of normal vectors for lighting calculations */
-  normals?: Vector2[];
+  normals?: Float32Array;
 };
 
 /**
@@ -23,13 +23,13 @@ type TMeshConstructor = {
  */
 class Mesh {
   /** Array of triangle indices (3 indices per triangle) */
-  private _triangles: number[];
+  private _triangles: Uint16Array;
   /** Array of vertex positions in 3D space */
-  private _verticies: Vector3[];
+  private _vertices: Float32Array;
   /** Array of UV coordinates for texture mapping */
-  private _uvs: Vector2[];
+  private _uvs: Float32Array;
   /** Array of normal vectors for lighting calculations */
-  private _normals: Vector2[];
+  private _normals: Float32Array;
   /** Vertex Array Object stores the state of vertex attribute bindings */
   private _vao: WebGLVertexArrayObject | null = null;
   /** Buffer containing vertex position data (x, y, z coordinates) */
@@ -44,28 +44,28 @@ class Mesh {
   /**
    * Gets the array of triangle indices
    */
-  get triangles(): number[] {
+  get triangles(): Uint16Array {
     return this._triangles;
   }
 
   /**
    * Gets the array of vertex positions
    */
-  get verticies(): Vector3[] {
-    return this._verticies;
+  get verticies(): Float32Array {
+    return this._vertices;
   }
 
   /**
    * Gets the array of UV coordinates
    */
-  get uvs(): Vector2[] {
+  get uvs(): Float32Array {
     return this._uvs;
   }
 
   /**
    * Gets the array of normal vectors
    */
-  get normals(): Vector2[] {
+  get normals(): Float32Array {
     return this._normals;
   }
 
@@ -77,13 +77,13 @@ class Mesh {
    * @param normals - Optional array of normal vectors
    */
   constructor({
-    triangles = [],
-    verticies = [],
-    uvs = [],
-    normals = [],
+    triangles = Uint16Array.from([]),
+    verticies = Float32Array.from([]),
+    uvs = Float32Array.from([]),
+    normals = Float32Array.from([]),
   }: TMeshConstructor = {}) {
     this._triangles = triangles;
-    this._verticies = verticies;
+    this._vertices = verticies;
     this._uvs = uvs;
     this._normals = normals;
   }
@@ -95,7 +95,14 @@ class Mesh {
    * @param v3 - Index of third vertex
    */
   addTriangle(v1: number, v2: number, v3: number) {
-    this._triangles.push(v1, v2, v3);
+    // Validate indices
+    if (v1 > 65535 || v2 > 65535 || v3 > 65535 || v1 < 0 || v2 < 0 || v3 < 0) {
+      throw new Error('Triangle indices must be between 0 and 65535');
+    }
+    const newTriangles = new Uint16Array(this._triangles.length + 3);
+    newTriangles.set(this._triangles);
+    newTriangles.set([v1, v2, v3], this._triangles.length);
+    this._triangles = newTriangles;
   }
 
   /**
@@ -104,8 +111,12 @@ class Mesh {
    * @returns The index of the added vertex
    */
   addVertex(vertex: Vector3): number {
-    this._verticies.push(vertex);
-    return this._verticies.length - 1;
+    const index = this._vertices.length / 3;
+    const newVertices = new Float32Array(this._vertices.length + 3);
+    newVertices.set(this._vertices);
+    newVertices.set([vertex.x, vertex.y, vertex.z], this._vertices.length);
+    this._vertices = newVertices;
+    return index;
   }
 
   /**
@@ -113,15 +124,22 @@ class Mesh {
    * @param uv - The UV coordinate to add
    */
   addUV(uv: Vector2) {
-    this._uvs.push(uv);
+    const newUVs = new Float32Array(this._uvs.length + 2);
+    newUVs.set(this._uvs);
+    newUVs.set([uv.x, uv.y], this._uvs.length);
+    this._uvs = newUVs;
   }
 
   /**
    * Adds a new normal vector to the mesh
    * @param normal - The normal vector to add
    */
-  addNormal(normal: Vector2) {
-    this._normals.push(normal);
+  addNormal(normal: Vector3) {
+    // Note: Normals should be Vector3, not Vector2
+    const newNormals = new Float32Array(this._normals.length + 3);
+    newNormals.set(this._normals);
+    newNormals.set([normal.x, normal.y, normal.z], this._normals.length);
+    this._normals = newNormals;
   }
 
   /**
@@ -131,58 +149,40 @@ class Mesh {
   bind(): boolean {
     const gl = ServiceLocator.get<Canvas>('canvas').gl;
 
-    // Create and bind VAO
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);
 
-    // Create and bind vertex buffer
+    // Vertex buffer
     this._vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
-    const vertexData = this._verticies.flatMap((v) => [v.x, v.y, v.z]);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array(vertexData),
-      gl.STATIC_DRAW
-    );
+    gl.bufferData(gl.ARRAY_BUFFER, this._vertices, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
-    // Create and bind UV buffer
+    // UV buffer
     if (this._uvs.length > 0) {
       this._uvBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._uvBuffer);
-      const uvData = this._uvs.flatMap((uv) => [uv.x, uv.y]);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvData), gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, this._uvs, gl.STATIC_DRAW);
       gl.enableVertexAttribArray(1);
       gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
     }
 
-    // Create and bind normal buffer
+    // Normal buffer
     if (this._normals.length > 0) {
       this._normalBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._normalBuffer);
-      const normalData = this._normals.flatMap((n) => [n.x, n.y]);
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array(normalData),
-        gl.STATIC_DRAW
-      );
+      gl.bufferData(gl.ARRAY_BUFFER, this._normals, gl.STATIC_DRAW);
       gl.enableVertexAttribArray(2);
-      gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(2, 3, gl.FLOAT, false, 0, 0); // Normals are 3D
     }
 
-    // Create and bind index buffer
+    // Index buffer
     this._indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
-    gl.bufferData(
-      gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(this._triangles),
-      gl.STATIC_DRAW
-    );
+    gl.bufferData(gl.ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW);
 
-    // Unbind VAO
     gl.bindVertexArray(null);
-
     return true;
   }
 }
