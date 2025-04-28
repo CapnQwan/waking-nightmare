@@ -7,6 +7,8 @@ import Canvas from '../Canvas';
  * Configuration object for creating a new Mesh instance
  */
 type TMeshConstructor = {
+  /** Name of the mesh */
+  name?: string;
   /** Array of triangle indices (3 indices per triangle) */
   triangles?: Uint16Array;
   /** Array of vertex positions in 3D space */
@@ -22,6 +24,8 @@ type TMeshConstructor = {
  * It's used to define the geometry of 3D objects in the scene.
  */
 class Mesh {
+  /** Name of the mesh */
+  public name: string;
   /** Array of triangle indices (3 indices per triangle) */
   private _triangles: Uint16Array;
   /** Array of vertex positions in 3D space */
@@ -49,10 +53,39 @@ class Mesh {
   }
 
   /**
+   * Sets the array of triangles from either a number array or a Uint16Array
+   */
+  set triangles(triangles: number[] | Uint16Array) {
+    this._triangles = Uint16Array.from(triangles);
+  }
+
+  /**
    * Gets the array of vertex positions
    */
   get verticies(): Float32Array {
     return this._vertices;
+  }
+
+  /**
+   * Sets the array of vertex positions
+   */
+  set verticies(vertices: Vector2[] | Vector3[] | Float32Array) {
+    if (vertices instanceof Float32Array) {
+      this._vertices = vertices;
+      return;
+    }
+
+    const newVertices = new Float32Array(vertices.length * 3);
+
+    vertices.forEach((vertex, index) => {
+      const offset = index * 3;
+
+      newVertices[offset] = vertex.x;
+      newVertices[offset + 1] = vertex.y;
+      newVertices[offset + 2] = vertex instanceof Vector3 ? vertex.z : 0;
+    });
+
+    this._vertices;
   }
 
   /**
@@ -77,11 +110,13 @@ class Mesh {
    * @param normals - Optional array of normal vectors
    */
   constructor({
+    name = '',
     triangles = Uint16Array.from([]),
     verticies = Float32Array.from([]),
     uvs = Float32Array.from([]),
     normals = Float32Array.from([]),
   }: TMeshConstructor = {}) {
+    this.name = name;
     this._triangles = triangles;
     this._vertices = verticies;
     this._uvs = uvs;
