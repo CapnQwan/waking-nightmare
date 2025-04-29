@@ -1,4 +1,4 @@
-import GameObject from './GameObjects/GameObject/GameObject';
+import { GameObject } from './GameObjects/GameObject/GameObject';
 import Canvas from './Rendering/Canvas';
 import Renderer from './Rendering/Renderer';
 import SceneManager from './SceneManager/SceneManager';
@@ -18,7 +18,7 @@ class WNCore {
 
   private static instance: WNCore;
 
-  constructor({ isDebugging = true, scene = [] }: constructionProps) {
+  constructor({ isDebugging = true }: constructionProps) {
     if (WNCore.instance) {
       return WNCore.instance;
     }
@@ -26,7 +26,7 @@ class WNCore {
     this.isDebugging = isDebugging;
 
     this.canvas = new Canvas();
-    this.sceneManager = new SceneManager({ core: this });
+    this.sceneManager = new SceneManager({});
     this.renderer = new Renderer();
 
     const services = ServiceLocator;
@@ -44,7 +44,7 @@ class WNCore {
   }
 
   update = () => {
-    this.entityManager.updateBehaviours();
+    this.sceneManager.activeScene.updateBehaviours();
     this.renderer.render();
 
     if (this.isDebugging) {
