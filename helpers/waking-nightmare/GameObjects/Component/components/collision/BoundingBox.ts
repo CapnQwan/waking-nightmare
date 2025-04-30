@@ -1,4 +1,1 @@
-class BoundingBox {
-}
-
-export default BoundingBox;
+export class BoundingBox {}

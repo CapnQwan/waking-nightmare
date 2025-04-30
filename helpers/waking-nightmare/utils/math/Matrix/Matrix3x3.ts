@@ -1,4 +1,4 @@
-class Matrix3x3 {
+export class Matrix3x3 {
   elements: number[];
 
   constructor(elements?: number[]) {
@@ -65,5 +65,3 @@ class Matrix3x3 {
     return new Matrix3x3([1, 0, tx, 0, 1, ty, 0, 0, 1]);
   }
 }
-
-export default Matrix3x3;

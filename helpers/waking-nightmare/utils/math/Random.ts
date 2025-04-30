@@ -1,10 +1,10 @@
-import WN_Color from '../../classes/graphics/Color';
+import { Color } from '../Color';
 
 const modulus = 4294967296 as const;
 const multiplier = 1664525 as const;
 const increment = 1013904223 as const;
 
-class Random {
+export class Random {
   seed: number;
 
   constructor(seed: number) {
@@ -41,19 +41,19 @@ class Random {
     return array[randomIndex];
   }
 
-  static randomColor(): WN_Color {
+  static randomColor(): Color {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
-    return new WN_Color({ r, g, b });
+    return new Color({ r, g, b });
   }
 
-  static randomColorAndAlpha(): WN_Color {
+  static randomColorAndAlpha(): Color {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
     const a = Math.random();
-    return new WN_Color({ r, g, b, a });
+    return new Color({ r, g, b, a });
   }
 
   static randomGaussian(mean: number = 0, stdDev: number = 1): number {
@@ -66,5 +66,3 @@ class Random {
     return num;
   }
 }
-
-export default Random;

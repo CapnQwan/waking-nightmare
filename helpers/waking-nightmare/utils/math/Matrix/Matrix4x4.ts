@@ -1,7 +1,7 @@
-import Quaternion from '../Quaternion/Quaternion';
-import Vector3 from '../Vectors/Vector3';
+import { Quaternion } from '../Quaternion/Quaternion';
+import { Vector3 } from '../Vectors/Vector3';
 
-class Matrix4x4 {
+export class Matrix4x4 {
   elements: number[];
 
   constructor(elements?: number[]) {
@@ -196,5 +196,3 @@ class Matrix4x4 {
     ]);
   }
 }
-
-export default Matrix4x4;

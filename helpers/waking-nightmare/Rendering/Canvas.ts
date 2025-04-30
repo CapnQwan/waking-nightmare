@@ -2,7 +2,7 @@
  * Canvas class manages the WebGL2 rendering context and canvas element.
  * It handles canvas creation, resizing, and basic rendering operations.
  */
-class Canvas {
+export class Canvas {
   /** The HTML canvas element */
   private _canvas: HTMLCanvasElement;
   /** The WebGL2 rendering context */
@@ -96,5 +96,3 @@ class Canvas {
     this._gl.clear(this._gl.COLOR_BUFFER_BIT);
   };
 }
-
-export default Canvas;

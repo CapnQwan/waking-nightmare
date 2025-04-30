@@ -1,4 +1,4 @@
-class ServiceLocator {
+export class ServiceLocator {
   private static instance: ServiceLocator;
   private services: Map<string, any> = new Map();
 

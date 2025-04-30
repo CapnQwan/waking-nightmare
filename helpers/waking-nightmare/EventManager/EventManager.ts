@@ -1,3 +1,1 @@
-class EventManager {}
-
-export default EventManager;
+export class EventManager {}

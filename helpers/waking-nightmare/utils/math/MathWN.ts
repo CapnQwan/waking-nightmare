@@ -1,4 +1,4 @@
-class MathWN {
+export class MathWN {
   static clamp(value: number, min: number, max: number): number {
     const minVal = Math.min(min, max);
     const maxVal = Math.max(min, max);
@@ -63,5 +63,3 @@ class MathWN {
     return ((value % divisor) + divisor) % divisor;
   }
 }
-
-export default MathWN;

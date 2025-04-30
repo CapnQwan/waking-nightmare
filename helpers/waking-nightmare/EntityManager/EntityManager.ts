@@ -1,9 +1,9 @@
-import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
-import RendererComponent from '../GameObjects/Component/components/renderering/RendererComponent';
-import CameraComponent from '../GameObjects/Component/components/renderering/CameraComponent';
-import Behaviour from '../GameObjects/Component/Behaviours/Behaviour';
+import { GameObject } from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
+import { RendererComponent } from '../GameObjects/Component/components/renderering/RendererComponent';
+import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
+import { Behaviour } from '../GameObjects/Component/Behaviours/Behaviour';
 
-class EntityManager {
+export class EntityManager {
   entityIdIteration: number = 0;
   private entities: Array<GameObject> = [];
   private behaviours: Array<Behaviour> = [];
@@ -39,5 +39,3 @@ class EntityManager {
   getRenderableEntities = () => this.renderers;
   getCameras = () => this.cameras;
 }
-
-export default EntityManager;

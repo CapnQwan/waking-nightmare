@@ -1,8 +1,8 @@
-import Matrix4x4 from './Matrix/Matrix4x4';
-import Quaternion from './Quaternion/Quaternion';
-import Vector3 from './Vectors/Vector3';
+import { Matrix4x4 } from './Matrix/Matrix4x4';
+import { Quaternion } from './Quaternion/Quaternion';
+import { Vector3 } from './Vectors/Vector3';
 
-class Transfrom {
+export class Transfrom {
   position: Vector3;
   rotation: Quaternion;
   scale: Vector3;
@@ -77,5 +77,3 @@ class Transfrom {
     this.scale = transform.scale.clone();
   }
 }
-
-export default Transfrom;

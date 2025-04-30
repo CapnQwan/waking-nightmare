@@ -1,6 +1,6 @@
-import MathWN from '../utils/math/MathWN';
+import { MathWN } from '../utils/math/MathWN';
 
-class Color {
+export class Color {
   r: number;
   g: number;
   b: number;
@@ -180,5 +180,3 @@ class Color {
   static green = (): Color => new Color({ r: 0, g: 255, b: 0, a: 1 });
   static blue = (): Color => new Color({ r: 0, g: 0, b: 255, a: 1 });
 }
-
-export default Color;

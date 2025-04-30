@@ -5,7 +5,7 @@ import {
 import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
 import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
-import Canvas from '../Canvas';
+import { Canvas } from '../Canvas';
 import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
 
 /**

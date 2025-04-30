@@ -1,10 +1,10 @@
-import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
-import SceneManager from '../SceneManager';
 import Behaviour from '../../GameObjects/Component/Behaviours/Behaviour';
 import CameraComponent from '../../GameObjects/Component/components/renderering/CameraComponent';
-import RendererComponent from '../../GameObjects/Component/components/renderering/RendererComponent';
+import { RendererComponent } from '../../GameObjects/Component/components/renderering/RendererComponent';
+import { GameObject } from '../../GameObjects/GameObject/GameObject';
+import SceneManager from '../SceneManager';
 
-class Scene {
+export class Scene {
   private _sceneManager: SceneManager;
   private _entityIdIteration: number = 0;
 
@@ -52,5 +52,3 @@ class Scene {
     this._behaviours.forEach((behaviour) => behaviour.update());
   };
 }
-
-export default Scene;

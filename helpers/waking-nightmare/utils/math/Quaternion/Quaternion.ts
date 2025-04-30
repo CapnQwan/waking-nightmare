@@ -1,7 +1,7 @@
-import Matrix4x4 from '../Matrix/Matrix4x4';
-import Vector3 from '../Vectors/Vector3';
+import { Matrix4x4 } from '../Matrix/Matrix4x4';
+import { Vector3 } from '../Vectors/Vector3';
 
-class Quaternion {
+export class Quaternion {
   x: number;
   y: number;
   z: number;
@@ -204,5 +204,3 @@ class Quaternion {
 
   static identity = (): Quaternion => new Quaternion(0, 0, 0, 1);
 }
-
-export default Quaternion;

@@ -1,6 +1,4 @@
-import Canvas from '@/helpers/waking-nightmare/Rendering/Canvas';
-
-class Time {
+export class Time {
   startTime: number = performance.now();
   timeLastFrame: number | null = null;
   deltaTime: number = 0;
@@ -13,12 +11,11 @@ class Time {
 
   private static instance: Time;
 
-  private constructor(maxFramesHistory: number = 10) {
+  constructor() {
     if (Time.instance) {
       return Time.instance;
     }
     this.startTime = performance.now();
-    this.maxFramesHistory = maxFramesHistory;
     Time.instance = this;
   }
 
@@ -43,22 +40,6 @@ class Time {
       0
     );
     return Math.round(totalFrameRate / this.pastFrames.length);
-  }
-
-  renderPerformance(canvas: Canvas) {
-    if (!canvas.ctx) {
-      return;
-    }
-
-    this.update();
-    canvas.ctx.font = '12px Arial';
-    canvas.ctx.fillStyle = '#f2af13';
-    const averageFrameRate = this.getAverageFrameRate();
-
-    const xPos = (canvas.width - 100 * canvas.pixelRatio) / canvas.pixelRatio;
-    const yPos = 50 / canvas.pixelRatio;
-
-    canvas.renderText(`FPS: ${averageFrameRate}`, xPos, yPos);
   }
 
   clearFrameHistory() {
@@ -106,13 +87,10 @@ class Time {
     }
   }
 
-  static getInstance(maxFramesHistory: number = 10): Time {
+  static getInstance(): Time {
     if (!Time.instance) {
-      Time.instance = new Time(maxFramesHistory);
+      Time.instance = new Time();
     }
     return Time.instance;
   }
 }
-
-const time = Time.getInstance();
-export default time;

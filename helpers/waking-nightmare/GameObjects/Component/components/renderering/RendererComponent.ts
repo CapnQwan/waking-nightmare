@@ -3,7 +3,7 @@ import {
   IComponentConstructor,
 } from '@/helpers/waking-nightmare/GameObjects/Component/Component';
 import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material';
-import Mesh from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
+import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
 
 export interface IRenderComponentConstructor extends IComponentConstructor {
   material?: Material;

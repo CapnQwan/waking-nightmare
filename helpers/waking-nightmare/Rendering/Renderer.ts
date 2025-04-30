@@ -1,11 +1,10 @@
-import Matrix4x4 from '../utils/math/Matrix/Matrix4x4';
-import WN_RendererComponent from '../GameObjects/Component/components/renderering/RendererComponent';
-import EntityManager from '../EntityManager/EntityManager';
-import CameraComponent from '../GameObjects/Component/components/renderering/CameraComponent';
-import Canvas from './Canvas';
+import { EntityManager } from '../EntityManager/EntityManager';
+import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
 import ServiceLocator from '../ServiceLocator/ServiceLocator';
+import { Matrix4x4 } from '../utils/math/Matrix/Matrix4x4';
+import { Canvas } from './Canvas';
 
-class Renderer {
+export class Renderer {
   constructor() {}
 
   render = () => {
@@ -44,14 +43,12 @@ class Renderer {
     return output.width / output.height;
   };
 
-  draw = (
-    renderer: WN_RendererComponent,
-    mvpMatrix: Matrix4x4,
-    camera: CameraComponent
-  ) => {
-    //renderer.render(camera.pixelBuffer, mvpMatrix);
-    //camera.output.loadPixelBuffer(camera.pixelBuffer);
-  };
+  //draw = (
+  //  renderer: WN_RendererComponent,
+  //  mvpMatrix: Matrix4x4,
+  //  camera: CameraComponent
+  //) => {
+  //  //renderer.render(camera.pixelBuffer, mvpMatrix);
+  //  //camera.output.loadPixelBuffer(camera.pixelBuffer);
+  //};
 }
-
-export default Renderer;

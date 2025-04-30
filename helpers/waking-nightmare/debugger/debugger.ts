@@ -1,4 +1,1 @@
-class Debugger {
-}
-
-export default Debugger;
+export class Debugger {}

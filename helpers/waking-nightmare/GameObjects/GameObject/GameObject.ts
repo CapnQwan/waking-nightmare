@@ -1,12 +1,12 @@
-import WN_Transform from '@/helpers/waking-nightmare/utils/math/Transform';
 import { IObjectConstructor, Object } from '../Object';
 import { Component } from 'react';
 import { RendererComponent } from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
+import { Transfrom } from '../../utils/math/Transform';
 
 export interface IGameObjectConstructor extends IObjectConstructor {}
 
 export class GameObject extends Object {
-  transform: WN_Transform = new WN_Transform();
+  transform: Transfrom = new Transfrom();
   children: GameObject[] = [];
   components: Component[] = [];
   renderComponents: RendererComponent[] = [];

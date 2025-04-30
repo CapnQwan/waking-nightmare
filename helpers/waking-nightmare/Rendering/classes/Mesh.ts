@@ -23,7 +23,7 @@ type TMeshConstructor = {
  * Mesh class represents a 3D mesh with vertices, triangles, UVs, and normals.
  * It's used to define the geometry of 3D objects in the scene.
  */
-class Mesh {
+export class Mesh {
   /** Name of the mesh */
   public name: string;
   /** Array of triangle indices (3 indices per triangle) */
@@ -221,5 +221,3 @@ class Mesh {
     return true;
   }
 }
-
-export default Mesh;

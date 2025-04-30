@@ -1,7 +1,7 @@
-import Matrix4x4 from '../../../../utils/math/Matrix/Matrix4x4';
-import GameObject from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
-import Canvas from '../../../../Rendering/Canvas';
-import Component from '../../Component';
+import { Matrix4x4 } from '../../../../utils/math/Matrix/Matrix4x4';
+import { GameObject } from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
+import { Canvas } from '../../../../Rendering/Canvas';
+import { Component } from '../../Component';
 import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/RenderTexture';
 
 type CameraConstructor = {
@@ -12,7 +12,7 @@ type CameraConstructor = {
   far?: number;
 };
 
-class CameraComponent extends Component {
+export class CameraComponent extends Component {
   output: Canvas | RenderTexture;
   fieldOfView: number;
   near: number;
@@ -34,7 +34,7 @@ class CameraComponent extends Component {
   }
 
   getViewMatrix(): Matrix4x4 {
-    if (!this.parent.transform) {
+    if (!this.parent?.transform) {
       throw new Error('Parent object does not have a transform');
     }
 
@@ -65,5 +65,3 @@ class CameraComponent extends Component {
     ]);
   }
 }
-
-export default CameraComponent;

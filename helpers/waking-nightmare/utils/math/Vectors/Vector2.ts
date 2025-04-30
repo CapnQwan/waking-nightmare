@@ -1,4 +1,4 @@
-class Vector2 {
+export class Vector2 {
   x: number;
   y: number;
 
@@ -86,5 +86,3 @@ class Vector2 {
   static right = () => new Vector2(0, 1);
   static left = () => new Vector2(0, -1);
 }
-
-export default Vector2;

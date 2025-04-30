@@ -1,5 +1,5 @@
-import Vector3 from '@/helpers/waking-nightmare/utils/math/Vectors/Vector3';
-import Mesh from '../Mesh';
+import { Vector3 } from '@/helpers/waking-nightmare/utils/math/Vectors/Vector3';
+import { Mesh } from '../Mesh';
 
 /** Generates a mesh  */
 export const generateQuad = (width: number, height: number): Mesh => {

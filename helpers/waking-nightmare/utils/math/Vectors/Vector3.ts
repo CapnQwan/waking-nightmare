@@ -1,4 +1,4 @@
-class Vector3 {
+export class Vector3 {
   x: number;
   y: number;
   z: number;
@@ -120,5 +120,3 @@ class Vector3 {
   static forward = (): Vector3 => new Vector3(0, 0, 1);
   static backward = (): Vector3 => new Vector3(0, 0, -1);
 }
-
-export default Vector3;

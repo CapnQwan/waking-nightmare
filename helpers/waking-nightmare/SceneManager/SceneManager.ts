@@ -1,11 +1,13 @@
-import Scene from './Scene/Scene';
+import { Scene } from './Scene/Scene';
 
-class SceneManager {
+export class SceneManager {
   activeScene: Scene;
 
   constructor({ scene }: { scene?: Scene }) {
     this.activeScene = scene ? scene : new Scene(this);
   }
-}
 
-export default SceneManager;
+  loadScene(scene: Scene) {
+    this.activeScene = scene;
+  }
+}

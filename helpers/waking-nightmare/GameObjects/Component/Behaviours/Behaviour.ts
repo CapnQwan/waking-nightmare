@@ -1,6 +1,6 @@
-import Component from '../Component';
+import { Component } from '../Component';
 
-class Behaviour extends Component {
+export class Behaviour extends Component {
   onAwake = () => {};
 
   update = () => {};
@@ -11,5 +11,3 @@ class Behaviour extends Component {
 
   onDestroy = () => {};
 }
-
-export default Behaviour;

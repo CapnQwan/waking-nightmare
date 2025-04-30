@@ -1,6 +1,9 @@
 /** WebGL buffers singleton, initializes it or retreives it if it's already been initialized */
 const BUFFERS: Record<string, WebGLBuffer> = {};
-export const getBuffer = (key: string, gl: WebGLRenderingContext): WebGLBuffer | null => {
+export const getBuffer = (
+  key: string,
+  gl: WebGLRenderingContext
+): WebGLBuffer | null => {
   if (key in BUFFERS) {
     return BUFFERS[key];
   }

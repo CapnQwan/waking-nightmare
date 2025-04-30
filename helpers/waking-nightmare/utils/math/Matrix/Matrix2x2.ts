@@ -1,4 +1,4 @@
-class Matrix2x2 {
+export class Matrix2x2 {
   elements: number[];
 
   constructor(elements?: number[]) {
@@ -36,5 +36,3 @@ class Matrix2x2 {
     return new Matrix2x2([sx, 0, 0, sy]);
   }
 }
-
-export default Matrix2x2;

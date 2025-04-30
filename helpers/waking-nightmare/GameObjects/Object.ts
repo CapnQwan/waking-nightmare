@@ -11,4 +11,12 @@ export class Object {
     if (id) this.id = id;
     if (name) this.name = name;
   }
+
+  serualize(): string {
+    return JSON.stringify(this);
+  }
+
+  instantiate(): this {
+    return new (this.constructor as any)(this);
+  }
 }

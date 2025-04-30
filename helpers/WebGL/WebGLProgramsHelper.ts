@@ -1,6 +1,6 @@
-import Canvas from '../waking-nightmare/Rendering/Canvas';
+import { Canvas } from '../waking-nightmare/Rendering/Canvas';
 import ServiceLocator from '../waking-nightmare/ServiceLocator/ServiceLocator';
-import { getFragmentShader, getVertexShader, SHADER_IDS } from './WebGLShadersHelper';
+import { SHADER_IDS } from './WebGLShadersHelper';
 
 /** Creates a WebGL shader program from a vertex shader and fragment shader */
 const createProgram = (
@@ -11,7 +11,7 @@ const createProgram = (
 
   const program = gl.createProgram();
   if (!program) {
-    throw new Error('Unable to create shader program')
+    throw new Error('Unable to create shader program');
   }
 
   gl.attachShader(program, vertexShader);
