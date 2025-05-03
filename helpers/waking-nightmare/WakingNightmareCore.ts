@@ -32,11 +32,11 @@ export class WNCore {
     this.time = new Time();
 
     const services = ServiceLocator;
-    services.register('core', this);
-    services.register('canvas', this.canvas);
-    services.register('sceneManager', this.sceneManager);
-    services.register('renderer', this.renderer);
-    services.register('time', this.time);
+    services.register(this);
+    services.register(this.canvas);
+    services.register(this.sceneManager);
+    services.register(this.renderer);
+    services.register(this.time);
 
     WNCore.instance = this;
 

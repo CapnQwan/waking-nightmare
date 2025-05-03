@@ -52,7 +52,7 @@ export class Shader {
    * This is called automatically when shaders are updated
    */
   createProgram() {
-    const gl = ServiceLocator.get<Canvas>('canvas').gl;
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     this._program = getProgram(this._vertexShader, this._fragmentShader);
   }
 

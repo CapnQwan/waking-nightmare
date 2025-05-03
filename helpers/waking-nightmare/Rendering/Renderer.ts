@@ -8,7 +8,7 @@ export class Renderer {
   constructor() {}
 
   render = () => {
-    const entityManager = ServiceLocator.get<EntityManager>('entityManager');
+    const entityManager = ServiceLocator.get<EntityManager>(EntityManager);
     const cameras = entityManager.getCameras();
 
     if (!cameras.length) {

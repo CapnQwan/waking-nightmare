@@ -1,7 +1,7 @@
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
-import Vector2 from '../../utils/math/Vectors/Vector2';
-import Vector3 from '../../utils/math/Vectors/Vector3';
-import Canvas from '../Canvas';
+import { Vector2 } from '../../utils/math/Vectors/Vector2';
+import { Vector3 } from '../../utils/math/Vectors/Vector3';
+import { Canvas } from '../Canvas';
 
 /**
  * Configuration object for creating a new Mesh instance
@@ -182,7 +182,7 @@ export class Mesh {
    * @returns true if binding was successful
    */
   bind(): boolean {
-    const gl = ServiceLocator.get<Canvas>('canvas').gl;
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);

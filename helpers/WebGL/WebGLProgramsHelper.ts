@@ -7,7 +7,7 @@ const createProgram = (
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
 ): WebGLProgram => {
-  const gl = ServiceLocator.get<Canvas>('canvas').gl;
+  const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
   const program = gl.createProgram();
   if (!program) {

@@ -6,7 +6,7 @@ export const SHADER_IDS: WeakMap<WebGLShader, number> = new WeakMap();
 
 /** Creates a WebGL shader program from a vertex shader and fragment shader */
 const createShader = (type: GLenum, source: string): WebGLShader | null => {
-  const gl = ServiceLocator.get<Canvas>('canvas').gl;
+  const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
   const shader = gl.createShader(type);
   if (!shader) {
@@ -23,7 +23,7 @@ const createShader = (type: GLenum, source: string): WebGLShader | null => {
 /** Vertex shader cache */
 const VERTEX_SHADERS: Map<string, WebGLShader> = new Map();
 export const getVertexShader = (shaderSource: string): WebGLShader => {
-  const gl = ServiceLocator.get<Canvas>('canvas').gl;
+  const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
   const cachedShader = VERTEX_SHADERS.get(shaderSource);
   if (cachedShader) {
@@ -44,7 +44,7 @@ export const getVertexShader = (shaderSource: string): WebGLShader => {
 /** Fragment shader cache */
 const FRAGMENT_SHADERS: Map<string, WebGLShader> = new Map();
 export const getFragmentShader = (shaderSource: string): WebGLShader => {
-  const gl = ServiceLocator.get<Canvas>('canvas').gl;
+  const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
   const cachedShader = FRAGMENT_SHADERS.get(shaderSource);
   if (cachedShader) {

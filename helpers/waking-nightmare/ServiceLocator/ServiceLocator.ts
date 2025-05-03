@@ -1,6 +1,6 @@
 export class ServiceLocator {
   private static instance: ServiceLocator;
-  private services: Map<string, any> = new Map();
+  private services: Map<Function, any> = new Map();
 
   private constructor() {}
 
@@ -11,16 +11,16 @@ export class ServiceLocator {
     return ServiceLocator.instance;
   }
 
-  register<T>(key: string, service: T): void {
-    this.services.set(key, service);
+  register<T extends TClass>(service: T): void {
+    this.services.set(service.constructor, service);
   }
 
-  get<T>(key: string): T {
-    const service = this.services.get(key);
-    if (!service) {
-      throw new Error(`Service ${key} not found`);
+  get<T>(service: { new (...args: any[]): any }): T {
+    const serviceInstance = this.services.get(service.constructor);
+    if (!serviceInstance) {
+      throw new Error(`Service ${service.constructor} not found`);
     }
-    return service as T;
+    return serviceInstance as T;
   }
 }
 

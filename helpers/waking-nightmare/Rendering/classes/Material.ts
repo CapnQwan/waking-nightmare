@@ -37,7 +37,7 @@ export class Material {
    * This must be called before rendering any geometry with this material
    */
   use() {
-    const gl = ServiceLocator.get<Canvas>('canvas').gl;
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     gl.useProgram(this.shader.program);
   }
 
@@ -61,7 +61,7 @@ export class Material {
    * - Float32Array of length 16 (uniformMatrix4fv)
    */
   updateUniforms() {
-    const gl = ServiceLocator.get<Canvas>('canvas').gl;
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     this.use();
 
     for (const [name, value] of Object.entries(this.uniforms)) {
