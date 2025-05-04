@@ -6,14 +6,22 @@ export interface IComponentConstructor extends IObjectConstructor {
 }
 
 export class Component extends Object {
-  parent: GameObject | null;
+  private _parent: GameObject | null;
 
   constructor(params: IComponentConstructor) {
     super(params);
-    this.parent = params.parent ?? null;
+    this._parent = params.parent ?? null;
   }
 
-  setParent(parent: GameObject) {
-    this.parent = parent;
+  get parent(): GameObject | null {
+    return this._parent;
+  }
+
+  set parent(parent: GameObject | null) {
+    this._parent = parent;
+  }
+
+  get transform() {
+    return this._parent?.transform;
   }
 }

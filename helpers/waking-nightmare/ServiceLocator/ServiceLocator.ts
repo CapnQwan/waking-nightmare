@@ -15,10 +15,10 @@ export class ServiceLocator {
     this.services.set(service.constructor, service);
   }
 
-  get<T>(service: { new (...args: any[]): any }): T {
-    const serviceInstance = this.services.get(service.constructor);
+  get<T extends TClass>(service: { new (...args: any[]): any }): T {
+    const serviceInstance = this.services.get(service);
     if (!serviceInstance) {
-      throw new Error(`Service ${service.constructor} not found`);
+      throw new Error(`Service ${service.name} not found`);
     }
     return serviceInstance as T;
   }

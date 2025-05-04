@@ -1,7 +1,5 @@
 import { EntityManager } from '../EntityManager/EntityManager';
-import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
 import ServiceLocator from '../ServiceLocator/ServiceLocator';
-import { Matrix4x4 } from '../utils/math/Matrix/Matrix4x4';
 import { Canvas } from './Canvas';
 
 export class Renderer {

@@ -1,3 +1,4 @@
+import { EntityManager } from './EntityManager/EntityManager';
 import { GameObject } from './GameObjects/GameObject/GameObject';
 import { Canvas } from './Rendering/Canvas';
 import { Renderer } from './Rendering/Renderer';
@@ -12,10 +13,11 @@ interface constructionProps {
 
 export class WNCore {
   isDebugging: boolean = true;
-  canvas!: Canvas;
-  sceneManager!: SceneManager;
-  renderer!: Renderer;
   time!: Time;
+  canvas!: Canvas;
+  renderer!: Renderer;
+  sceneManager!: SceneManager;
+  entityManager!: EntityManager;
 
   private static instance: WNCore;
 
@@ -26,17 +28,22 @@ export class WNCore {
 
     this.isDebugging = isDebugging;
 
-    this.canvas = new Canvas();
-    this.sceneManager = new SceneManager({});
-    this.renderer = new Renderer();
-    this.time = new Time();
+    ServiceLocator.register(this);
 
-    const services = ServiceLocator;
-    services.register(this);
-    services.register(this.canvas);
-    services.register(this.sceneManager);
-    services.register(this.renderer);
-    services.register(this.time);
+    this.time = new Time();
+    ServiceLocator.register(this.time);
+
+    this.canvas = new Canvas();
+    ServiceLocator.register(this.canvas);
+
+    this.renderer = new Renderer();
+    ServiceLocator.register(this.renderer);
+
+    this.sceneManager = new SceneManager();
+    ServiceLocator.register(this.sceneManager);
+
+    this.entityManager = new EntityManager();
+    ServiceLocator.register(this.entityManager);
 
     WNCore.instance = this;
 
@@ -46,7 +53,7 @@ export class WNCore {
   }
 
   update = () => {
-    this.sceneManager.activeScene.updateBehaviours();
+    this.entityManager.updateObjects();
     this.renderer.render();
 
     requestAnimationFrame(this.update);

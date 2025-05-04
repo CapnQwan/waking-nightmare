@@ -1,7 +1,7 @@
 import { IObjectConstructor, Object } from '../Object';
-import { Component } from 'react';
 import { RendererComponent } from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
 import { Transfrom } from '../../utils/math/Transform';
+import { Component } from '../Component/Component';
 
 export interface IGameObjectConstructor extends IObjectConstructor {}
 

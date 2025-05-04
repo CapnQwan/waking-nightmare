@@ -1,13 +1,22 @@
-import { Component } from '../Component';
+import { Component, IComponentConstructor } from '../Component';
+
+export interface IBehaviourConstructor extends IComponentConstructor {
+  enabled?: boolean;
+}
 
 export class Behaviour extends Component {
-  onAwake = () => {};
+  private _enabled: boolean = true;
 
-  update = () => {};
+  constructor(params: IBehaviourConstructor) {
+    super(params);
+    this._enabled = params.enabled ?? true;
+  }
 
-  onEnable = () => {};
+  get enabled(): boolean {
+    return this._enabled;
+  }
 
-  onDisable = () => {};
-
-  onDestroy = () => {};
+  set enabled(value: boolean) {
+    this._enabled = value;
+  }
 }

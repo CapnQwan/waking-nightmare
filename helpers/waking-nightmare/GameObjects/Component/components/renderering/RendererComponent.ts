@@ -1,16 +1,13 @@
-import {
-  Component,
-  IComponentConstructor,
-} from '@/helpers/waking-nightmare/GameObjects/Component/Component';
 import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material';
 import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
+import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
 
-export interface IRenderComponentConstructor extends IComponentConstructor {
+export interface IRenderComponentConstructor extends IBehaviourConstructor {
   material?: Material;
   mesh?: Mesh;
 }
 
-export class RendererComponent extends Component {
+export class RendererComponent extends Behaviour {
   material: Material;
   mesh: Mesh;
 

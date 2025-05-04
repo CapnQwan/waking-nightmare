@@ -1,18 +1,29 @@
 import { GameObject } from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 import { RendererComponent } from '../GameObjects/Component/components/renderering/RendererComponent';
 import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
+import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
 import { Behaviour } from '../GameObjects/Component/Behaviours/Behaviour';
 
 export class EntityManager {
   entityIdIteration: number = 0;
-  private entities: Array<GameObject> = [];
-  private behaviours: Array<Behaviour> = [];
-  private renderers: Array<RendererComponent> = [];
-  private cameras: Array<CameraComponent> = [];
+  private entities: GameObject[] = [];
+  private behaviours: Behaviour[] = [];
+  private monoBehaviours: MonoBehaviour[] = [];
+  private renderers: RendererComponent[] = [];
+  private cameras: CameraComponent[] = [];
 
-  constructor() {}
+  constructor() {
+    this.tempFunction();
+  }
 
-  addEntity = (gameObject: GameObject) => {
+  tempFunction() {
+    const object = new GameObject({ name: 'testObject' });
+    const meshRenderer = new RendererComponent({});
+    object.addComponent(meshRenderer);
+    this.addEntity(object);
+  }
+
+  addEntity(gameObject: GameObject) {
     this.entities.push(gameObject);
     gameObject.id = this.entityIdIteration++;
 
@@ -25,15 +36,19 @@ export class EntityManager {
         this.renderers.push(component);
       }
 
-      if (component instanceof Behaviour) {
-        this.behaviours.push(component);
+      if (component instanceof MonoBehaviour) {
+        this.monoBehaviours.push(component);
       }
     });
-  };
+  }
 
-  updateBehaviours = () => {
-    this.behaviours.forEach((behaviour) => behaviour.update());
-  };
+  public updateObjects() {
+    this.updateBehaviours();
+  }
+
+  private updateBehaviours() {
+    this.monoBehaviours.forEach((monoBehaviour) => monoBehaviour.onUpdate());
+  }
 
   getEntities = () => this.entities;
   getRenderableEntities = () => this.renderers;
