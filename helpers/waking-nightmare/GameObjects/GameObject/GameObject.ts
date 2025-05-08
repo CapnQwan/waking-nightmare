@@ -17,6 +17,7 @@ export class GameObject extends Object {
 
   addComponent = (component: Component) => {
     this.components.push(component);
+    component.parent = this;
 
     if (component instanceof RendererComponent) {
       this.renderComponents.push(component);

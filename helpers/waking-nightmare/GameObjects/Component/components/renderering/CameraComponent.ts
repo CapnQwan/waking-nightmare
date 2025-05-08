@@ -1,45 +1,36 @@
 import { Matrix4x4 } from '../../../../utils/math/Matrix/Matrix4x4';
-import { GameObject } from '@/helpers/waking-nightmare/GameObjects/GameObject/GameObject';
 import { Canvas } from '../../../../Rendering/Canvas';
-import { Component } from '../../Component';
 import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/RenderTexture';
+import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
 
-type CameraConstructor = {
-  parent: GameObject;
-  output: Canvas | RenderTexture;
+interface ICameraConstructor extends IBehaviourConstructor {
+  output?: Canvas | RenderTexture;
   fieldOfView?: number;
   near?: number;
   far?: number;
-};
+}
 
-export class CameraComponent extends Component {
-  output: Canvas | RenderTexture;
+export class CameraComponent extends Behaviour {
+  output: Canvas | RenderTexture | null;
   fieldOfView: number;
   near: number;
   far: number;
 
-  constructor({
-    parent,
-    output,
-    fieldOfView = 45,
-    near = 0.1,
-    far = 1000,
-  }: CameraConstructor) {
-    super({ parent });
-    this.parent = parent;
-    this.output = output;
-    this.fieldOfView = fieldOfView;
-    this.near = near;
-    this.far = far;
+  constructor(params: ICameraConstructor) {
+    super(params);
+    this.output = params.output ?? null;
+    this.fieldOfView = params.fieldOfView ?? 45;
+    this.near = params.near ?? 0.1;
+    this.far = params.far ?? 1000;
   }
 
   getViewMatrix(): Matrix4x4 {
-    if (!this.parent?.transform) {
+    if (!this.transform) {
       throw new Error('Parent object does not have a transform');
     }
 
-    const position = this.parent.transform.position;
-    const rotation = this.parent.transform.rotation;
+    const position = this.transform.position;
+    const rotation = this.transform.rotation;
     const viewMatrix = Matrix4x4.translation(
       -position.x,
       -position.y,

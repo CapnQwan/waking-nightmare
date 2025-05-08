@@ -10,6 +10,8 @@ type MaterialConstructor = {
   shader?: Shader;
   /** Optional uniforms to be passed to the shader program */
   uniforms?: Record<string, any>;
+  /** Optional attributes to be passed to the shader program */
+  attributes?: Record<string, any>;
 };
 
 /**
@@ -21,15 +23,37 @@ export class Material {
   shader: Shader;
   /** Collection of uniform values to be passed to the shader program */
   uniforms: Record<string, any>;
+  /** Collection of attributes to be passed to the shader program */
+  attributes: Record<string, any>;
 
   /**
    * Creates a new Material instance
    * @param shader - The shader program to be used
    * @param uniforms - Optional initial uniform values
    */
-  constructor({ shader, uniforms = {} }: MaterialConstructor) {
+  constructor({ shader, uniforms = {}, attributes = {} }: MaterialConstructor) {
     this.shader = shader ?? new Shader({});
     this.uniforms = uniforms;
+    this.attributes = attributes;
+    this.setupDefaultUniforms();
+  }
+
+  /**
+   * Sets up default uniforms and attributes that should be available to all materials
+   * TODO: setup a way for this to be updated if the canvas is resized
+   * @private
+   */
+  private setupDefaultUniforms() {
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
+    const canvas = gl.canvas as HTMLCanvasElement;
+
+    // TODO: add a color uniform for the color of the material
+
+    // Set resolution uniform
+    this.setUniform(
+      'u_resolution',
+      new Float32Array([canvas.width, canvas.height])
+    );
   }
 
   /**
@@ -62,7 +86,6 @@ export class Material {
    */
   updateUniforms() {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-    this.use();
 
     for (const [name, value] of Object.entries(this.uniforms)) {
       const location = gl.getUniformLocation(this.shader.program, name);
@@ -82,5 +105,10 @@ export class Material {
         gl.uniformMatrix4fv(location, false, value);
       }
     }
+  }
+
+  //TODO: add a way to set attributes for the shader program
+  setAttribute(name: string, value: any) {
+    this.attributes[name] = value;
   }
 }

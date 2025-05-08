@@ -1,8 +1,9 @@
 #version 300 es
 
 precision mediump float;
-uniform vec4 u_color;
+
+out vec4 fragColor;
 
 void main() {
-    gl_FragColor = vec4(u_color);
+    fragColor = vec4(0.11f, 0.41f, 0.11f, 1.0f); // Green color
 }

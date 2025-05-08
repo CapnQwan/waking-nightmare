@@ -1,15 +1,9 @@
 import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
 
 export class DemoComponent extends MonoBehaviour {
-  awake(): void {
-    console.log('DemoComponent awake');
-  }
+  awake(): void {}
 
-  start(): void {
-    console.log('DemoComponent start');
-  }
+  start(): void {}
 
-  onUpdate(): void {
-    console.log('DemoComponent update');
-  }
+  onUpdate(): void {}
 }

@@ -2,12 +2,12 @@ import { GameObject } from '@/helpers/waking-nightmare/GameObjects/GameObject/Ga
 import { RendererComponent } from '../GameObjects/Component/components/renderering/RendererComponent';
 import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
 import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
-import { Behaviour } from '../GameObjects/Component/Behaviours/Behaviour';
+import { DemoComponent } from '../Assets/DemoComponent';
+import { generateQuad } from '../Rendering/classes/Meshes/Quad';
 
 export class EntityManager {
   entityIdIteration: number = 0;
   private entities: GameObject[] = [];
-  private behaviours: Behaviour[] = [];
   private monoBehaviours: MonoBehaviour[] = [];
   private renderers: RendererComponent[] = [];
   private cameras: CameraComponent[] = [];
@@ -17,9 +17,18 @@ export class EntityManager {
   }
 
   tempFunction() {
+    const camera = new GameObject({ name: 'defaultCamera' });
+    const cameraComponent = new CameraComponent({});
+    camera.transform.position.z = 5;
+    camera.addComponent(cameraComponent);
+    this.addEntity(camera);
+
     const object = new GameObject({ name: 'testObject' });
-    const meshRenderer = new RendererComponent({});
+    const mesh = generateQuad(1, 1);
+    const meshRenderer = new RendererComponent({ mesh });
+    const demoBehaviour = new DemoComponent({});
     object.addComponent(meshRenderer);
+    object.addComponent(demoBehaviour);
     this.addEntity(object);
   }
 

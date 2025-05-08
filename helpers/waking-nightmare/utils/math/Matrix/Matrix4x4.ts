@@ -2,16 +2,16 @@ import { Quaternion } from '../Quaternion/Quaternion';
 import { Vector3 } from '../Vectors/Vector3';
 
 export class Matrix4x4 {
-  elements: number[];
+  elements: Float32Array;
 
   constructor(elements?: number[]) {
     // prettier-ignore
-    this.elements = elements || [
+    this.elements = new Float32Array(elements || [
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
       0, 0, 0, 1
-    ];
+    ]);
   }
 
   multiply(matrix: Matrix4x4): Matrix4x4 {
@@ -54,6 +54,10 @@ export class Matrix4x4 {
       (e[1] * x + e[5] * y + e[9] * z + e[13]) / w,
       (e[2] * x + e[6] * y + e[10] * z + e[14]) / w
     );
+  }
+
+  toFloat32Array(): Float32Array {
+    return new Float32Array(this.elements);
   }
 
   rotateX(angle: number): Matrix4x4 {

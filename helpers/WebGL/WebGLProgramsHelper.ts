@@ -9,6 +9,18 @@ const createProgram = (
 ): WebGLProgram => {
   const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
+  // Verify vertex shader compilation
+  if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+    const info = gl.getShaderInfoLog(vertexShader);
+    throw new Error(`Vertex shader compilation failed: ${info}`);
+  }
+
+  // Verify fragment shader compilation
+  if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+    const info = gl.getShaderInfoLog(fragmentShader);
+    throw new Error(`Fragment shader compilation failed: ${info}`);
+  }
+
   const program = gl.createProgram();
   if (!program) {
     throw new Error('Unable to create shader program');

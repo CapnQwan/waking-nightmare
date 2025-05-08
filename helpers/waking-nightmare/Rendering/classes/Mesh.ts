@@ -1,4 +1,5 @@
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
+import { Matrix4x4 } from '../../utils/math/Matrix/Matrix4x4';
 import { Vector2 } from '../../utils/math/Vectors/Vector2';
 import { Vector3 } from '../../utils/math/Vectors/Vector3';
 import { Canvas } from '../Canvas';
@@ -34,16 +35,19 @@ export class Mesh {
   private _uvs: Float32Array;
   /** Array of normal vectors for lighting calculations */
   private _normals: Float32Array;
+
+  /** buffers */
+
   /** Vertex Array Object stores the state of vertex attribute bindings */
   private _vao: WebGLVertexArrayObject | null = null;
   /** Buffer containing vertex position data (x, y, z coordinates) */
-  private _vertexBuffer: WebGLBuffer | null = null;
+  private _vbo: WebGLBuffer | null = null;
   /** Buffer containing texture coordinate data (u, v coordinates) */
-  private _uvBuffer: WebGLBuffer | null = null;
+  private _uvbo: WebGLBuffer | null = null;
   /** Buffer containing vertex normal data for lighting calculations */
-  private _normalBuffer: WebGLBuffer | null = null;
+  private _nbo: WebGLBuffer | null = null;
   /** Buffer containing triangle indices that define mesh topology */
-  private _indexBuffer: WebGLBuffer | null = null;
+  private _ibo: WebGLBuffer | null = null;
 
   /**
    * Gets the array of triangle indices
@@ -57,6 +61,7 @@ export class Mesh {
    */
   set triangles(triangles: number[] | Uint16Array) {
     this._triangles = Uint16Array.from(triangles);
+    this.bind();
   }
 
   /**
@@ -85,7 +90,8 @@ export class Mesh {
       newVertices[offset + 2] = vertex instanceof Vector3 ? vertex.z : 0;
     });
 
-    this._vertices;
+    this._vertices = newVertices;
+    this.bind();
   }
 
   /**
@@ -121,6 +127,7 @@ export class Mesh {
     this._vertices = verticies;
     this._uvs = uvs;
     this._normals = normals;
+    this.bind();
   }
 
   /**
@@ -182,22 +189,26 @@ export class Mesh {
    * @returns true if binding was successful
    */
   bind(): boolean {
+    if (this.triangles.length === 0 || this.verticies.length === 0) {
+      return false;
+    }
+
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
 
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);
 
     // Vertex buffer
-    this._vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
+    this._vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._vbo);
     gl.bufferData(gl.ARRAY_BUFFER, this._vertices, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
     // UV buffer
     if (this._uvs.length > 0) {
-      this._uvBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._uvBuffer);
+      this._uvbo = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._uvbo);
       gl.bufferData(gl.ARRAY_BUFFER, this._uvs, gl.STATIC_DRAW);
       gl.enableVertexAttribArray(1);
       gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
@@ -205,19 +216,30 @@ export class Mesh {
 
     // Normal buffer
     if (this._normals.length > 0) {
-      this._normalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._normalBuffer);
+      this._nbo = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._nbo);
       gl.bufferData(gl.ARRAY_BUFFER, this._normals, gl.STATIC_DRAW);
       gl.enableVertexAttribArray(2);
-      gl.vertexAttribPointer(2, 3, gl.FLOAT, false, 0, 0); // Normals are 3D
+      gl.vertexAttribPointer(2, 3, gl.FLOAT, false, 0, 0);
     }
 
     // Index buffer
-    this._indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW);
+    this._ibo = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW); // Changed from ARRAY_BUFFER to ELEMENT_ARRAY_BUFFER
 
     gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
     return true;
+  }
+
+  // Add a new method for drawing
+  draw(): void {
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
+    gl.bindVertexArray(this._vao);
+    gl.drawElements(gl.TRIANGLES, this._triangles.length, gl.UNSIGNED_SHORT, 0);
+    gl.bindVertexArray(null);
   }
 }
