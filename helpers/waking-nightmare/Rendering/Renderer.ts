@@ -1,8 +1,6 @@
 import { EntityManager } from '../EntityManager/EntityManager';
 import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
-import { RendererComponent } from '../GameObjects/Component/components/renderering/RendererComponent';
 import ServiceLocator from '../ServiceLocator/ServiceLocator';
-import { Matrix4x4 } from '../utils/math/Matrix/Matrix4x4';
 import { Canvas } from './Canvas';
 
 export class Renderer {
@@ -48,21 +46,30 @@ export class Renderer {
 
     // TODO: update this to use the camers output to get the aspect ratio
     const aspectRatio = this.getAspectRatio(canvas);
+    const resolution = new Float32Array([canvas.width, canvas.height]);
     const projectionMatrix = camera.getProjectionMatrix(aspectRatio);
 
     const renderableEntities = entityManager.getRenderableEntities();
 
-    renderableEntities.forEach((entity) => {
-      if (!entity.transform) {
+    renderableEntities.forEach((renderEntity) => {
+      if (!renderEntity.transform) {
         return;
       }
 
-      const modelMatrix = entity.transform.getMatrix();
+      console.log(`Rendering entity: ${renderEntity.name}`);
+
+      const modelMatrix = renderEntity.transform.getMatrix();
       const mvpMatrix = projectionMatrix
         .multiply(viewMatrix)
         .multiply(modelMatrix);
 
-      entity.renderComponet(camera, mvpMatrix.elements);
+      console.log(`Rendering entity: ${renderEntity.name}`);
+
+      renderEntity.renderComponent(
+        mvpMatrix.elements,
+        projectionMatrix.elements,
+        resolution
+      );
     });
   }
 

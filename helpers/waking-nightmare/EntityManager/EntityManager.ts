@@ -3,7 +3,7 @@ import { RendererComponent } from '../GameObjects/Component/components/rendereri
 import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
 import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
 import { DemoComponent } from '../Assets/DemoComponent';
-import { generateQuad } from '../Rendering/classes/Meshes/Quad';
+import { generateCube } from '../Rendering/classes/Meshes/Cube';
 
 export class EntityManager {
   entityIdIteration: number = 0;
@@ -24,8 +24,8 @@ export class EntityManager {
     this.addEntity(camera);
 
     const object = new GameObject({ name: 'testObject' });
-    const mesh = generateQuad(1, 1);
-    const meshRenderer = new RendererComponent({ mesh });
+    const mesh = generateCube(1, 1, 1);
+    const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
     const demoBehaviour = new DemoComponent({});
     object.addComponent(meshRenderer);
     object.addComponent(demoBehaviour);

@@ -1,9 +1,9 @@
 #version 300 es
-
 precision mediump float;
 
+// Declare an output variable for the fragment color
 out vec4 fragColor;
 
 void main() {
-    fragColor = vec4(0.11f, 0.41f, 0.11f, 1.0f); // Green color
+    fragColor = vec4(1.0, 0.5, 0.0, 1.0); // Orange color
 }
