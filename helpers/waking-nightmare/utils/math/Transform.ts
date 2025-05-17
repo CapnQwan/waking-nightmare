@@ -2,7 +2,7 @@ import { Matrix4x4 } from './Matrix/Matrix4x4';
 import { Quaternion } from './Quaternion/Quaternion';
 import { Vector3 } from './Vectors/Vector3';
 
-export class Transfrom {
+export class Transform {
   position: Vector3;
   rotation: Quaternion;
   scale: Vector3;
@@ -17,12 +17,13 @@ export class Transfrom {
     this.scale = scale;
   }
 
-  getMatrix = (): Matrix4x4 => {
+  getModelMatrix = (): Float32Array => {
     const translationMatrix = Matrix4x4.translationVector(this.position);
     const rotationMatrix = Matrix4x4.rotationQuaternion(this.rotation);
     const scaleMatrix = Matrix4x4.scaleVector(this.scale);
 
-    return translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix);
+    return translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix)
+      .elements;
   };
 
   applyTranslation(translation: Vector3): void {
@@ -37,14 +38,14 @@ export class Transfrom {
     this.scale = this.scale.multiply(scale);
   }
 
-  combine(transform: Transfrom): Transfrom {
+  combine(transform: Transform): Transform {
     const combinedPosition = this.position.add(transform.position);
     const combinedRotation = this.rotation
       .multiply(transform.rotation)
       .normalize();
     const combinedScale = this.scale.multiply(transform.scale);
 
-    return new Transfrom(combinedPosition, combinedRotation, combinedScale);
+    return new Transform(combinedPosition, combinedRotation, combinedScale);
   }
 
   lookAt(target: Vector3, up: Vector3 = Vector3.up()): void {
@@ -63,15 +64,15 @@ export class Transfrom {
     this.rotation = Quaternion.fromMatrix4x4(mat);
   }
 
-  clone(): Transfrom {
-    return new Transfrom(
+  clone(): Transform {
+    return new Transform(
       this.position.clone(),
       this.rotation.clone(),
       this.scale.clone()
     );
   }
 
-  copy(transform: Transfrom): void {
+  copy(transform: Transform): void {
     this.position = transform.position.clone();
     this.rotation = transform.rotation.clone();
     this.scale = transform.scale.clone();

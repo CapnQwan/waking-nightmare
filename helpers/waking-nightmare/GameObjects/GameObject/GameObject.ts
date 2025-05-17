@@ -1,12 +1,12 @@
 import { IObjectConstructor, Object } from '../Object';
 import { RendererComponent } from '@/helpers/waking-nightmare/GameObjects/Component/components/renderering/RendererComponent';
-import { Transfrom } from '../../utils/math/Transform';
+import { Transform } from '../../utils/math/Transform';
 import { Component } from '../Component/Component';
 
 export interface IGameObjectConstructor extends IObjectConstructor {}
 
 export class GameObject extends Object {
-  transform: Transfrom = new Transfrom();
+  transform: Transform = new Transform();
   children: GameObject[] = [];
   components: Component[] = [];
   renderComponents: RendererComponent[] = [];

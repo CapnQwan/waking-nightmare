@@ -4,9 +4,9 @@ import {
 } from '@/helpers/WebGL/WebGLShadersHelper';
 import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
 import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
+import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
 import { Canvas } from '../Canvas';
-import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
 
 /**
  * Configuration object for creating a new Shader instance
@@ -29,7 +29,7 @@ export class Shader {
   /** The fragment shader program */
   private _fragmentShader: WebGLShader;
   /** The compiled and linked WebGL program */
-  private _program: WebGLProgram;
+  private _program!: WebGLProgram;
 
   get program() {
     return this._program;
@@ -44,7 +44,7 @@ export class Shader {
     this._vertexShader = vertexShader ?? getVertexShader(defaultVertexShader);
     this._fragmentShader =
       fragmentShader ?? getFragmentShader(defaultFragmentShader);
-    this._program = getProgram(this._vertexShader, this._fragmentShader);
+    this.createProgram();
   }
 
   /**
@@ -52,7 +52,15 @@ export class Shader {
    * This is called automatically when shaders are updated
    */
   createProgram() {
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     this._program = getProgram(this._vertexShader, this._fragmentShader);
+    gl.linkProgram(this._program);
+    if (!gl.getProgramParameter(this._program, gl.LINK_STATUS)) {
+      console.error(
+        'Program linking failed:',
+        gl.getProgramInfoLog(this._program)
+      );
+    }
   }
 
   /**

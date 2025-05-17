@@ -51,8 +51,8 @@ export class CameraComponent extends Behaviour {
     return new Matrix4x4([
       f / aspectRatio, 0, 0, 0,
       0, f, 0, 0,
-      0, 0, (this.near + this.far) * rangeInv, 2 * this.near * this.far * rangeInv,
-      0, 0, -1, 0
+      0, 0, (this.near + this.far) * rangeInv, -1,
+      0, 0, 2 * this.near * this.far * rangeInv, 0
     ]);
   }
 }

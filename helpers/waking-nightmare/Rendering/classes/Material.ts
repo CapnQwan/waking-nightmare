@@ -35,25 +35,6 @@ export class Material {
     this.shader = shader ?? new Shader({});
     this.uniforms = uniforms;
     this.attributes = attributes;
-    this.setupDefaultUniforms();
-  }
-
-  /**
-   * Sets up default uniforms and attributes that should be available to all materials
-   * TODO: setup a way for this to be updated if the canvas is resized
-   * @private
-   */
-  private setupDefaultUniforms() {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-    const canvas = gl.canvas as HTMLCanvasElement;
-
-    // TODO: add a color uniform for the color of the material
-
-    // Set resolution uniform
-    this.setUniform(
-      'u_resolution',
-      new Float32Array([canvas.width, canvas.height])
-    );
   }
 
   /**
@@ -89,7 +70,10 @@ export class Material {
 
     for (const [name, value] of Object.entries(this.uniforms)) {
       const location = gl.getUniformLocation(this.shader.program, name);
-      if (!location) continue;
+      if (!location) {
+        console.warn(`Uniform ${name} not found in shader`);
+        continue;
+      }
 
       if (typeof value === 'number') {
         gl.uniform1f(location, value);
@@ -126,7 +110,10 @@ export class Material {
 
     for (const [name, value] of Object.entries(this.attributes)) {
       const location = gl.getAttribLocation(this.shader.program, name);
-      if (!location) continue;
+      if (!location) {
+        console.warn(`Attribute ${name} not found in shader`);
+        continue;
+      }
 
       if (typeof value === 'number') {
         gl.vertexAttrib1f(location, value);

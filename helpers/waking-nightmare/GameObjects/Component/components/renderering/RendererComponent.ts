@@ -17,21 +17,18 @@ export class RendererComponent extends Behaviour {
     this.mesh = params.mesh ?? new Mesh({});
   }
 
-  renderComponent(
-    mvpMatrix: Float32Array,
-    projectionMatrix: Float32Array,
-    resolution: Float32Array
-  ) {
-    const positionMatrix = this.transform?.position.toMatrix();
+  renderComponent(viewProjectionMatrix: Float32Array) {
+    const modelMatrix = this.transform?.getModelMatrix();
+
+    if (!modelMatrix) {
+      console.error('Model matrix is not defined.');
+      return;
+    }
 
     this.material.use();
 
-    this.material.setAttribute('aPosition', positionMatrix);
-    this.material.updateAttributes();
-
-    this.material.setUniform('uModelViewMatrix', mvpMatrix);
-    this.material.setUniform('uProjectionMatrix', projectionMatrix);
-    this.material.setUniform('uResolution', resolution);
+    this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
+    this.material.setUniform('uModelMatrix', modelMatrix);
     this.material.updateUniforms();
 
     this.mesh.bind();

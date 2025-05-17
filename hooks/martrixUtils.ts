@@ -1,6 +1,12 @@
 // Matrix Functions
 export function createIdentityMatrix(): Float32Array {
-  return new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  // prettier-ignore
+  return new Float32Array([
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
+  ]);
 }
 
 export function createPerspectiveMatrix(
@@ -11,23 +17,12 @@ export function createPerspectiveMatrix(
 ): Float32Array {
   const f = 1.0 / Math.tan(fov / 2);
   const nf = 1 / (near - far);
+  // prettier-ignore
   return new Float32Array([
-    f / aspect,
-    0,
-    0,
-    0,
-    0,
-    f,
-    0,
-    0,
-    0,
-    0,
-    (far + near) * nf,
-    -1,
-    0,
-    0,
-    2 * far * near * nf,
-    0,
+    f / aspect, 0, 0, 0,
+    0, f, 0, 0,
+    0, 0, (far + near) * nf, -1,
+    0, 0, 2 * far * near * nf, 0,
   ]);
 }
 

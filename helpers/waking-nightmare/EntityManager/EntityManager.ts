@@ -7,10 +7,26 @@ import { generateCube } from '../Rendering/classes/Meshes/Cube';
 
 export class EntityManager {
   entityIdIteration: number = 0;
-  private entities: GameObject[] = [];
-  private monoBehaviours: MonoBehaviour[] = [];
-  private renderers: RendererComponent[] = [];
-  private cameras: CameraComponent[] = [];
+  private _entities: GameObject[] = [];
+  private _monoBehaviours: MonoBehaviour[] = [];
+  private _renderers: RendererComponent[] = [];
+  private _cameras: CameraComponent[] = [];
+
+  public get cameras(): CameraComponent[] {
+    return this._cameras;
+  }
+
+  public get renderers(): RendererComponent[] {
+    return this._renderers;
+  }
+
+  public get entities(): GameObject[] {
+    return this._entities;
+  }
+
+  public get monoBehaviours(): MonoBehaviour[] {
+    return this._monoBehaviours;
+  }
 
   constructor() {
     this.tempFunction();
@@ -19,7 +35,7 @@ export class EntityManager {
   tempFunction() {
     const camera = new GameObject({ name: 'defaultCamera' });
     const cameraComponent = new CameraComponent({});
-    camera.transform.position.z = 5;
+    camera.transform.position.z = 0;
     camera.addComponent(cameraComponent);
     this.addEntity(camera);
 
@@ -33,20 +49,20 @@ export class EntityManager {
   }
 
   addEntity(gameObject: GameObject) {
-    this.entities.push(gameObject);
+    this._entities.push(gameObject);
     gameObject.id = this.entityIdIteration++;
 
     gameObject.components.forEach((component) => {
       if (component instanceof CameraComponent) {
-        this.cameras.push(component);
+        this._cameras.push(component);
       }
 
       if (component instanceof RendererComponent) {
-        this.renderers.push(component);
+        this._renderers.push(component);
       }
 
       if (component instanceof MonoBehaviour) {
-        this.monoBehaviours.push(component);
+        this._monoBehaviours.push(component);
       }
     });
   }
@@ -56,10 +72,6 @@ export class EntityManager {
   }
 
   private updateBehaviours() {
-    this.monoBehaviours.forEach((monoBehaviour) => monoBehaviour.onUpdate());
+    this._monoBehaviours.forEach((monoBehaviour) => monoBehaviour.onUpdate());
   }
-
-  getEntities = () => this.entities;
-  getRenderableEntities = () => this.renderers;
-  getCameras = () => this.cameras;
 }

@@ -5,7 +5,7 @@ import {
   translateMatrix,
   rotateMatrix,
 } from './martrixUtils';
-import { Canvas } from './waking-nightmare/Rendering/Canvas';
+import { Canvas } from '../helpers/waking-nightmare/Rendering/Canvas';
 
 type TUseRenderCube = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -71,13 +71,7 @@ export const useRenderCube = () => {
 
     // Get the WebGL context
     const canvas = canvasClass.canvas;
-    const gl = canvas.getContext('webgl');
-    if (!gl) {
-      console.error('WebGL not supported');
-      return;
-    }
-
-    console.log('Canvas size:', canvas.width, canvas.height); // Verify
+    const gl = canvasClass.gl;
 
     // Create Shader Program
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
@@ -113,19 +107,6 @@ export const useRenderCube = () => {
     }
     gl.useProgram(program);
 
-    console.log(
-      'Vertex shader compiled:',
-      gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)
-    );
-    console.log(
-      'Fragment shader compiled:',
-      gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)
-    );
-    console.log(
-      'Program linked:',
-      gl.getProgramParameter(program, gl.LINK_STATUS)
-    );
-
     // Create Vertex Buffer
     const vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -142,12 +123,6 @@ export const useRenderCube = () => {
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
-    console.log('Position location:', positionLocation); // Should be >= 0
-    if (positionLocation === -1) {
-      console.error('Failed to get aPosition attribute location');
-      return;
-    }
-
     // Set up Matrices
     let modelViewMatrix = createIdentityMatrix();
     const projectionMatrix = createPerspectiveMatrix(
@@ -159,9 +134,6 @@ export const useRenderCube = () => {
     modelViewMatrix = translateMatrix(modelViewMatrix, 0.0, 0.0, -5.0);
     modelViewMatrix = rotateMatrix(modelViewMatrix, 0.7, [1, 1, 0]);
 
-    console.log('ModelViewMatrix:', modelViewMatrix);
-    console.log('ProjectionMatrix:', projectionMatrix);
-
     // Pass matrices to shaders
     const uModelViewMatrix = gl.getUniformLocation(program, 'uModelViewMatrix');
     const uProjectionMatrix = gl.getUniformLocation(
@@ -170,13 +142,6 @@ export const useRenderCube = () => {
     );
     gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
     gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
-
-    console.log('uModelViewMatrix:', uModelViewMatrix);
-    console.log('uProjectionMatrix:', uProjectionMatrix);
-    if (!uModelViewMatrix || !uProjectionMatrix) {
-      console.error('Failed to get uniform locations');
-      return;
-    }
 
     // Set up WebGL rendering
     gl.clearColor(0.0, 0.0, 0.0, 1.0);

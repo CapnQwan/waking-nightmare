@@ -60,7 +60,6 @@ export class Canvas {
 
     if (!glContext) {
       throw new Error('Unable to initialize WebGL2 context');
-      return;
     }
 
     this._gl = glContext;
