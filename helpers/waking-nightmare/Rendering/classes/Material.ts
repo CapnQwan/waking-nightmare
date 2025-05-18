@@ -84,9 +84,9 @@ export class Material {
           gl.uniform3fv(location, value);
         } else if (value.length === 2) {
           gl.uniform2fv(location, value);
+        } else if (value.length === 16) {
+          gl.uniformMatrix4fv(location, false, value);
         }
-      } else if (value instanceof Float32Array && value.length === 16) {
-        gl.uniformMatrix4fv(location, false, value);
       }
     }
   }

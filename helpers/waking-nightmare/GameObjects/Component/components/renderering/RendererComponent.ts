@@ -1,6 +1,8 @@
 import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material';
 import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
+import { Canvas } from '@/helpers/waking-nightmare/Rendering/Canvas';
+import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
 
 export interface IRenderComponentConstructor extends IBehaviourConstructor {
   material?: Material;
@@ -18,6 +20,7 @@ export class RendererComponent extends Behaviour {
   }
 
   renderComponent(viewProjectionMatrix: Float32Array) {
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const modelMatrix = this.transform?.getModelMatrix();
 
     if (!modelMatrix) {
@@ -25,7 +28,17 @@ export class RendererComponent extends Behaviour {
       return;
     }
 
+    //console.log('model matrix', modelMatrix);
+
     this.material.use();
+
+    const positionLocation = gl.getAttribLocation(
+      this.material.shader.program,
+      'aPosition'
+    );
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.mesh.vbo);
+    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
     this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
     this.material.setUniform('uModelMatrix', modelMatrix);

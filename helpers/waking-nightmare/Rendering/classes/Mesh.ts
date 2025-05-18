@@ -1,5 +1,4 @@
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
-import { Matrix4x4 } from '../../utils/math/Matrix/Matrix4x4';
 import { Vector2 } from '../../utils/math/Vectors/Vector2';
 import { Vector3 } from '../../utils/math/Vectors/Vector3';
 import { Canvas } from '../Canvas';
@@ -230,7 +229,7 @@ export class Mesh {
     // Index buffer
     this._ibo = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW); // Changed from ARRAY_BUFFER to ELEMENT_ARRAY_BUFFER
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW);
 
     gl.bindVertexArray(null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);

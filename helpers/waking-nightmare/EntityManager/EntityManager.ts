@@ -35,11 +35,12 @@ export class EntityManager {
   tempFunction() {
     const camera = new GameObject({ name: 'defaultCamera' });
     const cameraComponent = new CameraComponent({});
-    camera.transform.position.z = 0;
+    camera.transform.position.z = -5;
     camera.addComponent(cameraComponent);
     this.addEntity(camera);
 
     const object = new GameObject({ name: 'testObject' });
+    object.transform.position.y = 100;
     const mesh = generateCube(1, 1, 1);
     const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
     const demoBehaviour = new DemoComponent({});

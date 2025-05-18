@@ -28,24 +28,55 @@ export class CameraComponent extends Behaviour {
     if (!this.transform) {
       throw new Error('Parent object does not have a transform');
     }
-
     const position = this.transform.position;
     const rotation = this.transform.rotation;
-    const viewMatrix = Matrix4x4.translation(
+
+    // Get the inverse rotation (conjugate of the quaternion)
+    const inverseRotation = rotation.conjugate();
+    const rotationMatrix = Matrix4x4.rotationQuaternion(inverseRotation);
+
+    // Translate by the negative of the camera's position
+    const translationMatrix = Matrix4x4.translation(
       -position.x,
       -position.y,
       -position.z
     );
-    viewMatrix.rotateX(-rotation.x);
-    viewMatrix.rotateY(-rotation.y);
-    viewMatrix.rotateZ(-rotation.z);
-    return viewMatrix;
+
+    //console.log(
+    //  'view matrix',
+    //  rotationMatrix.multiply(translationMatrix).elements
+    //);
+
+    // Combine: rotation^-1 * translation^-1
+    return rotationMatrix.multiply(translationMatrix);
   }
 
   getProjectionMatrix(aspectRatio: number): Matrix4x4 {
     const fovRad = (this.fieldOfView * Math.PI) / 180;
     const f = 1.0 / Math.tan(fovRad / 2);
     const rangeInv = 1.0 / (this.near - this.far);
+
+    //console.log(
+    //  'projection matrix',
+    //  new Matrix4x4([
+    //    f / aspectRatio,
+    //    0,
+    //    0,
+    //    0,
+    //    0,
+    //    f,
+    //    0,
+    //    0,
+    //    0,
+    //    0,
+    //    (this.near + this.far) * rangeInv,
+    //    -1,
+    //    0,
+    //    0,
+    //    2 * this.near * this.far * rangeInv,
+    //    0,
+    //  ]).elements
+    //);
 
     // prettier-ignore
     return new Matrix4x4([

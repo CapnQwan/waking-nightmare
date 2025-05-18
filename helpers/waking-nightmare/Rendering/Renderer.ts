@@ -54,74 +54,22 @@ export class Renderer {
   ) {
     const viewMatrix = camera.getViewMatrix();
 
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-
     const testRenderComponent = entityManager.renderers[0];
     if (!testRenderComponent.transform) {
       console.error('Test render component does not have a transform');
       return;
     }
 
-    testRenderComponent.material.use();
-    const program = testRenderComponent.material.shader.program;
-
     // TODO: update this to use the camers output to get the aspect ratio
     const aspectRatio = this.getAspectRatio(canvas);
     const projectionMatrix = camera.getProjectionMatrix(aspectRatio);
+    const viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
 
     const renderableEntities = entityManager.renderers;
 
-    const viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
-
-    testRenderComponent.mesh.bind();
-
-    //// Create Vertex Buffer
-    //const vertexBuffer = gl.createBuffer();
-    //gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    //gl.bufferData(
-    //  gl.ARRAY_BUFFER,
-    //  testRenderComponent.mesh.verticies,
-    //  gl.STATIC_DRAW
-    //);
-    //
-    //// Create Index Buffer
-    //const indexBuffer = gl.createBuffer();
-    //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    //gl.bufferData(
-    //  gl.ELEMENT_ARRAY_BUFFER,
-    //  testRenderComponent.mesh.triangles,
-    //  gl.STATIC_DRAW
-    //);
-
-    // Set up Attributes
-    const positionLocation = gl.getAttribLocation(program, 'aPosition');
-    gl.enableVertexAttribArray(positionLocation);
-    gl.bindBuffer(gl.ARRAY_BUFFER, testRenderComponent.mesh.vbo);
-    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-
-    const modelMatrix = testRenderComponent.transform.getModelMatrix();
-
-    const uModelMatrix = gl.getUniformLocation(program, 'uModelMatrix');
-    const uViewProjectionMatrix = gl.getUniformLocation(
-      program,
-      'uViewProjectionMatrix'
-    );
-    gl.uniformMatrix4fv(uModelMatrix, false, modelMatrix);
-    gl.uniformMatrix4fv(
-      uViewProjectionMatrix,
-      false,
-      viewProjectionMatrix.elements
-    );
-
-    gl.drawElements(
-      gl.TRIANGLES,
-      testRenderComponent.mesh.triangles.length,
-      gl.UNSIGNED_SHORT,
-      0
-    );
-    // renderableEntities.forEach((renderEntity) => {
-    //   renderEntity.renderComponent(viewProjectionMatrix.elements);
-    // });
+    renderableEntities.forEach((renderEntity) => {
+      renderEntity.renderComponent(viewProjectionMatrix.elements);
+    });
   }
 
   private getAspectRatio(output: Canvas): number {

@@ -65,6 +65,19 @@ export class Quaternion {
     ]);
   }
 
+  toObject(): { x: number; y: number; z: number; w: number } {
+    return {
+      x: this.x,
+      y: this.y,
+      z: this.z,
+      w: this.w,
+    };
+  }
+
+  toString(): string {
+    return `Quaternion(${this.x}, ${this.y}, ${this.z}, ${this.w})`;
+  }
+
   clone(): Quaternion {
     return new Quaternion(this.x, this.y, this.z, this.w);
   }
