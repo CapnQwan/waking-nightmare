@@ -19,7 +19,7 @@ export class RendererComponent extends Behaviour {
     this.mesh = params.mesh ?? new Mesh({});
   }
 
-  renderComponent(viewProjectionMatrix: Float32Array) {
+  renderComponent(viewMatrix: Float32Array, projectionMatrix: Float32Array) {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const modelMatrix = this.transform?.getModelMatrix();
 
@@ -40,7 +40,9 @@ export class RendererComponent extends Behaviour {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.mesh.vbo);
     gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
-    this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
+    //this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
+    this.material.setUniform('uProjectionMatrix', projectionMatrix);
+    this.material.setUniform('uViewMatrix', viewMatrix);
     this.material.setUniform('uModelMatrix', modelMatrix);
     this.material.updateUniforms();
 

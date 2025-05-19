@@ -2,6 +2,8 @@ import { Matrix4x4 } from '../../../../utils/math/Matrix/Matrix4x4';
 import { Canvas } from '../../../../Rendering/Canvas';
 import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/RenderTexture';
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
+import { RendererComponent } from './RendererComponent';
+import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
 
 interface ICameraConstructor extends IBehaviourConstructor {
   output?: Canvas | RenderTexture;
@@ -42,11 +44,6 @@ export class CameraComponent extends Behaviour {
       -position.z
     );
 
-    //console.log(
-    //  'view matrix',
-    //  rotationMatrix.multiply(translationMatrix).elements
-    //);
-
     // Combine: rotation^-1 * translation^-1
     return rotationMatrix.multiply(translationMatrix);
   }
@@ -56,28 +53,6 @@ export class CameraComponent extends Behaviour {
     const f = 1.0 / Math.tan(fovRad / 2);
     const rangeInv = 1.0 / (this.near - this.far);
 
-    //console.log(
-    //  'projection matrix',
-    //  new Matrix4x4([
-    //    f / aspectRatio,
-    //    0,
-    //    0,
-    //    0,
-    //    0,
-    //    f,
-    //    0,
-    //    0,
-    //    0,
-    //    0,
-    //    (this.near + this.far) * rangeInv,
-    //    -1,
-    //    0,
-    //    0,
-    //    2 * this.near * this.far * rangeInv,
-    //    0,
-    //  ]).elements
-    //);
-
     // prettier-ignore
     return new Matrix4x4([
       f / aspectRatio, 0, 0, 0,
@@ -85,5 +60,19 @@ export class CameraComponent extends Behaviour {
       0, 0, (this.near + this.far) * rangeInv, -1,
       0, 0, 2 * this.near * this.far * rangeInv, 0
     ]);
+  }
+
+  renderEntities(rendererEntities: RendererComponent[]) {
+    const canvas = ServiceLocator.get<Canvas>(Canvas);
+
+    const viewMatrix = this.getViewMatrix();
+
+    // TODO: update this to use the camers output to get the aspect ratio
+    const projectionMatrix = this.getProjectionMatrix(canvas.aspectRatio);
+    //const viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
+
+    rendererEntities.forEach((renderEntity) => {
+      renderEntity.renderComponent(viewMatrix.elements, viewMatrix.elements);
+    });
   }
 }

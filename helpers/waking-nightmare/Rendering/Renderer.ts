@@ -1,17 +1,6 @@
-import {
-  getFragmentShader,
-  getVertexShader,
-} from '@/helpers/WebGL/WebGLShadersHelper';
 import { EntityManager } from '../EntityManager/EntityManager';
-import { CameraComponent } from '../GameObjects/Component/components/renderering/CameraComponent';
 import ServiceLocator from '../ServiceLocator/ServiceLocator';
-import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
-import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
 import { Canvas } from './Canvas';
-import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
-import { generateCube } from './classes/Meshes/Cube';
-import { createIdentityMatrix } from '@/hooks/martrixUtils';
-import test from 'node:test';
 
 export class Renderer {
   constructor() {}
@@ -33,7 +22,6 @@ export class Renderer {
 
   private renderCameras() {
     const entityManager = ServiceLocator.get<EntityManager>(EntityManager);
-    const canvas = ServiceLocator.get<Canvas>(Canvas);
 
     const cameras = entityManager.cameras;
 
@@ -42,37 +30,6 @@ export class Renderer {
       return;
     }
 
-    cameras.forEach((camera) =>
-      this.renderCamera(camera, canvas, entityManager)
-    );
-  }
-
-  private renderCamera(
-    camera: CameraComponent,
-    canvas: Canvas,
-    entityManager: EntityManager
-  ) {
-    const viewMatrix = camera.getViewMatrix();
-
-    const testRenderComponent = entityManager.renderers[0];
-    if (!testRenderComponent.transform) {
-      console.error('Test render component does not have a transform');
-      return;
-    }
-
-    // TODO: update this to use the camers output to get the aspect ratio
-    const aspectRatio = this.getAspectRatio(canvas);
-    const projectionMatrix = camera.getProjectionMatrix(aspectRatio);
-    const viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
-
-    const renderableEntities = entityManager.renderers;
-
-    renderableEntities.forEach((renderEntity) => {
-      renderEntity.renderComponent(viewProjectionMatrix.elements);
-    });
-  }
-
-  private getAspectRatio(output: Canvas): number {
-    return output.width / output.height;
+    cameras.forEach((camera) => camera.renderEntities(entityManager.renderers));
   }
 }

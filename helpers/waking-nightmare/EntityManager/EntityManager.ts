@@ -32,7 +32,7 @@ export class EntityManager {
     this.tempFunction();
   }
 
-  tempFunction() {
+  private tempFunction() {
     const camera = new GameObject({ name: 'defaultCamera' });
     const cameraComponent = new CameraComponent({});
     camera.transform.position.z = -5;

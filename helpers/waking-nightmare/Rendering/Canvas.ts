@@ -50,6 +50,20 @@ export class Canvas {
   }
 
   /**
+   * Gets the canvas resolution as a Float32Array
+   */
+  get resolution(): Float32Array {
+    return new Float32Array([this._width, this._height]);
+  }
+
+  /**
+   * Gets the aspect ratio of the canvas
+   */
+  get aspectRatio(): number {
+    return this._width / this._height;
+  }
+
+  /**
    * Creates a new Canvas instance and initializes WebGL2 context
    * @throws Error if WebGL2 is not supported
    */
