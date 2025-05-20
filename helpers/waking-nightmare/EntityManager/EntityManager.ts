@@ -40,7 +40,6 @@ export class EntityManager {
     this.addEntity(camera);
 
     const object = new GameObject({ name: 'testObject' });
-    object.transform.position.y = 100;
     const mesh = generateCube(1, 1, 1);
     const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
     const demoBehaviour = new DemoComponent({});

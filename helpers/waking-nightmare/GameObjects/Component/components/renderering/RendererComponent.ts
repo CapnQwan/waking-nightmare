@@ -3,6 +3,7 @@ import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
 import { Canvas } from '@/helpers/waking-nightmare/Rendering/Canvas';
 import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
+import { createIdentityMatrix } from '@/hooks/martrixUtils';
 
 export interface IRenderComponentConstructor extends IBehaviourConstructor {
   material?: Material;
@@ -22,6 +23,7 @@ export class RendererComponent extends Behaviour {
   renderComponent(viewMatrix: Float32Array, projectionMatrix: Float32Array) {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const modelMatrix = this.transform?.getModelMatrix();
+    //const modelMatrix = createIdentityMatrix();
 
     if (!modelMatrix) {
       console.error('Model matrix is not defined.');

@@ -1,10 +1,10 @@
 // Matrix Functions
-export function createIdentityMatrix(): Float32Array {
+export function createIdentityMatrix(z = 0): Float32Array {
   // prettier-ignore
   return new Float32Array([
     1, 0, 0, 0,
     0, 1, 0, 0,
-    0, 0, 1, 0,
+    0, 0, 1, z,
     0, 0, 0, 1
   ]);
 }
