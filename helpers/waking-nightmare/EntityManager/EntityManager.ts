@@ -4,6 +4,8 @@ import { CameraComponent } from '../GameObjects/Component/components/renderering
 import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
 import { DemoComponent } from '../Assets/DemoComponent';
 import { generateCube } from '../Rendering/classes/Meshes/Cube';
+import ServiceLocator from '../ServiceLocator/ServiceLocator';
+import { Canvas } from '../Rendering/Canvas';
 
 export class EntityManager {
   entityIdIteration: number = 0;
@@ -33,19 +35,30 @@ export class EntityManager {
   }
 
   private tempFunction() {
+    const canvas = ServiceLocator.get<Canvas>(Canvas);
+
     const camera = new GameObject({ name: 'defaultCamera' });
     const cameraComponent = new CameraComponent({});
     camera.transform.position.z = -5;
     camera.addComponent(cameraComponent);
     this.addEntity(camera);
 
+    console.log(cameraComponent.getViewMatrix().elements);
+    console.log(
+      cameraComponent.getProjectionMatrix(canvas.aspectRatio).elements
+    );
+
     const object = new GameObject({ name: 'testObject' });
+    object.transform.position.x = 0;
+    object.transform.position.y = 0;
+    object.transform.position.z = 0;
     const mesh = generateCube(1, 1, 1);
     const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
     const demoBehaviour = new DemoComponent({});
     object.addComponent(meshRenderer);
     object.addComponent(demoBehaviour);
     this.addEntity(object);
+    console.log(object.transform.getModelMatrix());
   }
 
   addEntity(gameObject: GameObject) {

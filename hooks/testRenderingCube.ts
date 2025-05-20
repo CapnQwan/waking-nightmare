@@ -6,6 +6,7 @@ import {
   rotateMatrix,
 } from './martrixUtils';
 import { Canvas } from '../helpers/waking-nightmare/Rendering/Canvas';
+import { Transform } from '@/helpers/waking-nightmare/utils/math/Transform';
 
 type TUseRenderCube = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -122,6 +123,9 @@ export const useRenderCube = () => {
     gl.enableVertexAttribArray(positionLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+
+    const cubeTransform = new Transform();
+    const cameraTransform = new Transform();
 
     // Set up Matrices
     let modelViewMatrix = createIdentityMatrix();

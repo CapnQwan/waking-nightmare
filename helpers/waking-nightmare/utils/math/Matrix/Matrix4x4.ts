@@ -14,30 +14,74 @@ export class Matrix4x4 {
     ]);
   }
 
-  multiply(matrix: Matrix4x4): Matrix4x4 {
+  multiplyInPlace(matrix: Matrix4x4): void {
     const a = this.elements;
     const b = matrix.elements;
+    const c = new Float32Array(16);
 
+    // prettier-ignore
+    var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
+        a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
+        a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
+        a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+
+    // Cache only the current line of the second matrix
+
+    // prettier-ignore
+    var b0 = b[0],
+      b1 = b[1],
+      b2 = b[2],
+      b3 = b[3];
+    c[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    c[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    c[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    c[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    b0 = b[4];
+    b1 = b[5];
+    b2 = b[6];
+    b3 = b[7];
+    c[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    c[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    c[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    c[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    b0 = b[8];
+    b1 = b[9];
+    b2 = b[10];
+    b3 = b[11];
+    c[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    c[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    c[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    c[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    // prettier-ignore
+    b0 = b[12];
+    b1 = b[13];
+    b2 = b[14];
+    b3 = b[15];
+    c[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+    c[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+    c[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+    c[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+    this.elements = c;
+  }
+
+  static perspective(
+    fov: number,
+    aspect: number,
+    near: number,
+    far: number
+  ): Matrix4x4 {
+    const f = 1.0 / Math.tan(fov / 2);
+    const nf = 1 / (near - far);
+    // prettier-ignore
     return new Matrix4x4([
-      a[0] * b[0] + a[1] * b[4] + a[2] * b[8] + a[3] * b[12],
-      a[0] * b[1] + a[1] * b[5] + a[2] * b[9] + a[3] * b[13],
-      a[0] * b[2] + a[1] * b[6] + a[2] * b[10] + a[3] * b[14],
-      a[0] * b[3] + a[1] * b[7] + a[2] * b[11] + a[3] * b[15],
-
-      a[4] * b[0] + a[5] * b[4] + a[6] * b[8] + a[7] * b[12],
-      a[4] * b[1] + a[5] * b[5] + a[6] * b[9] + a[7] * b[13],
-      a[4] * b[2] + a[5] * b[6] + a[6] * b[10] + a[7] * b[14],
-      a[4] * b[3] + a[5] * b[7] + a[6] * b[11] + a[7] * b[15],
-
-      a[8] * b[0] + a[9] * b[4] + a[10] * b[8] + a[11] * b[12],
-      a[8] * b[1] + a[9] * b[5] + a[10] * b[9] + a[11] * b[13],
-      a[8] * b[2] + a[9] * b[6] + a[10] * b[10] + a[11] * b[14],
-      a[8] * b[3] + a[9] * b[7] + a[10] * b[11] + a[11] * b[15],
-
-      a[12] * b[0] + a[13] * b[4] + a[14] * b[8] + a[15] * b[12],
-      a[12] * b[1] + a[13] * b[5] + a[14] * b[9] + a[15] * b[13],
-      a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14],
-      a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15],
+      f / aspect, 0, 0, 0,
+      0, f, 0, 0,
+      0, 0, (far + near) * nf, 2 * far * near * nf,
+      0, 0, -1, 0
     ]);
   }
 
@@ -70,7 +114,7 @@ export class Matrix4x4 {
       0, s, c, 0,
       0, 0, 0, 1
     ]);
-    return this.multiply(rotationMatrix);
+    return Matrix4x4.multiply(this, rotationMatrix);
   }
 
   rotateY(angle: number): Matrix4x4 {
@@ -83,7 +127,7 @@ export class Matrix4x4 {
       -s, 0, c, 0,
       0, 0, 0, 1
     ]);
-    return this.multiply(rotationMatrix);
+    return Matrix4x4.multiply(this, rotationMatrix);
   }
 
   rotateZ(angle: number): Matrix4x4 {
@@ -96,7 +140,7 @@ export class Matrix4x4 {
       0, 0, 1, 0,
       0, 0, 0, 1
     ]);
-    return this.multiply(rotationMatrix);
+    return Matrix4x4.multiply(this, rotationMatrix);
   }
 
   static identity(): Matrix4x4 {
@@ -178,6 +222,23 @@ export class Matrix4x4 {
       2 * x * z - 2 * y * w, 2 * y * z + 2 * x * w, 1 - 2 * x * x - 2 * y * y, 0,
       0, 0, 0, 1
     ]);
+  }
+
+  static multiply(a: Matrix4x4, b: Matrix4x4): Matrix4x4 {
+    const result = new Matrix4x4();
+    result.elements = new Float32Array(16);
+
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        result.elements[i * 4 + j] =
+          a.elements[i * 4] * b.elements[j] +
+          a.elements[i * 4 + 1] * b.elements[j + 4] +
+          a.elements[i * 4 + 2] * b.elements[j + 8] +
+          a.elements[i * 4 + 3] * b.elements[j + 12];
+      }
+    }
+
+    return result;
   }
 
   static scaling(sx: number, sy: number, sz: number): Matrix4x4 {

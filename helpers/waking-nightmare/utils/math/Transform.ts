@@ -22,8 +22,10 @@ export class Transform {
     const rotationMatrix = Matrix4x4.rotationQuaternion(this.rotation);
     const scaleMatrix = Matrix4x4.scaleVector(this.scale);
 
-    return translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix)
-      .elements;
+    translationMatrix.multiplyInPlace(rotationMatrix);
+    translationMatrix.multiplyInPlace(scaleMatrix);
+
+    return translationMatrix.elements;
   };
 
   applyTranslation(translation: Vector3): void {

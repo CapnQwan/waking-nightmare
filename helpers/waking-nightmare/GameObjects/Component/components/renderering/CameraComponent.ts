@@ -4,12 +4,7 @@ import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/Rend
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
 import { RendererComponent } from './RendererComponent';
 import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
-import {
-  createIdentityMatrix,
-  createPerspectiveMatrix,
-  rotateMatrix,
-  translateMatrix,
-} from '@/hooks/martrixUtils';
+import { createIdentityMatrix } from '@/hooks/martrixUtils';
 
 interface ICameraConstructor extends IBehaviourConstructor {
   output?: Canvas | RenderTexture;
@@ -51,7 +46,7 @@ export class CameraComponent extends Behaviour {
     );
 
     // Combine: rotation^-1 * translation^-1
-    return rotationMatrix.multiply(translationMatrix);
+    return Matrix4x4.multiply(rotationMatrix, translationMatrix);
   }
 
   getProjectionMatrix(aspectRatio: number): Matrix4x4 {
@@ -72,14 +67,12 @@ export class CameraComponent extends Behaviour {
     const canvas = ServiceLocator.get<Canvas>(Canvas);
 
     //const viewMatrix = this.getViewMatrix();
-    const viewMatrix = rotateMatrix(
-      translateMatrix(createIdentityMatrix(), 0.0, 0.0, -5.0),
-      0.7,
-      [1, 1, 0]
-    );
+    const viewMatrix = createIdentityMatrix();
 
     // TODO: update this to use the camers output to get the aspect ratio
-    const projectionMatrix = this.getProjectionMatrix(canvas.aspectRatio);
+    const projectionMatrix = this.getProjectionMatrix(
+      canvas.aspectRatio
+    ).elements;
     //const projectionMatrix = createPerspectiveMatrix(
     //  Math.PI / 4,
     //  canvas.width / canvas.height,
