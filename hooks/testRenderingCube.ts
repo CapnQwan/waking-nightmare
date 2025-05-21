@@ -1,10 +1,5 @@
 import { useEffect } from 'react';
-import {
-  createIdentityMatrix,
-  createPerspectiveMatrix,
-  translateMatrix,
-  rotateMatrix,
-} from './martrixUtils';
+import { createIdentityMatrix, createPerspectiveMatrix } from './martrixUtils';
 import { Canvas } from '../helpers/waking-nightmare/Rendering/Canvas';
 import { Transform } from '@/helpers/waking-nightmare/utils/math/Transform';
 
@@ -15,10 +10,11 @@ type TUseRenderCube = {
 // Vertex Shader
 const vertexShaderSource = `
     attribute vec4 aPosition;
-    uniform mat4 uModelViewMatrix;
+    uniform mat4 uModelMatrix;
+    uniform mat4 uViewMatrix;
     uniform mat4 uProjectionMatrix;
     void main() {
-        gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
+        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * aPosition;
     }
 `;
 
@@ -125,26 +121,44 @@ export const useRenderCube = () => {
     gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
     const cubeTransform = new Transform();
+    cubeTransform.position.z = -10;
+    cubeTransform.rotation.rotatePitch(30);
+    cubeTransform.rotation.rotateRoll(30);
+
     const cameraTransform = new Transform();
 
-    // Set up Matrices
-    let modelViewMatrix = createIdentityMatrix();
+    const modelMatrix = cubeTransform.getModelMatrix();
+    //const modelMatrix = rotateMatrix(
+    //  translateMatrix(createIdentityMatrix(), 0.0, 0.0, -5.0),
+    //  0.7,
+    //  [1, 1, 0]
+    //);
+
+    console.log(modelMatrix);
+
+    const viewMatrix = createIdentityMatrix();
+
+    console.log(viewMatrix);
+
     const projectionMatrix = createPerspectiveMatrix(
       Math.PI / 4,
       canvas.width / canvas.height,
       0.1,
       100.0
     );
-    modelViewMatrix = translateMatrix(modelViewMatrix, 0.0, 0.0, -5.0);
-    modelViewMatrix = rotateMatrix(modelViewMatrix, 0.7, [1, 1, 0]);
+
+    console.log(projectionMatrix);
 
     // Pass matrices to shaders
-    const uModelViewMatrix = gl.getUniformLocation(program, 'uModelViewMatrix');
+    const uModelMatrix = gl.getUniformLocation(program, 'uModelMatrix');
+    const uViewMatrix = gl.getUniformLocation(program, 'uViewMatrix');
     const uProjectionMatrix = gl.getUniformLocation(
       program,
       'uProjectionMatrix'
     );
-    gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
+
+    gl.uniformMatrix4fv(uModelMatrix, false, modelMatrix);
+    gl.uniformMatrix4fv(uViewMatrix, false, viewMatrix);
     gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
 
     // Set up WebGL rendering

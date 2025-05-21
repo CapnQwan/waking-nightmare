@@ -26,19 +26,18 @@ export class Quaternion {
     );
   }
 
-  normalize(): Quaternion {
+  normalize(): void {
     const length = Math.sqrt(
       this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
     );
     if (length === 0) {
       throw new Error('Cannot normalize a zero quaternion');
     }
-    return new Quaternion(
-      this.x / length,
-      this.y / length,
-      this.z / length,
-      this.w / length
-    );
+
+    this.x = this.x / length;
+    this.y = this.y / length;
+    this.z = this.z / length;
+    this.w = this.w / length;
   }
 
   conjugate(): Quaternion {
@@ -100,6 +99,45 @@ export class Quaternion {
     return new Vector3(qResult.x, qResult.y, qResult.z);
   }
 
+  rotatePitch(pitch: number): void {
+    const halfPitch = pitch / 2;
+    const sinHalfPitch = Math.sin(halfPitch);
+    const cosHalfPitch = Math.cos(halfPitch);
+
+    this.x = this.x * cosHalfPitch + this.w * sinHalfPitch;
+    this.y = this.y * cosHalfPitch - this.z * sinHalfPitch;
+    this.z = this.z * cosHalfPitch + this.y * sinHalfPitch;
+    this.w = this.w * cosHalfPitch - this.x * sinHalfPitch;
+
+    this.normalize();
+  }
+
+  rotateYaw(yaw: number): void {
+    const halfYaw = yaw / 2;
+    const sinHalfYaw = Math.sin(halfYaw);
+    const cosHalfYaw = Math.cos(halfYaw);
+
+    this.x = this.x * cosHalfYaw - this.z * sinHalfYaw;
+    this.y = this.y * cosHalfYaw + this.w * sinHalfYaw;
+    this.z = this.z * cosHalfYaw + this.x * sinHalfYaw;
+    this.w = this.w * cosHalfYaw - this.y * sinHalfYaw;
+
+    this.normalize();
+  }
+
+  rotateRoll(roll: number): void {
+    const halfRoll = roll / 2;
+    const sinHalfRoll = Math.sin(halfRoll);
+    const cosHalfRoll = Math.cos(halfRoll);
+
+    this.x = this.x * cosHalfRoll + this.y * sinHalfRoll;
+    this.y = this.y * cosHalfRoll - this.z * sinHalfRoll;
+    this.z = this.z * cosHalfRoll + this.x * sinHalfRoll;
+    this.w = this.w * cosHalfRoll - this.z * sinHalfRoll;
+
+    this.normalize();
+  }
+
   static fromAxisAngle(axis: Vector3, angle: number): Quaternion {
     const halfAngle = angle / 2;
     const s = Math.sin(halfAngle);
@@ -152,12 +190,14 @@ export class Quaternion {
     }
 
     if (cosTheta > 0.9995) {
-      return new Quaternion(
+      const newRotation = new Quaternion(
         q1.x + t * (q2.x - q1.x),
         q1.y + t * (q2.y - q1.y),
         q1.z + t * (q2.z - q1.z),
         q1.w + t * (q2.w - q1.w)
-      ).normalize();
+      );
+      newRotation.normalize();
+      return newRotation;
     }
 
     const theta0 = Math.acos(cosTheta);

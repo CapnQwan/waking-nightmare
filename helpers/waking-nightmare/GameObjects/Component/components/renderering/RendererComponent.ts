@@ -23,7 +23,6 @@ export class RendererComponent extends Behaviour {
   renderComponent(viewMatrix: Float32Array, projectionMatrix: Float32Array) {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const modelMatrix = this.transform?.getModelMatrix();
-    //const modelMatrix = createIdentityMatrix();
 
     if (!modelMatrix) {
       console.error('Model matrix is not defined.');

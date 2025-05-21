@@ -70,23 +70,12 @@ export function rotateMatrix(
     ys = ny * s,
     zs = nz * s;
 
+  // prettier-ignore
   const rot = new Float32Array([
-    x2 * t + c,
-    xy - zs,
-    xz + ys,
-    0,
-    xy + zs,
-    y2 * t + c,
-    yz - xs,
-    0,
-    xz - ys,
-    yz + xs,
-    z2 * t + c,
-    0,
-    0,
-    0,
-    0,
-    1,
+    x2 * t + c, xy - zs, xz + ys, 0, 
+    xy + zs, y2 * t + c, yz - xs, 0, 
+    xz - ys, yz + xs, z2 * t + c, 0,
+    0, 0, 0, 1,
   ]);
 
   return multiplyMatrices(rot, matrix); // Changed order: rotation * matrix

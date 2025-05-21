@@ -166,10 +166,10 @@ export class Matrix4x4 {
   static translationVector(position: Vector3): Matrix4x4 {
     // prettier-ignore
     return new Matrix4x4([
-      1, 0, 0, position.x,
-      0, 1, 0, position.y,
-      0, 0, 1, position.z,
-      0, 0, 0, 1
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      position.x, position.y, position.z, 1
     ]);
   }
 

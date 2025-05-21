@@ -39,26 +39,19 @@ export class EntityManager {
 
     const camera = new GameObject({ name: 'defaultCamera' });
     const cameraComponent = new CameraComponent({});
-    camera.transform.position.z = -5;
     camera.addComponent(cameraComponent);
     this.addEntity(camera);
 
-    console.log(cameraComponent.getViewMatrix().elements);
-    console.log(
-      cameraComponent.getProjectionMatrix(canvas.aspectRatio).elements
-    );
-
     const object = new GameObject({ name: 'testObject' });
-    object.transform.position.x = 0;
-    object.transform.position.y = 0;
-    object.transform.position.z = 0;
+    object.transform.position.z = -10;
+    object.transform.rotation.rotatePitch(45);
+    object.transform.rotation.rotateRoll(45);
     const mesh = generateCube(1, 1, 1);
     const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
     const demoBehaviour = new DemoComponent({});
     object.addComponent(meshRenderer);
     object.addComponent(demoBehaviour);
     this.addEntity(object);
-    console.log(object.transform.getModelMatrix());
   }
 
   addEntity(gameObject: GameObject) {

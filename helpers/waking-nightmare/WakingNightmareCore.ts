@@ -53,6 +53,7 @@ export class WNCore {
   }
 
   update = () => {
+    this.time.update();
     this.entityManager.updateObjects();
     this.renderer.render();
 

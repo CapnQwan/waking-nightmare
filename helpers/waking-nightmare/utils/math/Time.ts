@@ -20,14 +20,16 @@ export class Time {
   }
 
   update() {
+    console.log('Time update');
     const timeNow = performance.now();
     const timeLastFrame = this.timeLastFrame || this.startTime;
     const deltaTime = timeNow - timeLastFrame;
-    this.time += deltaTime;
+
     this.timeLastFrame = timeNow;
 
     const currentFrameRate = 1000 / deltaTime;
     this.deltaTime = deltaTime * 0.001;
+    this.time += this.deltaTime;
     this.pastFrames.push(currentFrameRate);
     if (this.pastFrames.length > this.maxFramesHistory) {
       this.pastFrames.shift();
