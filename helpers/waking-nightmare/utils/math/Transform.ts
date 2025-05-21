@@ -17,7 +17,7 @@ export class Transform {
     this.scale = scale;
   }
 
-  getModelMatrix = (): Float32Array => {
+  getModelMatrix = (): Matrix4x4 => {
     const translationMatrix = Matrix4x4.translationVector(this.position);
     const rotationMatrix = Matrix4x4.rotationQuaternion(this.rotation);
     const scaleMatrix = Matrix4x4.scaleVector(this.scale);
@@ -25,7 +25,7 @@ export class Transform {
     translationMatrix.multiplyInPlace(rotationMatrix);
     translationMatrix.multiplyInPlace(scaleMatrix);
 
-    return translationMatrix.elements;
+    return translationMatrix;
   };
 
   applyTranslation(translation: Vector3): void {
@@ -33,7 +33,9 @@ export class Transform {
   }
 
   applyRotation(rotation: Quaternion): void {
-    this.rotation = this.rotation.multiply(rotation).normalize();
+    const newRotation = this.rotation.multiply(rotation);
+    newRotation.normalize();
+    this.rotation = newRotation;
   }
 
   applyScale(scale: Vector3): void {
@@ -42,9 +44,8 @@ export class Transform {
 
   combine(transform: Transform): Transform {
     const combinedPosition = this.position.add(transform.position);
-    const combinedRotation = this.rotation
-      .multiply(transform.rotation)
-      .normalize();
+    const combinedRotation = this.rotation.multiply(transform.rotation);
+    combinedRotation.normalize();
     const combinedScale = this.scale.multiply(transform.scale);
 
     return new Transform(combinedPosition, combinedRotation, combinedScale);

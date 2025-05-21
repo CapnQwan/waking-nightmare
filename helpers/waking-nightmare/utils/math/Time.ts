@@ -20,7 +20,6 @@ export class Time {
   }
 
   update() {
-    console.log('Time update');
     const timeNow = performance.now();
     const timeLastFrame = this.timeLastFrame || this.startTime;
     const deltaTime = timeNow - timeLastFrame;

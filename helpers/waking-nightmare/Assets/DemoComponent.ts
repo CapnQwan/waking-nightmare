@@ -12,8 +12,8 @@ export class DemoComponent extends MonoBehaviour {
 
     this.parent?.transform.rotation.rotateRoll(0.1);
     if (this.parent) {
-      console.log(time.time);
-      this.parent.transform.position.x = Math.sin(time.time) * 3;
+      this.parent.transform.position.x = Math.sin(time.time * 4) * 3;
+      this.parent.transform.position.y = Math.cos(time.time * 8);
     }
   }
 }

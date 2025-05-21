@@ -188,6 +188,87 @@ export class Mesh {
   }
 
   /**
+   * Recalculates vertex normals for the mesh based on triangle faces
+   */
+  recalculateNormals(): void {
+    // Initialize normals array with zeros
+    const vertexCount = this._vertices.length / 3;
+    this._normals = new Float32Array(vertexCount * 3);
+
+    // Temporary array to store count of faces per vertex for averaging
+    const faceCounts = new Uint16Array(vertexCount);
+
+    // Calculate face normals for each triangle
+    for (let i = 0; i < this._triangles.length; i += 3) {
+      // Get triangle vertices indices
+      const v1Idx = this._triangles[i] * 3;
+      const v2Idx = this._triangles[i + 1] * 3;
+      const v3Idx = this._triangles[i + 2] * 3;
+
+      // Get vertex positions
+      const v1 = new Vector3(
+        this._vertices[v1Idx],
+        this._vertices[v1Idx + 1],
+        this._vertices[v1Idx + 2]
+      );
+      const v2 = new Vector3(
+        this._vertices[v2Idx],
+        this._vertices[v2Idx + 1],
+        this._vertices[v2Idx + 2]
+      );
+      const v3 = new Vector3(
+        this._vertices[v3Idx],
+        this._vertices[v3Idx + 1],
+        this._vertices[v3Idx + 2]
+      );
+
+      // Calculate face normal
+      const edge1 = v2.subtract(v1);
+      const edge2 = v3.subtract(v1);
+      const faceNormal = edge1.cross(edge2).normalize();
+
+      // Add face normal to each vertex's normal
+      const idx1 = this._triangles[i] * 3;
+      const idx2 = this._triangles[i + 1] * 3;
+      const idx3 = this._triangles[i + 2] * 3;
+
+      // Accumulate normals
+      this._normals[idx1] += faceNormal.x;
+      this._normals[idx1 + 1] += faceNormal.y;
+      this._normals[idx1 + 2] += faceNormal.z;
+
+      this._normals[idx2] += faceNormal.x;
+      this._normals[idx2 + 1] += faceNormal.y;
+      this._normals[idx2 + 2] += faceNormal.z;
+
+      this._normals[idx3] += faceNormal.x;
+      this._normals[idx3 + 1] += faceNormal.y;
+      this._normals[idx3 + 2] += faceNormal.z;
+
+      // Increment face counts for averaging
+      faceCounts[this._triangles[i]]++;
+      faceCounts[this._triangles[i + 1]]++;
+      faceCounts[this._triangles[i + 2]]++;
+    }
+
+    // Average and normalize the accumulated normals
+    for (let i = 0; i < vertexCount; i++) {
+      const idx = i * 3;
+      if (faceCounts[i] > 0) {
+        const normal = new Vector3(
+          this._normals[idx] / faceCounts[i],
+          this._normals[idx + 1] / faceCounts[i],
+          this._normals[idx + 2] / faceCounts[i]
+        ).normalize();
+
+        this._normals[idx] = normal.x;
+        this._normals[idx + 1] = normal.y;
+        this._normals[idx + 2] = normal.z;
+      }
+    }
+  }
+
+  /**
    * Binds the mesh data to WebGL buffers
    * @returns true if binding was successful
    */

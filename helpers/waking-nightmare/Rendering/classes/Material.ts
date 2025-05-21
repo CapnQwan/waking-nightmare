@@ -91,41 +91,12 @@ export class Material {
     }
   }
 
-  //TODO: add a way to set attributes for the shader program
-  setAttribute(name: string, value: any) {
-    this.attributes[name] = value;
-  }
-
-  /**
-   * Updates all attribute values in the shader program
-   * Automatically detects the type of attribute and uses the appropriate WebGL attribute function
-   * Supported types:
-   * - Numbers (vertexAttrib1f)
-   * - Float32Array of length 2 (vertexAttrib2fv)
-   * - Float32Array of length 3 (vertexAttrib3fv)
-   * - Float32Array of length 4 (vertexAttrib4fv)
-   */
-  updateAttributes() {
+  bindAttribute(attributeName: string, vbo: WebGLBuffer, size: number) {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
+    const location = gl.getAttribLocation(this.shader.program, attributeName);
 
-    for (const [name, value] of Object.entries(this.attributes)) {
-      const location = gl.getAttribLocation(this.shader.program, name);
-      if (!location) {
-        console.warn(`Attribute ${name} not found in shader`);
-        continue;
-      }
-
-      if (typeof value === 'number') {
-        gl.vertexAttrib1f(location, value);
-      } else if (value instanceof Float32Array) {
-        if (value.length === 4) {
-          gl.vertexAttrib4fv(location, value);
-        } else if (value.length === 3) {
-          gl.vertexAttrib3fv(location, value);
-        } else if (value.length === 2) {
-          gl.vertexAttrib2fv(location, value);
-        }
-      }
-    }
+    gl.enableVertexAttribArray(location);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
   }
 }

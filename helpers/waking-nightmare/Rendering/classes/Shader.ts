@@ -2,8 +2,10 @@ import {
   getFragmentShader,
   getVertexShader,
 } from '@/helpers/WebGL/WebGLShadersHelper';
-import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
-import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
+//import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
+//import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
+import defaultLitVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
+import defaultLitFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
 import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
 import ServiceLocator from '../../ServiceLocator/ServiceLocator';
 import { Canvas } from '../Canvas';
@@ -41,9 +43,10 @@ export class Shader {
    * @param fragmentShader - Optional custom fragment shader
    */
   constructor({ vertexShader, fragmentShader }: shaderConstructor) {
-    this._vertexShader = vertexShader ?? getVertexShader(defaultVertexShader);
+    this._vertexShader =
+      vertexShader ?? getVertexShader(defaultLitVertexShader);
     this._fragmentShader =
-      fragmentShader ?? getFragmentShader(defaultFragmentShader);
+      fragmentShader ?? getFragmentShader(defaultLitFragmentShader);
     this.createProgram();
   }
 
