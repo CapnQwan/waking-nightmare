@@ -36,32 +36,56 @@ export class RendererComponent extends Behaviour {
     }
 
     const modelViewMatrix = Matrix4x4.multiply(modelMatrix, viewMatrix);
-    const normalMatrix = Matrix4x4.normalFromMat4(modelViewMatrix);
+    const normalMatrix = Matrix4x4.normalFromMat4(modelViewMatrix)?.elements;
 
     this.material.use();
 
     this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
 
     // Set up light properties
-    this.material.setUniform('uLightPosition', [-10.0, -10.0, -10.0]);
-    this.material.setUniform('uLightAmbient', [0.2, 0.2, 0.2]);
-    this.material.setUniform('uLightDiffuse', [0.8, 0.8, 0.8]);
-    this.material.setUniform('uLightSpecular', [1.0, 1.0, 1.0]);
+    this.material.setUniform(
+      'uLightPosition',
+      new Float32Array([-1.0, -1.0, -1.0])
+    );
+    this.material.setUniform(
+      'uLightAmbient',
+      new Float32Array([0.2, 0.2, 0.2])
+    );
+    this.material.setUniform(
+      'uLightDiffuse',
+      new Float32Array([0.8, 0.8, 0.8])
+    );
+    this.material.setUniform(
+      'uLightSpecular',
+      new Float32Array([1.0, 1.0, 1.0])
+    );
 
     // Set up light properties
-    this.material.setUniform('uMaterialAmbient', [0.2, 0.2, 0.2]);
-    this.material.setUniform('uMaterialDiffuse', [0.5, 0.5, 0.5]);
-    this.material.setUniform('uMaterialSpecular', [1.0, 1.0, 1.0]);
+    this.material.setUniform(
+      'uMaterialAmbient',
+      new Float32Array([0.2, 0.2, 0.2])
+    );
+    this.material.setUniform(
+      'uMaterialDiffuse',
+      new Float32Array([0.5, 0.5, 0.5])
+    );
+    this.material.setUniform(
+      'uMaterialSpecular',
+      new Float32Array([1.0, 1.0, 1.0])
+    );
     this.material.setUniform('uMaterialShininess', 32);
 
     // Set up camera properties
-    this.material.setUniform('uViewPosition', cameraPosition.toArray());
+    this.material.setUniform('uViewPosition', cameraPosition.toFloat32Array());
 
     //this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
-    this.material.setUniform('uProjectionMatrix', projectionMatrix);
-    this.material.setUniform('uViewMatrix', viewMatrix);
-    this.material.setUniform('uModelMatrix', modelMatrix);
-    this.material.setUniform('uNormalMatrix', normalMatrix);
+    this.material.setUniform('uProjectionMatrix', projectionMatrix.elements);
+    this.material.setUniform('uViewMatrix', viewMatrix.elements);
+    this.material.setUniform('uModelMatrix', modelMatrix.elements);
+    this.material.setUniform(
+      'uNormalMatrix',
+      normalMatrix ?? new Float32Array(9)
+    );
     this.material.updateUniforms();
 
     this.mesh.bind();

@@ -40,6 +40,11 @@ export class Vector3 {
     return [this.x, this.y, this.z];
   }
 
+  /** Converts the vector to a Float32Array */
+  toFloat32Array(): Float32Array {
+    return new Float32Array([this.x, this.y, this.z]);
+  }
+
   /** Calculates the magnitude (length) of the vector */
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);

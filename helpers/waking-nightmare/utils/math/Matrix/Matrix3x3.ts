@@ -1,8 +1,8 @@
 export class Matrix3x3 {
-  elements: number[];
+  elements: Float32Array;
 
   constructor(elements?: number[]) {
-    this.elements = elements || [1, 0, 0, 0, 1, 0, 0, 0, 1];
+    this.elements = new Float32Array(elements ?? [1, 0, 0, 0, 1, 0, 0, 0, 1]);
   }
 
   multiply(matrix: Matrix3x3): Matrix3x3 {
@@ -23,7 +23,10 @@ export class Matrix3x3 {
   }
 
   determinant(): number {
-    const [a, b, c, d, e, f, g, h, i] = this.elements;
+    // prettier-ignore
+    const a = this.elements[0], b = this.elements[1], c = this.elements[2],
+          d = this.elements[3], e = this.elements[4], f = this.elements[5],
+          g = this.elements[6], h = this.elements[7], i = this.elements[8];
     return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
   }
 
@@ -31,7 +34,11 @@ export class Matrix3x3 {
     const det = this.determinant();
     if (det === 0) return null;
 
-    const [a, b, c, d, e, f, g, h, i] = this.elements;
+    // prettier-ignore
+    const a = this.elements[0], b = this.elements[1], c = this.elements[2],
+          d = this.elements[3], e = this.elements[4], f = this.elements[5],
+          g = this.elements[6], h = this.elements[7], i = this.elements[8];
+
     const invDet = 1 / det;
 
     return new Matrix3x3([

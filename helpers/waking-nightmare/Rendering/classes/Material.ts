@@ -51,7 +51,7 @@ export class Material {
    * @param name - The name of the uniform as defined in the shader
    * @param value - The value to set for the uniform
    */
-  setUniform(name: string, value: any) {
+  setUniform(name: string, value: number | Float32Array) {
     this.uniforms[name] = value;
   }
 
