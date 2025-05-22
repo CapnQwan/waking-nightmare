@@ -4,6 +4,7 @@ precision mediump float;
 // Declare an output variable for the fragment color
 in vec3 vNormal;
 in vec3 vPosition;
+in vec3 vFragPos;
 
 uniform vec3 uLightPosition;
 uniform vec3 uLightAmbient;
@@ -21,7 +22,7 @@ out vec4 fragColor;
 
 void main() {
   vec3 normal = normalize(vNormal);
-  vec3 lightDir = normalize(uLightPosition - vPosition);
+  vec3 lightDir = normalize(uLightPosition - vFragPos); //normalize(uLightPosition - vPosition);
   vec3 viewDir = normalize(uViewPosition - vPosition);
   vec3 reflectDir = reflect(-lightDir, normal);
 
@@ -37,6 +38,6 @@ void main() {
   vec3 specular = uLightSpecular * uMaterialSpecular * spec;
 
   // Combine components
-  vec3 color = ambient + diffuse + specular;
+  vec3 color = ambient + diffuse; // + specular;
   fragColor = vec4(color, 1.0);
 }

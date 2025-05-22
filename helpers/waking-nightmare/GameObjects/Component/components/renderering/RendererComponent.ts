@@ -1,8 +1,6 @@
 import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material';
 import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
-import { Canvas } from '@/helpers/waking-nightmare/Rendering/Canvas';
-import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
 import { Vector3 } from '@/helpers/waking-nightmare/utils/math/Vectors/Vector3';
 import { Matrix4x4 } from '@/helpers/waking-nightmare/utils/math/Matrix/Matrix4x4';
 
@@ -28,8 +26,6 @@ export class RendererComponent extends Behaviour {
   ) {
     const modelMatrix = this.transform?.getModelMatrix();
 
-    if (!this.mesh.vbo) return;
-
     if (!modelMatrix) {
       console.error('Model matrix is not defined.');
       return;
@@ -40,7 +36,13 @@ export class RendererComponent extends Behaviour {
 
     this.material.use();
 
-    this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
+    if (this.mesh.vbo) {
+      this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
+    }
+
+    if (this.mesh.nbo) {
+      this.material.bindAttribute('aNormal', this.mesh.nbo, 3);
+    }
 
     // Set up light properties
     this.material.setUniform(
@@ -49,7 +51,7 @@ export class RendererComponent extends Behaviour {
     );
     this.material.setUniform(
       'uLightAmbient',
-      new Float32Array([0.2, 0.2, 0.2])
+      new Float32Array([0.3, 0.3, 0.3])
     );
     this.material.setUniform(
       'uLightDiffuse',
@@ -63,7 +65,7 @@ export class RendererComponent extends Behaviour {
     // Set up light properties
     this.material.setUniform(
       'uMaterialAmbient',
-      new Float32Array([0.2, 0.2, 0.2])
+      new Float32Array([0.76, 0.58, 0.08])
     );
     this.material.setUniform(
       'uMaterialDiffuse',

@@ -111,6 +111,10 @@ export class Mesh {
     return this._vbo;
   }
 
+  get nbo(): WebGLBuffer | null {
+    return this._nbo;
+  }
+
   /**
    * Creates a new Mesh instance
    * @param triangles - Optional array of triangle indices

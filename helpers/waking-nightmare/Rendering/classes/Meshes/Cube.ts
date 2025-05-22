@@ -65,5 +65,7 @@ export const generateCube = (
     20, 21, 22, 21, 23, 22,
   ]);
 
+  mesh.recalculateNormals();
+
   return mesh;
 };
