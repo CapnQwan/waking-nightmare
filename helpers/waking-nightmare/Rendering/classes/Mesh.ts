@@ -323,11 +323,41 @@ export class Mesh {
     return true;
   }
 
-  // Add a new method for drawing
+  /** Makes a draw call to the gpu */
   draw(): void {
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     gl.bindVertexArray(this._vao);
     gl.drawElements(gl.TRIANGLES, this._triangles.length, gl.UNSIGNED_SHORT, 0);
     gl.bindVertexArray(null);
+  }
+
+  /** Cleans up WebGL resources used by the mesh */
+  dispose(): void {
+    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
+
+    if (this._vao) {
+      gl.deleteVertexArray(this._vao);
+      this._vao = null;
+    }
+
+    if (this._vbo) {
+      gl.deleteBuffer(this._vbo);
+      this._vbo = null;
+    }
+
+    if (this._uvbo) {
+      gl.deleteBuffer(this._uvbo);
+      this._uvbo = null;
+    }
+
+    if (this._nbo) {
+      gl.deleteBuffer(this._nbo);
+      this._nbo = null;
+    }
+
+    if (this._ibo) {
+      gl.deleteBuffer(this._ibo);
+      this._ibo = null;
+    }
   }
 }
