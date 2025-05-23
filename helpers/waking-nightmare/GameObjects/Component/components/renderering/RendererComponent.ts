@@ -40,32 +40,41 @@ export class RendererComponent extends Behaviour {
       this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
     }
 
+    if (this.mesh.uvbo) {
+      this.material.bindAttribute('aUV', this.mesh.uvbo, 2);
+    }
+
     if (this.mesh.nbo) {
       this.material.bindAttribute('aNormal', this.mesh.nbo, 3);
     }
 
+    /**
+     * TODO: Move all of this to the materials class as see if you can find a way to automatically detect
+     * the attributes for setting up the uniforms and attributes. based on the shader or something like that.
+     */
+
     // Set up light properties
     this.material.setUniform(
       'uLightPosition',
-      new Float32Array([-1.0, -1.0, -1.0])
+      new Float32Array([-2.0, 2.0, -5.0])
     );
     this.material.setUniform(
       'uLightAmbient',
-      new Float32Array([0.3, 0.3, 0.3])
+      new Float32Array([0.5, 0.5, 0.5])
     );
     this.material.setUniform(
       'uLightDiffuse',
-      new Float32Array([0.8, 0.8, 0.8])
+      new Float32Array([0.2, 0.2, 0.2])
     );
     this.material.setUniform(
       'uLightSpecular',
-      new Float32Array([1.0, 1.0, 1.0])
+      new Float32Array([0.75, 0.75, 0.75])
     );
 
     // Set up light properties
     this.material.setUniform(
       'uMaterialAmbient',
-      new Float32Array([0.76, 0.58, 0.08])
+      new Float32Array([0.86, 0.48, 0.08])
     );
     this.material.setUniform(
       'uMaterialDiffuse',
@@ -75,7 +84,7 @@ export class RendererComponent extends Behaviour {
       'uMaterialSpecular',
       new Float32Array([1.0, 1.0, 1.0])
     );
-    this.material.setUniform('uMaterialShininess', 32);
+    this.material.setUniform('uMaterialShininess', 128);
 
     // Set up camera properties
     this.material.setUniform('uViewPosition', cameraPosition.toFloat32Array());

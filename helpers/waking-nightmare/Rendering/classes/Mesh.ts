@@ -101,18 +101,42 @@ export class Mesh {
   }
 
   /**
-   * Gets the array of normal vectors
+   * Sets the array of UV coordinates
+   */
+  set uvs(uvs: Float32Array) {
+    this._uvs = uvs;
+    this.bind();
+  }
+
+  /**
+   * Gets the array of normals vectors
    */
   get normals(): Float32Array {
     return this._normals;
+  }
+
+  /**
+   * Sets the array of normals coordinates
+   */
+  set normals(normals: Float32Array) {
+    this._normals = normals;
+    this.bind();
   }
 
   get vbo(): WebGLBuffer | null {
     return this._vbo;
   }
 
+  get uvbo(): WebGLBuffer | null {
+    return this._uvbo;
+  }
+
   get nbo(): WebGLBuffer | null {
     return this._nbo;
+  }
+
+  get ibo(): WebGLBuffer | null {
+    return this._ibo;
   }
 
   /**
@@ -298,17 +322,23 @@ export class Mesh {
       this._uvbo = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._uvbo);
       gl.bufferData(gl.ARRAY_BUFFER, this._uvs, gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(1);
-      gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(2);
+      gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 0, 0);
     }
+
+    /**
+     * NOTE: currently the normal is bound to location 1 in the shader. this is due to a binding issue
+     * jsut due to the UV buffer not being used in the default lit shader so it is bound to location 2.
+     * need to find a better way of binding the attributes so that they are not hard coded.
+     */
 
     // Normal buffer
     if (this._normals.length > 0) {
       this._nbo = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._nbo);
       gl.bufferData(gl.ARRAY_BUFFER, this._normals, gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(2);
-      gl.vertexAttribPointer(2, 3, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(1);
+      gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0);
     }
 
     // Index buffer

@@ -10,10 +10,10 @@ export class DemoComponent extends MonoBehaviour {
   onUpdate(): void {
     const time = ServiceLocator.get<Time>(Time);
 
-    this.parent?.transform.rotation.rotateRoll(0.01);
+    this.parent?.transform.rotation.rotateRoll(0.05);
     if (this.parent) {
-      this.parent.transform.position.x = Math.sin(time.time) * 3;
-      this.parent.transform.position.y = Math.cos(time.time);
+      this.parent.transform.position.x = Math.sin(time.time * 3) * 3;
+      this.parent.transform.position.y = Math.cos(time.time * 4);
     }
   }
 }

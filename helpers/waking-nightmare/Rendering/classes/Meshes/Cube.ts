@@ -65,7 +65,20 @@ export const generateCube = (
     20, 21, 22, 21, 23, 22,
   ]);
 
-  mesh.recalculateNormals();
+  mesh.normals = new Float32Array([
+    // Front
+    0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+    // Back
+    0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1,
+    // Left
+    -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0,
+    // Right
+    1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
+    // Top
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+    // Bottom
+    0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0,
+  ]);
 
   return mesh;
 };

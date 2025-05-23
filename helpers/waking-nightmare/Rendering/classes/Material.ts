@@ -84,6 +84,8 @@ export class Material {
           gl.uniform3fv(location, value);
         } else if (value.length === 2) {
           gl.uniform2fv(location, value);
+        } else if (value.length === 9) {
+          gl.uniformMatrix3fv(location, false, value);
         } else if (value.length === 16) {
           gl.uniformMatrix4fv(location, false, value);
         }
@@ -91,12 +93,17 @@ export class Material {
     }
   }
 
-  bindAttribute(attributeName: string, vbo: WebGLBuffer, size: number) {
+  bindAttribute(attributeName: string, buffer: WebGLBuffer, size: number) {
+    /**
+     * TODO: See if there is a better way of binging the attributes. Maybe binding them in the mesh class would be better?
+     * There is a bit of an issue with the location of the attributes potentially miss aligining in the shader if certain items
+     * are not used. that is why currently the normal attribute is bount to location 1 and the uv attribute is bound to location 2.
+     */
     const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const location = gl.getAttribLocation(this.shader.program, attributeName);
 
     gl.enableVertexAttribArray(location);
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
   }
 }
