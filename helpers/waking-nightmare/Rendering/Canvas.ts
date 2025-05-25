@@ -3,6 +3,8 @@
  * It handles canvas creation, resizing, and basic rendering operations.
  */
 export class Canvas {
+  private static _instance: Canvas;
+
   /** The HTML canvas element */
   private _canvas: HTMLCanvasElement;
   /** The WebGL2 rendering context */
@@ -108,4 +110,14 @@ export class Canvas {
   clearCanvas = () => {
     this._gl.clear(this._gl.COLOR_BUFFER_BIT);
   };
+
+  public static getInstance(): Canvas {
+    if (!Canvas._instance) {
+      Canvas._instance = new Canvas();
+    }
+    return Canvas._instance;
+  }
 }
+
+export const canvas = Canvas.getInstance();
+export const gl = canvas.gl;

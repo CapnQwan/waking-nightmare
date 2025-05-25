@@ -1,8 +1,9 @@
-import { EntityManager } from '../EntityManager/EntityManager';
-import ServiceLocator from '../ServiceLocator/ServiceLocator';
-import { Canvas } from './Canvas';
+import { entityManager } from '../EntityManager/EntityManager';
+import { canvas, gl } from './Canvas';
 
 export class Renderer {
+  private static instance: Renderer;
+
   constructor() {}
 
   render = () => {
@@ -11,9 +12,6 @@ export class Renderer {
   };
 
   private clearCanvas() {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-    const canvas = ServiceLocator.get<Canvas>(Canvas);
-
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -21,8 +19,6 @@ export class Renderer {
   }
 
   private renderCameras() {
-    const entityManager = ServiceLocator.get<EntityManager>(EntityManager);
-
     const cameras = entityManager.cameras;
 
     if (!cameras.length) {
@@ -32,4 +28,13 @@ export class Renderer {
 
     cameras.forEach((camera) => camera.renderEntities(entityManager.renderers));
   }
+
+  public static getInstance(): Renderer {
+    if (!Renderer.instance) {
+      Renderer.instance = new Renderer();
+    }
+    return Renderer.instance;
+  }
 }
+
+export const renderer = Renderer.getInstance();

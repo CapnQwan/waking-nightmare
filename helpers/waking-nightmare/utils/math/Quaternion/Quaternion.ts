@@ -1,12 +1,27 @@
 import { Matrix4x4 } from '../Matrix/Matrix4x4';
 import { Vector3 } from '../Vectors/Vector3';
 
+/**
+ * Represents a quaternion for 3D rotations
+ * A quaternion is defined as q = x*i + y*j + z*k + w where i,j,k are imaginary basis vectors
+ */
 export class Quaternion {
+  /** x component (i coefficient) */
   x: number;
+  /** y component (j coefficient) */
   y: number;
+  /** z component (k coefficient) */
   z: number;
+  /** w component (real part) */
   w: number;
 
+  /**
+   * Creates a new quaternion
+   * @param {number} [x=0] - x component
+   * @param {number} [y=0] - y component
+   * @param {number} [z=0] - z component
+   * @param {number} [w=1] - w component (defaults to 1 for identity quaternion)
+   */
   constructor(x: number = 0, y: number = 0, z: number = 0, w: number = 1) {
     this.x = x;
     this.y = y;
@@ -14,10 +29,16 @@ export class Quaternion {
     this.w = w;
   }
 
+  /**
+   * Multiplies this quaternion with another quaternion
+   * @param {Quaternion} quaternion - Quaternion to multiply with
+   * @returns {Quaternion} Result of multiplication
+   */
   multiply(quaternion: Quaternion): Quaternion {
     const q1 = this;
     const q2 = quaternion;
 
+    // Hamilton product formula
     return new Quaternion(
       q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
       q1.w * q2.y + q1.y * q2.w + q1.z * q2.x - q1.x * q2.z,
@@ -26,6 +47,10 @@ export class Quaternion {
     );
   }
 
+  /**
+   * Normalizes the quaternion to unit length
+   * @throws {Error} If quaternion length is zero
+   */
   normalize(): void {
     const length = Math.sqrt(
       this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
@@ -40,11 +65,20 @@ export class Quaternion {
     this.w = this.w / length;
   }
 
+  /**
+   * Returns the conjugate of this quaternion (negates x, y, z components)
+   * @returns {Quaternion} Conjugate quaternion
+   */
   conjugate(): Quaternion {
     return new Quaternion(-this.x, -this.y, -this.z, this.w);
   }
 
+  /**
+   * Converts quaternion to 4x4 rotation matrix
+   * @returns {Matrix4x4} Rotation matrix representation
+   */
   toMatrix4x4(): Matrix4x4 {
+    // Calculate common terms
     const xx = this.x * this.x;
     const yy = this.y * this.y;
     const zz = this.z * this.z;
@@ -55,6 +89,7 @@ export class Quaternion {
     const wy = this.w * this.y;
     const wz = this.w * this.z;
 
+    // Create rotation matrix
     // prettier-ignore
     return new Matrix4x4([
       1 - 2 * (yy + zz), 2 * (xy - wz), 2 * (xz + wy), 0,
@@ -138,6 +173,12 @@ export class Quaternion {
     this.normalize();
   }
 
+  /**
+   * Creates a quaternion from an axis and angle
+   * @param {Vector3} axis - Axis of rotation
+   * @param {number} angle - Angle in radians
+   * @returns {Quaternion} Quaternion representing the rotation
+   */
   static fromAxisAngle(axis: Vector3, angle: number): Quaternion {
     const halfAngle = angle / 2;
     const s = Math.sin(halfAngle);
@@ -149,6 +190,13 @@ export class Quaternion {
     );
   }
 
+  /**
+   * Creates a quaternion from Euler angles (yaw, pitch, roll)
+   * @param {number} yaw - Yaw angle in radians
+   * @param {number} pitch - Pitch angle in radians
+   * @param {number} roll - Roll angle in radians
+   * @returns {Quaternion} Quaternion representing the rotation
+   */
   static fromEulerAngles(yaw: number, pitch: number, roll: number): Quaternion {
     const cy = Math.cos(yaw * 0.5);
     const sy = Math.sin(yaw * 0.5);
@@ -165,6 +213,10 @@ export class Quaternion {
     );
   }
 
+  /**
+   * Converts this quaternion to Euler angles (yaw, pitch, roll)
+   * @returns {Object} Object containing yaw, pitch, and roll angles in radians
+   */
   toEulerAngles(): { yaw: number; pitch: number; roll: number } {
     const sinr_cosp = 2 * (this.w * this.x + this.y * this.z);
     const cosr_cosp = 1 - 2 * (this.x * this.x + this.y * this.y);
@@ -181,6 +233,13 @@ export class Quaternion {
     return { yaw, pitch, roll };
   }
 
+  /**
+   * Performs spherical linear interpolation between two quaternions
+   * @param {Quaternion} q1 - Start quaternion
+   * @param {Quaternion} q2 - End quaternion
+   * @param {number} t - Interpolation parameter (0-1)
+   * @returns {Quaternion} Interpolated quaternion
+   */
   static slerp(q1: Quaternion, q2: Quaternion, t: number): Quaternion {
     let cosTheta = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
@@ -216,6 +275,11 @@ export class Quaternion {
     );
   }
 
+  /**
+   * Creates a quaternion from a 4x4 rotation matrix
+   * @param {Matrix4x4} matrix - Rotation matrix
+   * @returns {Quaternion} Quaternion representing the rotation
+   */
   static fromMatrix4x4(matrix: Matrix4x4): Quaternion {
     const m = matrix.elements;
     const trace = m[0] + m[5] + m[10];
@@ -255,5 +319,9 @@ export class Quaternion {
     }
   }
 
+  /**
+   * Creates an identity quaternion (no rotation)
+   * @returns {Quaternion} Identity quaternion [0,0,0,1]
+   */
   static identity = (): Quaternion => new Quaternion(0, 0, 0, 1);
 }

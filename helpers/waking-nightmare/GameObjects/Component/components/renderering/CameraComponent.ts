@@ -1,9 +1,8 @@
 import { Matrix4x4 } from '../../../../utils/math/Matrix/Matrix4x4';
-import { Canvas } from '../../../../Rendering/Canvas';
+import { canvas, Canvas } from '../../../../Rendering/Canvas';
 import { RenderTexture } from '@/helpers/waking-nightmare/Rendering/classes/RenderTexture';
 import { Behaviour, IBehaviourConstructor } from '../../Behaviours/Behaviour';
 import { RendererComponent } from './RendererComponent';
-import ServiceLocator from '@/helpers/waking-nightmare/ServiceLocator/ServiceLocator';
 
 interface ICameraConstructor extends IBehaviourConstructor {
   output?: Canvas | RenderTexture;
@@ -63,8 +62,6 @@ export class CameraComponent extends Behaviour {
   }
 
   renderEntities(rendererEntities: RendererComponent[]) {
-    const canvas = ServiceLocator.get<Canvas>(Canvas);
-
     if (!this.transform) return;
 
     // TODO: update this to use the camers output to get the aspect ratio

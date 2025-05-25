@@ -276,61 +276,9 @@ export class Matrix4x4 {
 
   // Compute normal matrix from 4x4 model-view matrix
   static normalFromMat4(mat4: Matrix4x4): Matrix3x3 | null {
-    // Step 1: Extract 3x3 submatrix
-    const m = mat4.get3x3Submatrix();
-
-    // Step 2: Compute inverse of 3x3 matrix
-    const inv = Matrix4x4.inverse3x3(m);
-    if (!inv) return null; // Handle non-invertible case
-
-    // Step 3: Transpose the 3x3 inverse
-    const normalMatrix = Matrix4x4.transpose3x3(inv);
-
-    return normalMatrix;
-  }
-
-  // Helper: Compute inverse of a 3x3 matrix
-  static inverse3x3(matrix: Matrix3x3): Matrix3x3 | null {
-    // 3x3 matrix elements: [m0, m1, m2, m3, m4, m5, m6, m7, m8]
-    const a = matrix.elements[0],
-      b = matrix.elements[1],
-      c = matrix.elements[2],
-      d = matrix.elements[3],
-      e = matrix.elements[4],
-      f = matrix.elements[5],
-      g = matrix.elements[6],
-      h = matrix.elements[7],
-      i = matrix.elements[8];
-
-    // Determinant
-    const det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
-    if (Math.abs(det) < 1e-10) return null; // Non-invertible
-
-    // Adjugate matrix
-    const adj = [
-      e * i - f * h,
-      -(b * i - c * h),
-      b * f - c * e,
-      -(d * i - f * g),
-      a * i - c * g,
-      -(a * f - c * d),
-      d * h - e * g,
-      -(a * h - b * g),
-      a * e - b * d,
-    ];
-
-    // Inverse = adjugate / determinant
-    const inv = adj.map((x) => x / det);
-    return new Matrix3x3(inv);
-  }
-
-  // Helper: Transpose a 3x3 matrix
-  static transpose3x3(matrix: Matrix3x3): Matrix3x3 {
-    // prettier-ignore
-    return new Matrix3x3([
-      matrix.elements[0], matrix.elements[3], matrix.elements[6],
-      matrix.elements[1], matrix.elements[4], matrix.elements[7],
-      matrix.elements[2], matrix.elements[5], matrix.elements[8],
-    ]);
+    const mat3 = mat4.get3x3Submatrix();
+    const inverse = Matrix3x3.getInverse(mat3);
+    if (!inverse) return null; // Handle non-invertible case
+    return Matrix3x3.transpose(inverse);
   }
 }

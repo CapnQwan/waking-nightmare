@@ -1,6 +1,5 @@
 import { Shader } from './Shader';
-import ServiceLocator from '../../ServiceLocator/ServiceLocator';
-import { Canvas } from '../Canvas';
+import { gl } from '../Canvas';
 
 /**
  * Configuration object for creating a new Material instance
@@ -42,7 +41,6 @@ export class Material {
    * This must be called before rendering any geometry with this material
    */
   use() {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     gl.useProgram(this.shader.program);
   }
 
@@ -66,8 +64,6 @@ export class Material {
    * - Float32Array of length 16 (uniformMatrix4fv)
    */
   updateUniforms() {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-
     for (const [name, value] of Object.entries(this.uniforms)) {
       const location = gl.getUniformLocation(this.shader.program, name);
       if (!location) {
@@ -99,7 +95,6 @@ export class Material {
      * There is a bit of an issue with the location of the attributes potentially miss aligining in the shader if certain items
      * are not used. that is why currently the normal attribute is bount to location 1 and the uv attribute is bound to location 2.
      */
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     const location = gl.getAttribLocation(this.shader.program, attributeName);
 
     gl.enableVertexAttribArray(location);

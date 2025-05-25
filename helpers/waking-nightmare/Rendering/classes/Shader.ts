@@ -7,8 +7,7 @@ import {
 import defaultLitVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
 import defaultLitFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
 import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
-import ServiceLocator from '../../ServiceLocator/ServiceLocator';
-import { Canvas } from '../Canvas';
+import { gl } from '../Canvas';
 
 /**
  * Configuration object for creating a new Shader instance
@@ -55,7 +54,6 @@ export class Shader {
    * This is called automatically when shaders are updated
    */
   createProgram() {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     this._program = getProgram(this._vertexShader, this._fragmentShader);
     gl.linkProgram(this._program);
     if (!gl.getProgramParameter(this._program, gl.LINK_STATUS)) {

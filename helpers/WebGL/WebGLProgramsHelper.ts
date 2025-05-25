@@ -1,5 +1,4 @@
-import { Canvas } from '../waking-nightmare/Rendering/Canvas';
-import ServiceLocator from '../waking-nightmare/ServiceLocator/ServiceLocator';
+import { gl } from '../waking-nightmare/Rendering/Canvas';
 import { SHADER_IDS } from './WebGLShadersHelper';
 
 /** Creates a WebGL shader program from a vertex shader and fragment shader */
@@ -7,8 +6,6 @@ const createProgram = (
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
 ): WebGLProgram => {
-  const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-
   // Verify vertex shader compilation
   if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
     const info = gl.getShaderInfoLog(vertexShader);

@@ -1,7 +1,6 @@
-import ServiceLocator from '../../ServiceLocator/ServiceLocator';
 import { Vector2 } from '../../utils/math/Vectors/Vector2';
 import { Vector3 } from '../../utils/math/Vectors/Vector3';
-import { Canvas } from '../Canvas';
+import { gl } from '../Canvas';
 
 /**
  * Configuration object for creating a new Mesh instance
@@ -305,8 +304,6 @@ export class Mesh {
       return false;
     }
 
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);
 
@@ -355,7 +352,6 @@ export class Mesh {
 
   /** Makes a draw call to the gpu */
   draw(): void {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
     gl.bindVertexArray(this._vao);
     gl.drawElements(gl.TRIANGLES, this._triangles.length, gl.UNSIGNED_SHORT, 0);
     gl.bindVertexArray(null);
@@ -363,8 +359,6 @@ export class Mesh {
 
   /** Cleans up WebGL resources used by the mesh */
   dispose(): void {
-    const gl = ServiceLocator.get<Canvas>(Canvas).gl;
-
     if (this._vao) {
       gl.deleteVertexArray(this._vao);
       this._vao = null;

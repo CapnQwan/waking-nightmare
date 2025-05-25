@@ -1,11 +1,27 @@
 import { MathWN } from '../utils/math/MathWN';
 
+/**
+ * Represents a color in RGBA format
+ * Provides utilities for color manipulation and conversion
+ */
 export class Color {
+  /** Red component (0-255) */
   r: number;
+  /** Green component (0-255) */
   g: number;
+  /** Blue component (0-255) */
   b: number;
+  /** Alpha component (0-1) */
   a: number;
 
+  /**
+   * Creates a new Color instance
+   * @param {Object} params - Color parameters
+   * @param {number} [params.r=0] - Red component (0-255)
+   * @param {number} [params.g=0] - Green component (0-255)
+   * @param {number} [params.b=0] - Blue component (0-255)
+   * @param {number} [params.a=1] - Alpha component (0-1)
+   */
   constructor({
     r = 0,
     g = 0,
@@ -23,6 +39,10 @@ export class Color {
     this.a = MathWN.clamp(a, 0, 1);
   }
 
+  /**
+   * Converts the color to hexadecimal format
+   * @returns {string} Hex color string (e.g., "#FF0000")
+   */
   toHex(): string {
     return (
       '#' +
@@ -33,14 +53,28 @@ export class Color {
     );
   }
 
+  /**
+   * Converts the color to RGBA string format
+   * @returns {string} RGBA string (e.g., "rgba(255, 0, 0, 1)")
+   */
   toRgbaString(): string {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
 
+  /**
+   * Converts the color to RGBA array format
+   * @returns {number[]} Array of [r, g, b, a] values
+   */
   toRgbaArray(): Array<number> {
     return [this.r, this.g, this.b, this.a * 255];
   }
 
+  /**
+   * Linearly interpolates between this color and another
+   * @param {Color} color - Target color to blend with
+   * @param {number} t - Interpolation factor (0-1)
+   * @returns {Color} New interpolated color
+   */
   blend(color: Color, t: number): Color {
     return new Color({
       r: MathWN.lerp(this.r, color.r, t),
@@ -50,6 +84,11 @@ export class Color {
     });
   }
 
+  /**
+   * Creates a lighter version of the color
+   * @param {number} amount - Amount to lighten by (0-255)
+   * @returns {Color} New lightened color
+   */
   lighten(amount: number): Color {
     return new Color({
       r: MathWN.clamp(this.r + amount, 0, 255),
@@ -59,6 +98,11 @@ export class Color {
     });
   }
 
+  /**
+   * Creates a darker version of the color
+   * @param {number} amount - Amount to darken by (0-255)
+   * @returns {Color} New darkened color
+   */
   darken(amount: number): Color {
     return new Color({
       r: MathWN.clamp(this.r - amount, 0, 255),
@@ -68,7 +112,13 @@ export class Color {
     });
   }
 
+  /**
+   * Adjusts the saturation of the color
+   * @param {number} amount - Amount to adjust saturation
+   * @returns {Color} New color with adjusted saturation
+   */
   adjustSaturation(amount: number): Color {
+    // Calculate grayscale value using luminance weights
     const gray = 0.2989 * this.r + 0.587 * this.g + 0.114 * this.b;
     return new Color({
       r: MathWN.clamp(this.r + amount * (gray - this.r), 0, 255),
@@ -78,6 +128,10 @@ export class Color {
     });
   }
 
+  /**
+   * Creates an inverted version of the color
+   * @returns {Color} New inverted color
+   */
   invert(): Color {
     return new Color({
       r: 255 - this.r,
@@ -87,7 +141,12 @@ export class Color {
     });
   }
 
+  /**
+   * Converts the color to HSL format
+   * @returns {Object} HSL values {h: hue, s: saturation, l: lightness}
+   */
   toHsl(): { h: number; s: number; l: number } {
+    // Convert RGB to 0-1 range
     const r = this.r / 255;
     const g = this.g / 255;
     const b = this.b / 255;
@@ -102,6 +161,7 @@ export class Color {
 
     if (delta !== 0) {
       s = delta / (1 - Math.abs(2 * l - 1));
+      // Calculate hue
       switch (max) {
         case r:
           h = 60 * (((g - b) / delta) % 6);
@@ -119,6 +179,11 @@ export class Color {
     return { h, s, l };
   }
 
+  /**
+   * Compares this color with another color
+   * @param {Color} color - Color to compare with
+   * @returns {boolean} True if colors are equal
+   */
   equals(color: Color): boolean {
     return (
       this.r === color.r &&
@@ -128,6 +193,13 @@ export class Color {
     );
   }
 
+  /**
+   * Creates a new Color from HSL values
+   * @param {number} h - Hue (0-360)
+   * @param {number} s - Saturation (0-100)
+   * @param {number} l - Lightness (0-100)
+   * @returns {Color} New color instance
+   */
   static fromHsl(h: number, s: number, l: number): Color {
     s /= 100;
     l /= 100;
@@ -140,6 +212,7 @@ export class Color {
       g = 0,
       b = 0;
 
+    // Convert HSL to RGB
     if (0 <= h && h < 60) {
       r = c;
       g = x;
@@ -174,9 +247,14 @@ export class Color {
     });
   }
 
+  /** @returns {Color} White color instance */
   static white = (): Color => new Color({ r: 255, g: 255, b: 255, a: 1 });
+  /** @returns {Color} Black color instance */
   static black = (): Color => new Color({ r: 0, g: 0, b: 0, a: 1 });
+  /** @returns {Color} Red color instance */
   static red = (): Color => new Color({ r: 255, g: 0, b: 0, a: 1 });
+  /** @returns {Color} Green color instance */
   static green = (): Color => new Color({ r: 0, g: 255, b: 0, a: 1 });
+  /** @returns {Color} Blue color instance */
   static blue = (): Color => new Color({ r: 0, g: 0, b: 255, a: 1 });
 }
