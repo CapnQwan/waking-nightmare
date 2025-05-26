@@ -55,6 +55,10 @@ export class LitMaterial extends Material {
     this.diffuse = params.diffuse ?? new Float32Array([0.8, 0.8, 0.8]);
     this.specular = params.specular ?? new Float32Array([1.0, 1.0, 1.0]);
     this.shininess = params.shininess ?? 32.0;
+
+    this.use();
+    this.bindLightUniforms();
+    this.bindMaterialUniforms();
   }
 
   bindLightUniforms() {

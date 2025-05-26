@@ -4,6 +4,7 @@ import { CameraComponent } from '../GameObjects/Component/components/renderering
 import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour';
 import { DemoComponent } from '../Assets/DemoComponent';
 import { generateCube } from '../Rendering/classes/Meshes/Cube';
+import { LitMaterial } from '../Assets/Materials/LitMaterial';
 
 /**
  * Manages all game entities and their components in the game world.
@@ -64,7 +65,11 @@ export class EntityManager {
     object.transform.rotation.rotatePitch(45);
     object.transform.rotation.rotateRoll(45);
     const mesh = generateCube(1, 1, 1);
-    const meshRenderer = new RendererComponent({ name: 'testObjectRC', mesh });
+    const meshRenderer = new RendererComponent({
+      name: 'testObjectRC',
+      mesh,
+      material: new LitMaterial({}),
+    });
     const demoBehaviour = new DemoComponent({});
     object.addComponent(meshRenderer);
     object.addComponent(demoBehaviour);
