@@ -48,6 +48,8 @@ export class RendererComponent extends Behaviour {
       this.material.bindAttribute('aNormal', this.mesh.nbo, 3);
     }
 
+    /** TODO: Optimize all of this logic */
+
     /**
      * TODO: Move all of this to the materials class as see if you can find a way to automatically detect
      * the attributes for setting up the uniforms and attributes. based on the shader or something like that.
@@ -89,7 +91,6 @@ export class RendererComponent extends Behaviour {
     // Set up camera properties
     this.material.setUniform('uViewPosition', cameraPosition.toFloat32Array());
 
-    //this.material.setUniform('uViewProjectionMatrix', viewProjectionMatrix);
     this.material.setUniform('uProjectionMatrix', projectionMatrix.elements);
     this.material.setUniform('uViewMatrix', viewMatrix.elements);
     this.material.setUniform('uModelMatrix', modelMatrix.elements);
@@ -99,7 +100,6 @@ export class RendererComponent extends Behaviour {
     );
     this.material.updateUniforms();
 
-    this.mesh.bind();
     this.mesh.draw();
   }
 }

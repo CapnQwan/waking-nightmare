@@ -4,14 +4,14 @@ import { gl } from '../Canvas';
 /**
  * Configuration object for creating a new Material instance
  */
-type MaterialConstructor = {
+export interface IMaterialConstructor {
   /** The shader program to be used by this material */
   shader?: Shader;
   /** Optional uniforms to be passed to the shader program */
   uniforms?: Record<string, any>;
   /** Optional attributes to be passed to the shader program */
   attributes?: Record<string, any>;
-};
+}
 
 /**
  * Material class represents a WebGL material that can be applied to meshes.
@@ -30,7 +30,11 @@ export class Material {
    * @param shader - The shader program to be used
    * @param uniforms - Optional initial uniform values
    */
-  constructor({ shader, uniforms = {}, attributes = {} }: MaterialConstructor) {
+  constructor({
+    shader,
+    uniforms = {},
+    attributes = {},
+  }: IMaterialConstructor) {
     this.shader = shader ?? new Shader({});
     this.uniforms = uniforms;
     this.attributes = attributes;

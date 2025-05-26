@@ -2,10 +2,8 @@ import {
   getFragmentShader,
   getVertexShader,
 } from '@/helpers/WebGL/WebGLShadersHelper';
-//import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
-//import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
-import defaultLitVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
-import defaultLitFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
+import defaultVertexShader from '@/public/shaders/defaultVertexShader.glsl';
+import defaultFragmentShader from '@/public/shaders/defaultFragmentShader.glsl';
 import { getProgram } from '@/helpers/WebGL/WebGLProgramsHelper';
 import { gl } from '../Canvas';
 
@@ -42,10 +40,9 @@ export class Shader {
    * @param fragmentShader - Optional custom fragment shader
    */
   constructor({ vertexShader, fragmentShader }: shaderConstructor) {
-    this._vertexShader =
-      vertexShader ?? getVertexShader(defaultLitVertexShader);
+    this._vertexShader = vertexShader ?? getVertexShader(defaultVertexShader);
     this._fragmentShader =
-      fragmentShader ?? getFragmentShader(defaultLitFragmentShader);
+      fragmentShader ?? getFragmentShader(defaultFragmentShader);
     this.createProgram();
   }
 

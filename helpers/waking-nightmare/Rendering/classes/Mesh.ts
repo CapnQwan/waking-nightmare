@@ -118,6 +118,7 @@ export class Mesh {
    * Sets the array of normals coordinates
    */
   set normals(normals: Float32Array) {
+    console.log('Setting normals:', normals);
     this._normals = normals;
     this.bind();
   }
@@ -304,50 +305,61 @@ export class Mesh {
       return false;
     }
 
+    console.log('Binding mesh:', this.name);
+
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);
 
-    // Vertex buffer
-    this._vbo = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this._vbo);
-    gl.bufferData(gl.ARRAY_BUFFER, this._vertices, gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
-
-    // UV buffer
-    if (this._uvs.length > 0) {
-      this._uvbo = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._uvbo);
-      gl.bufferData(gl.ARRAY_BUFFER, this._uvs, gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(2);
-      gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 0, 0);
-    }
-
-    /**
-     * NOTE: currently the normal is bound to location 1 in the shader. this is due to a binding issue
-     * jsut due to the UV buffer not being used in the default lit shader so it is bound to location 2.
-     * need to find a better way of binding the attributes so that they are not hard coded.
-     */
-
-    // Normal buffer
-    if (this._normals.length > 0) {
-      this._nbo = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._nbo);
-      gl.bufferData(gl.ARRAY_BUFFER, this._normals, gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(1);
-      gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0);
-    }
-
-    // Index buffer
-    this._ibo = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW);
+    this.bindVertices();
+    this.bindNormals();
+    this.bindUVs();
+    this.bindTriangles();
 
     gl.bindVertexArray(null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
     return true;
+  }
+
+  private bindBuffer(
+    bufferData: Float32Array,
+    bufferIndex: number,
+    bufferSize: number
+  ): WebGLBuffer {
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(bufferIndex);
+    gl.vertexAttribPointer(bufferIndex, bufferSize, gl.FLOAT, false, 0, 0);
+    return buffer;
+  }
+
+  private bindVertices(): void {
+    if (this._vertices.length > 0) {
+      this._vbo = this.bindBuffer(this._vertices, 0, 3);
+    }
+  }
+
+  public bindNormals(): void {
+    if (this._normals.length > 0) {
+      console.log('Binding normals:', this._normals);
+      this._nbo = this.bindBuffer(this._normals, 1, 3);
+    }
+  }
+
+  private bindUVs(): void {
+    if (this._uvs.length > 0) {
+      this._uvbo = this.bindBuffer(this._uvs, 2, 2);
+    }
+  }
+
+  private bindTriangles(): void {
+    if (this._triangles.length > 0) {
+      this._ibo = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._triangles, gl.STATIC_DRAW);
+    }
   }
 
   /** Makes a draw call to the gpu */
