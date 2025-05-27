@@ -34,13 +34,14 @@ export class LitMaterial extends Material {
   private shininess: number;
 
   constructor(params: ILitMaterialConstructor) {
-    super(params);
-    this.shader =
-      params.shader ??
-      new Shader({
+    if (!params.shader) {
+      params.shader = new Shader({
         vertexShader: getVertexShader(defaultLitVertexShader),
         fragmentShader: getFragmentShader(defaultLitFragmentShader),
       });
+    }
+
+    super(params);
 
     this.lightPosition =
       params.lightPosition ?? new Float32Array([-2.0, 2.0, -5.0]);
@@ -69,9 +70,9 @@ export class LitMaterial extends Material {
   }
 
   bindMaterialUniforms() {
-    this.setUniform('uAmbientColor', this.ambientColor);
-    this.setUniform('uDiffuse', this.diffuse);
-    this.setUniform('uSpecular', this.specular);
-    this.setUniform('uShininess', this.shininess);
+    this.setUniform('uMaterialAmbient', this.ambientColor);
+    this.setUniform('uMaterialDiffuse', this.diffuse);
+    this.setUniform('uMaterialSpecular', this.specular);
+    this.setUniform('uMaterialShininess', this.shininess);
   }
 }

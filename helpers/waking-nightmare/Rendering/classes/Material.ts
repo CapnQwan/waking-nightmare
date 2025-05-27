@@ -22,22 +22,15 @@ export class Material {
   shader: Shader;
   /** Collection of uniform values to be passed to the shader program */
   uniforms: Record<string, any>;
-  /** Collection of attributes to be passed to the shader program */
-  attributes: Record<string, any>;
 
   /**
    * Creates a new Material instance
    * @param shader - The shader program to be used
    * @param uniforms - Optional initial uniform values
    */
-  constructor({
-    shader,
-    uniforms = {},
-    attributes = {},
-  }: IMaterialConstructor) {
+  constructor({ shader, uniforms }: IMaterialConstructor) {
     this.shader = shader ?? new Shader({});
-    this.uniforms = uniforms;
-    this.attributes = attributes;
+    this.uniforms = uniforms ?? {};
   }
 
   /**
@@ -54,41 +47,29 @@ export class Material {
    * @param value - The value to set for the uniform
    */
   setUniform(name: string, value: number | Float32Array) {
-    this.uniforms[name] = value;
-  }
+    if (this.uniforms[name] === value) return; // Skip if value hasn't changed
+    this.uniforms[name] = value; // Update the stored uniform value
 
-  /**
-   * Updates all uniform values in the shader program
-   * Automatically detects the type of uniform and uses the appropriate WebGL uniform function
-   * Supported types:
-   * - Numbers (uniform1f)
-   * - Float32Array of length 2 (uniform2fv)
-   * - Float32Array of length 3 (uniform3fv)
-   * - Float32Array of length 4 (uniform4fv)
-   * - Float32Array of length 16 (uniformMatrix4fv)
-   */
-  updateUniforms() {
-    for (const [name, value] of Object.entries(this.uniforms)) {
-      const location = gl.getUniformLocation(this.shader.program, name);
-      if (!location) {
-        console.warn(`Uniform ${name} not found in shader`);
-        continue;
-      }
+    const location = gl.getUniformLocation(this.shader.program, name);
 
-      if (typeof value === 'number') {
-        gl.uniform1f(location, value);
-      } else if (value instanceof Float32Array) {
-        if (value.length === 4) {
-          gl.uniform4fv(location, value);
-        } else if (value.length === 3) {
-          gl.uniform3fv(location, value);
-        } else if (value.length === 2) {
-          gl.uniform2fv(location, value);
-        } else if (value.length === 9) {
-          gl.uniformMatrix3fv(location, false, value);
-        } else if (value.length === 16) {
-          gl.uniformMatrix4fv(location, false, value);
-        }
+    if (!location) {
+      console.warn(`Uniform ${name} not found in shader`);
+      return;
+    }
+
+    if (typeof value === 'number') {
+      gl.uniform1f(location, value);
+    } else if (value instanceof Float32Array) {
+      if (value.length === 4) {
+        gl.uniform4fv(location, value);
+      } else if (value.length === 3) {
+        gl.uniform3fv(location, value);
+      } else if (value.length === 2) {
+        gl.uniform2fv(location, value);
+      } else if (value.length === 9) {
+        gl.uniformMatrix3fv(location, false, value);
+      } else if (value.length === 16) {
+        gl.uniformMatrix4fv(location, false, value);
       }
     }
   }

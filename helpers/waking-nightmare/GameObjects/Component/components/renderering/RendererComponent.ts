@@ -33,24 +33,16 @@ export class RendererComponent extends Behaviour {
 
     this.material.use();
 
-    if (this.mesh.vbo) {
+    if (this.mesh.vbo)
       this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
-    }
-
-    if (this.mesh.uvbo) {
-      this.material.bindAttribute('aUV', this.mesh.uvbo, 2);
-    }
-
-    if (this.mesh.nbo) {
-      this.material.bindAttribute('aNormal', this.mesh.nbo, 3);
-    }
+    if (this.mesh.uvbo) this.material.bindAttribute('aUV', this.mesh.uvbo, 2);
+    if (this.mesh.nbo) this.material.bindAttribute('aNormal', this.mesh.nbo, 3);
 
     const modelViewMatrix = Matrix4x4.multiply(modelMatrix, viewMatrix);
     const normalMatrix = Matrix4x4.normalFromMat4(modelViewMatrix)?.elements;
 
-    // Set up camera properties
+    // Set up MVP properties
     this.material.setUniform('uViewPosition', cameraPosition.toFloat32Array());
-
     this.material.setUniform('uProjectionMatrix', projectionMatrix.elements);
     this.material.setUniform('uViewMatrix', viewMatrix.elements);
     this.material.setUniform('uModelMatrix', modelMatrix.elements);
@@ -58,7 +50,6 @@ export class RendererComponent extends Behaviour {
       'uNormalMatrix',
       normalMatrix ?? new Float32Array(9)
     );
-    this.material.updateUniforms();
 
     this.mesh.draw();
   }
