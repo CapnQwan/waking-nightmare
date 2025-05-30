@@ -5,6 +5,8 @@ import { MonoBehaviour } from '../GameObjects/Component/Behaviours/MonoBehaviour
 import { DemoComponent } from '../Assets/DemoComponent';
 import { generateCube } from '../Rendering/classes/Meshes/Cube';
 import { LitMaterial } from '../Assets/Materials/LitMaterial';
+import { text } from 'stream/consumers';
+import { TextRenderer } from '../GameObjects/Component/components/renderering/TextRenderer';
 
 /**
  * Manages all game entities and their components in the game world.
@@ -74,6 +76,15 @@ export class EntityManager {
     object.addComponent(meshRenderer);
     object.addComponent(demoBehaviour);
     this.addEntity(object);
+
+    const object2 = new GameObject({ name: 'testObject2' });
+    object2.transform.position.z = -10;
+    const textRenderer = new TextRenderer({
+      text: 'Hello World',
+      fontSize: 1,
+    });
+    object2.addComponent(textRenderer);
+    this.addEntity(object2);
   }
 
   /**

@@ -118,7 +118,6 @@ export class Mesh {
    * Sets the array of normals coordinates
    */
   set normals(normals: Float32Array) {
-    console.log('Setting normals:', normals);
     this._normals = normals;
     this.bind();
   }
@@ -305,8 +304,6 @@ export class Mesh {
       return false;
     }
 
-    console.log('Binding mesh:', this.name);
-
     this._vao = gl.createVertexArray();
     gl.bindVertexArray(this._vao);
 
@@ -343,7 +340,6 @@ export class Mesh {
 
   public bindNormals(): void {
     if (this._normals.length > 0) {
-      console.log('Binding normals:', this._normals);
       this._nbo = this.bindBuffer(this._normals, 1, 3);
     }
   }

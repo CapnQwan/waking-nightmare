@@ -2,13 +2,14 @@ import {
   IMaterialConstructor,
   Material,
 } from '../../Rendering/classes/Material';
-import defaultLitVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
-import defaultLitFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
 import {
   getVertexShader,
   getFragmentShader,
 } from '@/helpers/WebGL/WebGLShadersHelper';
 import { Shader } from '../../Rendering/classes/Shader';
+
+import defaultLitVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
+import defaultLitFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
 
 export interface ILitMaterialConstructor extends IMaterialConstructor {
   lightPosition?: Float32Array;
