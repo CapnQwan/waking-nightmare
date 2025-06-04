@@ -1,5 +1,6 @@
 import { Shader } from './Shader';
 import { gl } from '../Canvas';
+import { getTexture } from '@/helpers/WebGL/WebGLTextureHelper';
 
 /**
  * Configuration object for creating a new Material instance
@@ -85,5 +86,13 @@ export class Material {
     gl.enableVertexAttribArray(location);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+  }
+
+  public bindTexture(uniformName: string, src: string, unit: number) {
+    // Assuming WebGL context
+    gl.activeTexture(gl.TEXTURE0 + unit);
+    const texture = getTexture(src);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    this.setUniform(uniformName, unit);
   }
 }

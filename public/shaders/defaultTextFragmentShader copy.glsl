@@ -1,9 +1,19 @@
 #version 300 es
-precision mediump float;
+precision highp float;
 
-// Declare an output variable for the fragment color
+in vec2 vUV;
+uniform sampler2D uSDFTexture;
+
 out vec4 fragColor;
 
+float sdfEdge(float dist, float edge, float width) {
+  return smoothstep(edge - width, edge + width, dist);
+}
+
 void main() {
-    fragColor = vec4(1.0, 0.5, 0.0, 1.0); // Orange color
+  float distance = texture(uSDFTexture, vUV).r;
+  float edge = 0.5; // SDF threshold (0.5 is typical for SDF)
+  float width = 0.01; // Controls edge smoothness
+  float alpha = sdfEdge(distance, edge, width);
+  fragColor = vec4(1.0, 1.0, 1.0, alpha); // White text, alpha from SDF
 }

@@ -9,7 +9,9 @@ const increment = 1013904223 as const; // LCG increment
  * A utility class for generating random numbers and values.
  * Provides both seeded and non-seeded random generation methods.
  */
-export class Random {
+class Random {
+  private static _instance: Random | null = null;
+
   seed: number;
 
   /**
@@ -18,6 +20,13 @@ export class Random {
    */
   constructor(seed: number) {
     this.seed = seed;
+  }
+
+  public static get instance(): Random {
+    if (!this._instance) {
+      this._instance = new Random(Date.now());
+    }
+    return this._instance;
   }
 
   /**
@@ -127,3 +136,5 @@ export class Random {
     return num;
   }
 }
+
+export const random = Random.instance;

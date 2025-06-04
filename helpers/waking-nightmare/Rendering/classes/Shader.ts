@@ -43,6 +43,7 @@ export class Shader {
     this._vertexShader = vertexShader ?? getVertexShader(defaultVertexShader);
     this._fragmentShader =
       fragmentShader ?? getFragmentShader(defaultFragmentShader);
+    console.log(this._vertexShader, this._fragmentShader);
     this.createProgram();
   }
 

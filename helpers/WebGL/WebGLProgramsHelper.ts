@@ -37,6 +37,7 @@ export const getProgram = (
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
 ): WebGLProgram => {
+  console.log('getProgram', vertexShader, fragmentShader);
   // Generate a key from shader IDs
   const vertexId = SHADER_IDS.get(vertexShader) ?? 'unknown';
   const fragmentId = SHADER_IDS.get(fragmentShader) ?? 'unknown';
@@ -44,9 +45,11 @@ export const getProgram = (
 
   const cachedProgram = PROGRAMS.get(programKey);
   if (cachedProgram) {
+    console.log('is cached');
     return cachedProgram;
   }
 
+  console.log('creating new program');
   const program = createProgram(vertexShader, fragmentShader);
   if (!program) {
     throw new Error('Unable to create program');
