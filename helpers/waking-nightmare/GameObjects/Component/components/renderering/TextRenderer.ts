@@ -8,12 +8,13 @@ import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material'
 import { Matrix4x4 } from '@/helpers/waking-nightmare/utils/math/Matrix/Matrix4x4';
 
 import sdfData from '@/public/sdf-fonts/fonts/roboto/Roboto-Regular.json';
-import defaultTextVertexShader from '@/public/shaders/defaultLitVertexShader.glsl';
-import defaultTextFragmentShader from '@/public/shaders/defaultLitFragmentShader.glsl';
+import defaultTextVertexShader from '@/public/shaders/defaultTextVertexShader.glsl';
+import defaultTextFragmentShader from '@/public/shaders/defaultTextFragmentShader.glsl';
 import { TextMesh } from '@/helpers/waking-nightmare/Rendering/classes/TextMesh';
 import {
   getVertexShader,
   getFragmentShader,
+  SHADER_IDS,
 } from '@/helpers/WebGL/WebGLShadersHelper';
 
 export interface ITextRendererComponent extends IRenderComponentConstructor {
@@ -34,22 +35,19 @@ export class TextRenderer extends RendererComponent {
     if (!params.material) {
       const vertexShader = getVertexShader(defaultTextVertexShader);
       const fragmentShader = getFragmentShader(defaultTextFragmentShader);
-      console.log('TEXT RENDERER: Using default shaders');
       const shader = new Shader({ vertexShader, fragmentShader });
-      params.material = new Material({});
-      //params.material = new Material({ shader });
+      params.material = new Material({ shader });
     }
 
     super(params);
 
     this.text = params.text;
     this.fontSize = params.fontSize;
-    this.material = params.material;
+    this.material = params.material!;
     this.mesh = new TextMesh(this.text, this.fontSize);
   }
 
   public renderComponent(viewMatrix: Matrix4x4, projectionMatrix: Matrix4x4) {
-    return;
     const modelMatrix = this.transform?.getModelMatrix();
     if (!modelMatrix) {
       console.error('Model matrix is not defined.');
