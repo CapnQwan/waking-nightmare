@@ -1,4 +1,3 @@
-import { Mesh } from '@/helpers/waking-nightmare/Rendering/classes/Mesh';
 import { Shader } from '@/helpers/waking-nightmare/Rendering/classes/Shader';
 import {
   IRenderComponentConstructor,
@@ -14,7 +13,6 @@ import { TextMesh } from '@/helpers/waking-nightmare/Rendering/classes/TextMesh'
 import {
   getVertexShader,
   getFragmentShader,
-  SHADER_IDS,
 } from '@/helpers/WebGL/WebGLShadersHelper';
 
 export interface ITextRendererComponent extends IRenderComponentConstructor {
@@ -27,9 +25,6 @@ export class TextRenderer extends RendererComponent {
   public text: string;
   public fontSize: number;
   public mesh: TextMesh;
-
-  // Convert this to a TextMesh class that extends Mesh if that's possible
-  private meshes: Mesh[] = [];
 
   constructor(params: ITextRendererComponent) {
     if (!params.material) {
@@ -55,10 +50,12 @@ export class TextRenderer extends RendererComponent {
     }
 
     this.material.use();
+
     this.material.setUniform('uProjectionMatrix', projectionMatrix.elements);
     this.material.setUniform('uViewMatrix', viewMatrix.elements);
     this.material.setUniform('uModelMatrix', modelMatrix.elements);
-    //this.material.bindTexture('uSDFTexture', sdfData.src, 0);
+
+    this.material.bindTexture('uSDFTexture', sdfData.src, 0);
 
     if (this.mesh.vbo)
       this.material.bindAttribute('aPosition', this.mesh.vbo, 3);

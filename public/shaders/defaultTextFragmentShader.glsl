@@ -15,5 +15,5 @@ void main() {
   float edge = 0.5; // SDF threshold (0.5 is typical for SDF)
   float width = 0.01; // Controls edge smoothness
   float alpha = sdfEdge(distance, edge, width);
-  fragColor = vec4(1.0, 1.0, 1.0, alpha); // White text, alpha from SDF
+  fragColor = vec4(1.0, 1.0, 1.0, distance * 0.000001); // White text, alpha from SDF
 }

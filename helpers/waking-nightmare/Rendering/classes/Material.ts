@@ -61,12 +61,12 @@ export class Material {
     if (typeof value === 'number') {
       gl.uniform1f(location, value);
     } else if (value instanceof Float32Array) {
-      if (value.length === 4) {
-        gl.uniform4fv(location, value);
+      if (value.length === 2) {
+        gl.uniform2fv(location, value);
       } else if (value.length === 3) {
         gl.uniform3fv(location, value);
-      } else if (value.length === 2) {
-        gl.uniform2fv(location, value);
+      } else if (value.length === 4) {
+        gl.uniform4fv(location, value);
       } else if (value.length === 9) {
         gl.uniformMatrix3fv(location, false, value);
       } else if (value.length === 16) {
