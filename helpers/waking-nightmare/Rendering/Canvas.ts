@@ -79,6 +79,10 @@ export class Canvas {
     }
 
     this._gl = glContext;
+
+    this._gl.enable(this._gl.BLEND);
+    this._gl.blendFunc(this._gl.SRC_ALPHA, this._gl.ONE_MINUS_SRC_ALPHA);
+
     this.resizeCanvas();
     window.addEventListener('resize', this.resizeCanvas);
   }

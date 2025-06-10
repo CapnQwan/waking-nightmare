@@ -23,23 +23,21 @@ export class TextMesh extends Mesh {
       const width = charData.width * scale;
       const height = charData.height * scale;
       const xOffset = cursorX + charData.xoffset * scale;
-      const yOffset = charData.yoffset * scale;
+      const yOffset = 0;
 
       // Vertex positions (quad for each character)
+
       const vertexIndex = vertices.length / 3;
+      // prettier-ignore
       vertices.push(
-        xOffset,
-        yOffset,
-        0, // Bottom-left
-        xOffset + width,
-        yOffset,
-        0, // Bottom-right
-        xOffset + width,
-        yOffset + height,
-        0, // Top-right
-        xOffset,
-        yOffset + height,
-        0 // Top-left
+        // Bottom-left
+        xOffset, yOffset, 0,
+        // Bottom-right
+        xOffset + width, yOffset, 0,
+         // Top-right
+        xOffset + width, yOffset + height, 0,
+         // Top-left
+        xOffset, yOffset + height, 0
       );
 
       // UV coordinates from SDF atlas
@@ -47,15 +45,17 @@ export class TextMesh extends Mesh {
       const uvY = charData.y / sdfData.common.scaleH;
       const uvWidth = charData.width / sdfData.common.scaleW;
       const uvHeight = charData.height / sdfData.common.scaleH;
+
+      // prettier-ignore
       uvs.push(
-        uvX,
-        uvY + uvHeight, // Bottom-left
-        uvX + uvWidth,
-        uvY + uvHeight, // Bottom-right
-        uvX + uvWidth,
-        uvY, // Top-right
-        uvX,
-        uvY // Top-left
+         // Bottom-left
+        uvX, uvY + uvHeight,
+        // Bottom-right
+        uvX + uvWidth, uvY + uvHeight, 
+         // Top-right
+        uvX + uvWidth, uvY,
+        // Top-left
+        uvX, uvY 
       );
 
       // Indices for two triangles per quad
