@@ -323,7 +323,7 @@ export class Mesh {
     bufferData: Float32Array,
     bufferIndex: number,
     bufferSize: number
-  ): WebGLBuffer {
+  ): WebGLBuffer | null {
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);

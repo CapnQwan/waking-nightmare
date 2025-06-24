@@ -18,7 +18,7 @@ export function getTexture(url: string): WebGLTexture {
   const image = new Image();
   image.src = url;
 
-  const texture = gl.createTexture();
+  const texture = gl.createTexture() as WebGLTexture;
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   gl.texImage2D(
