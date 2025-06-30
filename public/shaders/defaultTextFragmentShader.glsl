@@ -12,8 +12,9 @@ float sdfEdge(float dist, float edge, float width) {
 
 void main() {
   float distance = texture(uSDFTexture, vUV).r;
-  float edge = 0.5;
-  float width = 0.1;
-  float alpha = sdfEdge(distance, edge, width);
+  // TODO: adjust these values to be input params
+  float thickness = 0.5; // Thickness of the SDF font (smaller values for thicker text)
+  float smoothness = 0.1; // Smoothness of the SDF edges (smaller for sharper edges)
+  float alpha = sdfEdge(distance, thickness, smoothness);
   fragColor = vec4(1.0, 1.0, 1.0, alpha); // White text, alpha from SDF
 }
