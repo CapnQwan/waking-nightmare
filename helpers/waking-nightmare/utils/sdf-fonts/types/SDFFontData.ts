@@ -1,62 +1,50 @@
 export type TSDFFontData = {
-  pages: string[];
-  chars: TSDFChar[];
-  info: TSDFInfo;
-  common: TSDFCommon;
-  distanceField: TSDFDistanceField;
-  kernings: TSDFKerning[];
+  atlas: TSDFAtlas;
+  glyphs: TSDFGlyph[];
+  metrics: TSDFMetrics;
+  kerning: TSDFKerning[];
 };
 
-export type TSDFChar = {
-  id: number;
-  index: number;
-  char: string;
+export type TSDFAtlas = {
+  type: 'sdf' | 'msdf' | 'psdf' | 'mtsdf' | string;
+  font: string;
+  src: string;
+  distanceRange: number;
+  distanceRangeMiddle: number;
+  size: number;
   width: number;
   height: number;
-  xoffset: number;
-  yoffset: number;
-  xadvance: number;
-  chnl: number;
-  x: number;
-  y: number;
-  page: number;
+  yOrigin: 'bottom' | 'top' | string;
 };
 
-export type TSDFInfo = {
-  face: string;
-  size: number;
-  bold: number;
-  italic: number;
-  charset: string[];
-  unicode: number;
-  stretchH: number;
-  smooth: number;
-  aa: number;
-  padding: number[];
-  spacing: number[];
-  outline: number;
-};
-
-export type TSDFCommon = {
+export type TSDFMetrics = {
+  emSize: number;
   lineHeight: number;
-  base: number;
-  scaleW: number;
-  scaleH: number;
-  pages: number;
-  packed: number;
-  alphaChnl: number;
-  redChnl: number;
-  greenChnl: number;
-  blueChnl: number;
+  ascender: number;
+  descender: number;
+  underlineY: number;
+  underlineThickness: number;
 };
 
-export type TSDFDistanceField = {
-  fieldType: string;
-  distanceRange: number;
+export type TSDFGlyph = {
+  unicode: number;
+  advance: number;
+  planeBounds?: TPlaneBounds;
+  atlasBounds?: TAtlasBounds;
 };
 
-export type TSDFKerning = {
-  first: number;
-  second: number;
-  amount: number;
+export type TSDFKerning = {};
+
+export type TPlaneBounds = {
+  left: number;
+  bottom: number;
+  right: number;
+  top: number;
+};
+
+export type TAtlasBounds = {
+  left: number;
+  bottom: number;
+  right: number;
+  top: number;
 };

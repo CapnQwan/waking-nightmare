@@ -6,7 +6,7 @@ import {
 import { Material } from '@/helpers/waking-nightmare/Rendering/classes/Material';
 import { Matrix4x4 } from '@/helpers/waking-nightmare/utils/math/Matrix/Matrix4x4';
 
-import sdfData from '@/public/sdf-fonts/fonts/roboto/Roboto-Regular.json';
+import sdfData from '@/public/sdf-fonts/fonts/roboto/roboto_regular_sdf.json';
 import defaultTextVertexShader from '@/public/shaders/defaultTextVertexShader.glsl';
 import defaultTextFragmentShader from '@/public/shaders/defaultTextFragmentShader.glsl';
 import { TextMesh } from '@/helpers/waking-nightmare/Rendering/classes/TextMesh';
@@ -55,7 +55,7 @@ export class TextRenderer extends RendererComponent {
     this.material.setUniform('uViewMatrix', viewMatrix.elements);
     this.material.setUniform('uModelMatrix', modelMatrix.elements);
 
-    this.material.bindTexture('uSDFTexture', sdfData.src, 0);
+    this.material.bindTexture('uSDFTexture', sdfData.atlas.src, 0);
 
     if (this.mesh.vbo)
       this.material.bindAttribute('aPosition', this.mesh.vbo, 3);
