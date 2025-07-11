@@ -1,4 +1,4 @@
-import { RenderTexture } from '@/helpers/waking-nightmare_core/rendering/classes/renderTexture';
+import { RenderTexture } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/renderTexture';
 import { RendererComponent } from './rendererComponent';
 import {
   IBehaviourConstructor,

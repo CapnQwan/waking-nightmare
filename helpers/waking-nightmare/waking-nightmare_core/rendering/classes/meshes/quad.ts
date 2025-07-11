@@ -1,4 +1,4 @@
-import { Vector3 } from '@/helpers/waking-nightmare_core/utils/math/vectors/vector3';
+import { Vector3 } from '@/helpers/waking-nightmare/waking-nightmare_core/utils/math/vectors/vector3';
 import { Mesh } from '../mesh';
 
 type TGenerateQuadOptions = {
@@ -7,11 +7,11 @@ type TGenerateQuadOptions = {
 };
 
 /** Generates a mesh  */
-export const generateQuad = (
+export function generateQuad(
   width: number,
   height: number,
   options?: TGenerateQuadOptions
-): Mesh => {
+): Mesh {
   const { xOffset = 0, yOffset = 0 } = options || {};
 
   const mesh = new Mesh();
@@ -34,4 +34,4 @@ export const generateQuad = (
   ]);
 
   return mesh;
-};
+}

@@ -1,7 +1,7 @@
-import { Material } from '@/helpers/waking-nightmare_core/rendering/classes/material';
-import { Mesh } from '@/helpers/waking-nightmare_core/rendering/classes/mesh';
-import { Vector3 } from '@/helpers/waking-nightmare_core/utils/math/vectors/vector3';
-import { Matrix4x4 } from '@/helpers/waking-nightmare_core/utils/math/martix/matrix4x4';
+import { Material } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/material';
+import { Mesh } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/mesh';
+import { Vector3 } from '@/helpers/waking-nightmare/waking-nightmare_core/utils/math/vectors/vector3';
+import { Matrix4x4 } from '@/helpers/waking-nightmare/waking-nightmare_core/utils/math/martix/matrix4x4';
 import {
   Behaviour,
   IBehaviourConstructor,

@@ -1,4 +1,4 @@
-import { MonoBehaviour } from '../waking-nightmare_core/gameObject/behaviours/monoBehaviour';
+import { MonoBehaviour } from '../waking-nightmare/waking-nightmare_core/gameObject/behaviours/monoBehaviour';
 
 export class GameManager extends MonoBehaviour {
   public static instance: GameManager;

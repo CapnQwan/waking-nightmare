@@ -1,4 +1,4 @@
-import { gl } from '../waking-nightmare_core/rendering/canvas';
+import { gl } from '../waking-nightmare/waking-nightmare_core/rendering/canvas';
 
 let shaderIdCounter = 0;
 export const SHADER_IDS: WeakMap<WebGLShader, number> = new WeakMap();

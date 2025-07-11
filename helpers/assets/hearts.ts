@@ -1,6 +1,6 @@
-import { entityManager } from '../waking-nightmare_core/entityManager/entityManager';
-import { MonoBehaviour } from '../waking-nightmare_core/gameObject/behaviours/monoBehaviour';
-import { GameObject } from '../waking-nightmare_core/gameObject/gameObject/gameObject';
+import { entityManager } from '../waking-nightmare/waking-nightmare_core/entityManager/entityManager';
+import { MonoBehaviour } from '../waking-nightmare/waking-nightmare_core/gameObject/behaviours/monoBehaviour';
+import { GameObject } from '../waking-nightmare/waking-nightmare_core/gameObject/gameObject/gameObject';
 import { Card } from './card';
 import { CardRank, CardSuit } from './constants/cards';
 

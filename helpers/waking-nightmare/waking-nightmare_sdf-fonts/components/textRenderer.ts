@@ -1,15 +1,15 @@
-import { Shader } from '@/helpers/waking-nightmare_core/rendering/classes/shader';
-import { Material } from '@/helpers/waking-nightmare_core/rendering/classes/material';
-import { Matrix4x4 } from '@/helpers/waking-nightmare_core/utils/math/martix/matrix4x4';
+import { Shader } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/shader';
+import { Material } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/material';
+import { Matrix4x4 } from '@/helpers/waking-nightmare/waking-nightmare_core/utils/math/martix/matrix4x4';
 
 import sdfData from '@/public/sdf-fonts/fonts/roboto/roboto_regular_sdf.json';
 import defaultTextVertexShader from '../shaders/defaultTextVertexShader.glsl';
 import defaultTextFragmentShader from '../shaders/defaultTextFragmentShader.glsl';
-import { TextMesh } from '@/helpers/waking-nightmare_sdf-fonts/textMesh';
+import { TextMesh } from '@/helpers/waking-nightmare/waking-nightmare_sdf-fonts/textMesh';
 import {
   IRenderComponentConstructor,
   RendererComponent,
-} from '@/helpers/waking-nightmare_core/rendering/components/rendererComponent';
+} from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/components/rendererComponent';
 import {
   getVertexShader,
   getFragmentShader,

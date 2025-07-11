@@ -54,6 +54,8 @@ class Time {
     if (this.pastFrames.length > this.maxFramesHistory) {
       this.pastFrames.shift();
     }
+
+    document.title = `Waking Nightmare - FPS: ${this.getAverageFrameRate()}`;
   }
 
   /**

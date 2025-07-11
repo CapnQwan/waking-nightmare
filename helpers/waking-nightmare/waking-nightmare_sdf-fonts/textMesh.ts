@@ -1,5 +1,5 @@
-import { Mesh } from '@/helpers/waking-nightmare_core/rendering/classes/mesh';
-import { SDFUtils } from '@/helpers/waking-nightmare_sdf-fonts/sdfUtils';
+import { Mesh } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/mesh';
+import { SDFUtils } from '@/helpers/waking-nightmare/waking-nightmare_sdf-fonts/sdfUtils';
 import sdfData from '@/public/sdf-fonts/fonts/roboto/roboto_regular_sdf.json';
 
 export class TextMesh extends Mesh {

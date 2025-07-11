@@ -1,7 +1,7 @@
-import { Input } from '../waking-nightmare_inputs/inputs';
-import { time } from '../waking-nightmare_core/utils/time';
-import { MonoBehaviour } from '../waking-nightmare_core/gameObject/behaviours/monoBehaviour';
-import { Vector3 } from '../waking-nightmare_core/utils/math/vectors/vector3';
+import { Input } from '../waking-nightmare/waking-nightmare_inputs/inputs';
+import { time } from '../waking-nightmare/waking-nightmare_core/utils/time';
+import { MonoBehaviour } from '../waking-nightmare/waking-nightmare_core/gameObject/behaviours/monoBehaviour';
+import { Vector3 } from '../waking-nightmare/waking-nightmare_core/utils/math/vectors/vector3';
 
 export class DemoComponent extends MonoBehaviour {
   rotationVelocity: Vector3 = new Vector3(0, 0, 0);

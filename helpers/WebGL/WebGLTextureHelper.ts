@@ -1,4 +1,4 @@
-import { gl } from '../waking-nightmare_core/rendering/canvas';
+import { gl } from '../waking-nightmare/waking-nightmare_core/rendering/canvas';
 
 const LEVEL = 0;
 const INTERNAL_FORMAT = gl.RGBA;

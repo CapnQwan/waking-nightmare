@@ -1,9 +1,11 @@
-import { MonoBehaviour } from '../waking-nightmare_core/gameObject/behaviours/monoBehaviour';
-import { Material } from '../waking-nightmare_core/rendering/classes/material';
-import { generateCube } from '../waking-nightmare_core/rendering/classes/meshes/cube';
-import { Shader } from '../waking-nightmare_core/rendering/classes/shader';
-import { RendererComponent } from '../waking-nightmare_core/rendering/components/rendererComponent';
-import { Vector3 } from '../waking-nightmare_core/utils/math/vectors/vector3';
+import { MonoBehaviour } from '../waking-nightmare/waking-nightmare_core/gameObject/behaviours/monoBehaviour';
+import { Material } from '../waking-nightmare/waking-nightmare_core/rendering/classes/material';
+import { generateCube } from '../waking-nightmare/waking-nightmare_core/rendering/classes/meshes/cube';
+import { Shader } from '../waking-nightmare/waking-nightmare_core/rendering/classes/shader';
+import { RendererComponent } from '../waking-nightmare/waking-nightmare_core/rendering/components/rendererComponent';
+import { Vector3 } from '../waking-nightmare/waking-nightmare_core/utils/math/vectors/vector3';
+import { time } from '../waking-nightmare/waking-nightmare_core/utils/time';
+import { Input } from '../waking-nightmare/waking-nightmare_inputs/inputs';
 import {
   getVertexShader,
   getFragmentShader,
@@ -32,10 +34,23 @@ export class Card extends MonoBehaviour {
       const cardMaterial = new Material({ shader: cardShader });
       cardMaterial.bindTexture('uTexture', '/assets/1.png', 0);
       cardMaterial.setUniform('uTextureScale', new Float32Array([0.077, 0.25]));
-      cardMaterial.setUniform('uTextureOffset', new Float32Array([0.0, 0.0]));
+      cardMaterial.setUniform(
+        'uTextureOffset',
+        new Float32Array([this.rank * 0.077, this.suit * 0.25])
+      );
 
       if (this.transform) {
+        this.transform.position.x = (this.rank - 7) * 1.6;
+        this.transform.position.y = (this.suit * 1.56 - 2.34) * 1.6;
+        this.transform.scale.x = 1.5;
+        this.transform.scale.y = 1.5;
         this.transform.position.z = -10;
+        /**
+         * @todo Implement proper rotation
+         * @note Also the current implementation of the rotatePitch method is incorrect
+         * as it seems to use radians instead of degrees.
+         */
+        this.transform.rotation.rotatePitch(3.14);
       }
 
       this.parent.addComponent(
@@ -48,6 +63,12 @@ export class Card extends MonoBehaviour {
   }
 
   onUpdate(): void {
-    // Custom behavior for the card can be implemented here
+    if (Input.isMouseButtonPressed(0) && this.transform) {
+      this.transform.position.x += Input.mouseDelta.x * time.deltaTime;
+      this.transform.position.y += Input.mouseDelta.y * time.deltaTime;
+
+      this.transform.rotation.rotateRoll(Input.mouseDelta.y * time.deltaTime);
+      this.transform.rotation.rotateYaw(-Input.mouseDelta.x * time.deltaTime);
+    }
   }
 }

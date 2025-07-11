@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { WNCore } from '@/helpers/waking-nightmare_core/wakingNightmareCore';
+import type { WNCore } from '@/helpers/waking-nightmare/waking-nightmare_core/wakingNightmareCore';
 
 export const useWakingNightmare = () => {
   const wakingNightmare = useRef<WNCore | null>(null);
@@ -7,7 +7,7 @@ export const useWakingNightmare = () => {
   useEffect(() => {
     const initWN = async () => {
       const { WNCore } = await import(
-        '@/helpers/waking-nightmare_core/wakingNightmareCore'
+        '@/helpers/waking-nightmare/waking-nightmare_core/wakingNightmareCore'
       );
       wakingNightmare.current = new WNCore({ isDebugging: true });
     };

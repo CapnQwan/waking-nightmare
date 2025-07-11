@@ -3,8 +3,8 @@ import defaultLitFragmentShader from '../shaders/defaultLitFragmentShader.glsl';
 import {
   IMaterialConstructor,
   Material,
-} from '@/helpers/waking-nightmare_core/rendering/classes/material';
-import { Shader } from '@/helpers/waking-nightmare_core/rendering/classes/shader';
+} from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/material';
+import { Shader } from '@/helpers/waking-nightmare/waking-nightmare_core/rendering/classes/shader';
 import {
   getVertexShader,
   getFragmentShader,

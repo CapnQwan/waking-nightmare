@@ -139,10 +139,16 @@ export class Quaternion {
     const sinHalfPitch = Math.sin(halfPitch);
     const cosHalfPitch = Math.cos(halfPitch);
 
-    this.x = this.x * cosHalfPitch + this.w * sinHalfPitch;
-    this.y = this.y * cosHalfPitch - this.z * sinHalfPitch;
-    this.z = this.z * cosHalfPitch + this.y * sinHalfPitch;
-    this.w = this.w * cosHalfPitch - this.x * sinHalfPitch;
+    // Store original values to avoid using modified values in calculations
+    const originalX = this.x;
+    const originalY = this.y;
+    const originalZ = this.z;
+    const originalW = this.w;
+
+    this.x = originalX * cosHalfPitch + originalW * sinHalfPitch;
+    this.y = originalY * cosHalfPitch + originalZ * sinHalfPitch;
+    this.z = originalZ * cosHalfPitch - originalY * sinHalfPitch;
+    this.w = originalW * cosHalfPitch - originalX * sinHalfPitch;
 
     this.normalize();
   }
@@ -152,10 +158,16 @@ export class Quaternion {
     const sinHalfYaw = Math.sin(halfYaw);
     const cosHalfYaw = Math.cos(halfYaw);
 
-    this.x = this.x * cosHalfYaw - this.z * sinHalfYaw;
-    this.y = this.y * cosHalfYaw + this.w * sinHalfYaw;
-    this.z = this.z * cosHalfYaw + this.x * sinHalfYaw;
-    this.w = this.w * cosHalfYaw - this.y * sinHalfYaw;
+    // Store original values to avoid using modified values in calculations
+    const originalX = this.x;
+    const originalY = this.y;
+    const originalZ = this.z;
+    const originalW = this.w;
+
+    this.x = originalX * cosHalfYaw - originalZ * sinHalfYaw;
+    this.y = originalY * cosHalfYaw + originalW * sinHalfYaw;
+    this.z = originalZ * cosHalfYaw + originalX * sinHalfYaw;
+    this.w = originalW * cosHalfYaw - originalY * sinHalfYaw;
 
     this.normalize();
   }
@@ -165,10 +177,16 @@ export class Quaternion {
     const sinHalfRoll = Math.sin(halfRoll);
     const cosHalfRoll = Math.cos(halfRoll);
 
-    this.x = this.x * cosHalfRoll + this.y * sinHalfRoll;
-    this.y = this.y * cosHalfRoll - this.z * sinHalfRoll;
-    this.z = this.z * cosHalfRoll + this.x * sinHalfRoll;
-    this.w = this.w * cosHalfRoll - this.z * sinHalfRoll;
+    // Store original values to avoid using modified values in calculations
+    const originalX = this.x;
+    const originalY = this.y;
+    const originalZ = this.z;
+    const originalW = this.w;
+
+    this.x = originalX * cosHalfRoll + originalY * sinHalfRoll;
+    this.y = originalY * cosHalfRoll - originalX * sinHalfRoll;
+    this.z = originalZ * cosHalfRoll + originalW * sinHalfRoll;
+    this.w = originalW * cosHalfRoll - originalZ * sinHalfRoll;
 
     this.normalize();
   }

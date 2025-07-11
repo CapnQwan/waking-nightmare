@@ -1,4 +1,4 @@
-import { Vector3 } from '@/helpers/waking-nightmare_core/utils/math/vectors/vector3';
+import { Vector3 } from '@/helpers/waking-nightmare/waking-nightmare_core/utils/math/vectors/vector3';
 import { Mesh } from '../mesh';
 
 export const generateCube = (
