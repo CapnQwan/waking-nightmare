@@ -1,4 +1,4 @@
-import { gl } from '../waking-nightmare/Rendering/Canvas';
+import { gl } from '../waking-nightmare_core/rendering/canvas';
 
 const LEVEL = 0;
 const INTERNAL_FORMAT = gl.RGBA;
@@ -33,6 +33,10 @@ export function getTexture(url: string): WebGLTexture {
     PIXEL
   );
 
+  // Set initial texture filtering for the placeholder
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
   // Set the temporary texture in the cache to avoid reloading the image
   TEXTURE_CACHE.set(url, texture);
 
@@ -47,7 +51,20 @@ export function getTexture(url: string): WebGLTexture {
       image
     );
 
+    // Generate mipmaps for better quality at different distances
     gl.generateMipmap(gl.TEXTURE_2D);
+
+    // Set texture filtering for smooth appearance
+    gl.texParameteri(
+      gl.TEXTURE_2D,
+      gl.TEXTURE_MIN_FILTER,
+      gl.LINEAR_MIPMAP_LINEAR
+    );
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    // Set texture wrapping (optional, but good practice)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
 
     TEXTURE_CACHE.set(url, texture);
   };

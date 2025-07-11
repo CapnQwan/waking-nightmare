@@ -18,8 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": [ "./*" ],
-      "@WN/*": [ "./helpers/waking-nightmare/*" ]
+      "@/*": ["./*"],
+      "@WN/*": ["helpers/waking-nightmare_core/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,5 +1,5 @@
-import { gl } from '../waking-nightmare/Rendering/Canvas';
-import { SHADER_IDS } from './WebGLShadersHelper';
+import { gl } from '../waking-nightmare_core/rendering/canvas';
+import { SHADER_IDS } from './webGLShadersHelper';
 
 /** Creates a WebGL shader program from a vertex shader and fragment shader */
 const createProgram = (
